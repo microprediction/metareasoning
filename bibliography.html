@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -38,7 +38,6 @@
   </header>
 
   <main>
-    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
     <h1>Bibliography</h1>
     <p class="subtitle">Work on choosing what to compute and learn next, and on making the result of
     that choice believable.</p>
@@ -46,9 +45,7 @@
     <div class="bib">
 
       <p class="muted">arXiv identifiers were resolved against the arXiv API and journal DOIs against
-      Crossref in September 2026. Venues are given where the arXiv record states them. Entries are
-      grouped by the role each work plays. The same material is drawn as a
-      <a href="./map.html">map</a> and a <a href="./timeline.html">timeline</a>.</p>
+      Crossref in September 2026. Venues are given where the arXiv record states them.</p>
 
       <h3>The core</h3>
       <ul>
@@ -70,7 +67,7 @@
         <li>
           Turtel, B., Wilczewski, P., Franklin, D., and Skothiem, K. (2026).
           <a href="https://arxiv.org/abs/2601.06336"><em>Future-as-Label: Scalable Supervision from Real-World Outcomes</em></a>. arXiv:2601.06336.
-          <em>Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only; deployment-time loops are not evaluated.</em>
+          <em>Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only. Deployment-time loops are not evaluated.</em>
         </li>
         <li>
           Li, Y., Yang, X., Yang, X., Xu, M., Wang, X., et al. (2025).
@@ -81,6 +78,29 @@
           Gençay, E. (2026).
           <a href="https://arxiv.org/abs/2608.27734"><em>What survives honest evaluation? Leakage-safe, search-aware assessment of LLM-driven trading strategy discovery</em></a>. arXiv:2608.27734.
           <em>Leakage-safe tools by construction and deflation by the agent&rsquo;s own trial count. Rejects every LLM-discovered strategy tested, and shows a leaky oracle with Sharpe 35 passing both the deflated Sharpe ratio and the backtest-overfitting test.</em>
+        </li>
+      </ul>
+      <h3>Budgeted races</h3>
+      <ul>
+        <li>
+          Cotton, P. (2026).
+          <a href="https://brownianbandit.microprediction.org/papers.html"><em>Wavefront Pruning in Budgeted Brownian Races</em></a>. Working draft; software at <a href="https://github.com/microprediction/brownianbandit">microprediction/brownianbandit</a>.
+          <em>A controller pays per unit time for every Brownian path kept alive and prunes to maximise the expected terminal maximum. A path is kept while its future pivotal value exceeds its carrying cost. The value of computation for parallel rollouts and agent fleets.</em>
+        </li>
+        <li>
+          Cotton, P. (2026).
+          <a href="https://brownianbandit.microprediction.org/passk_posterior.pdf"><em>Posterior-Predictive Pass-at-k</em></a>. Note.
+          <em>Pass@k is the expected-maximum payoff of a best-of-k batch. A posterior expectation replaces the downward-biased plug-in and cuts held-out log loss from 3.37 to 0.48.</em>
+        </li>
+        <li>
+          Cotton, P. (2026).
+          <a href="https://github.com/microprediction/browniansearch"><em>When the Grass Is Greener: Three-Shot Search on Exponentiated Gaussian Landscapes</em></a>. microprediction/browniansearch.
+          <em>The search-side sibling: where to spend a few evaluations of one path, paid at the final point.</em>
+        </li>
+        <li>
+          Cotton, P. (2026).
+          <a href="https://brownianbandit.microprediction.org/clay_shooting.html"><em>Clay Shooting: Equilibrium Effort Solving Outstanding Problems</em></a>. Working draft.
+          <em>The strategic sibling. A Brownian attempt buys success probability at a convex price, and the record of solved problems implies what an attempt is worth to whoever makes it.</em>
         </li>
       </ul>
       <h3>Pricing information and computation</h3>
@@ -374,7 +394,7 @@
           <em>FINSABER. Reported LLM timing advantages deteriorate over two decades and 100+ symbols.</em>
         </li>
       </ul>
-      <h3>What a self-improving system updates</h3>
+      <h3>Self-improvement mechanisms</h3>
       <ul>
         <li>
           Khattab, O., Singhvi, A., Maheshwari, P., Zhang, Z., Santhanam, K., et al. (2023).
@@ -520,12 +540,12 @@
         <li>
           Elmachtoub, A. N., and Grigas, P. (2022).
           <a href="https://doi.org/10.1287/mnsc.2020.3922"><em>Smart &ldquo;Predict, then Optimize&rdquo;</em></a>. <em>Management Science</em> 68(1), 9&ndash;26; arXiv:1710.08005.
-          <em>Train on decision error. SPO+ is a convex, statistically consistent surrogate.</em>
+          <em>Prediction models trained on decision error rather than prediction error. SPO+ is a convex, statistically consistent surrogate.</em>
         </li>
         <li>
           G&acirc;rleanu, N., and Pedersen, L. H. (2013).
           <a href="https://doi.org/10.1111/jofi.12080"><em>Dynamic Trading with Predictable Returns and Transaction Costs</em></a>. <em>Journal of Finance</em> 68(6), 2309&ndash;2340.
-          <em>Trade partway toward an aim portfolio. Persistent signals get more weight.</em>
+          <em>The optimal portfolio trades partway toward an aim portfolio, and persistent signals get more weight.</em>
         </li>
         <li>
           Dudik, M., Langford, J., and Li, L. (2011).

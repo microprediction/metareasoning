@@ -133,7 +133,9 @@ its AVOID table appearing in a draft is a bug.
 - State theoretical claims with their preconditions, or not at all.
 - Report a number only as the source reports it, with the benchmark and baseline it was measured on.
 - Mark anything resting on news reporting rather than a primary document.
-- Dashed edges on the literature map are claims about absences — each carries a confidence level.
+- Gap edges on the literature map are claims about absences. Each carries a confidence level.
+- No red dashed lines anywhere, no per-page back links, menu names are categories of the topic
+  (site rulings in `microprediction/style/site_conventions.md`).
 - Do not run long passages inside coloured callout boxes. The `.caveat` class is for a short note,
   under roughly 150 words. A multi-heading section belongs in ordinary prose; a page-length band of
   tinted background wearies the reader.

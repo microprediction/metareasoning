@@ -25,17 +25,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -48,12 +48,11 @@
 
 <div id="tl-wrap">
   <h1>Timeline</h1>
-  <p>Seven strands over seventy-six years. arXiv papers sit at their v1 date and journal papers at
-  their publication date, except where the month is uncertain, which is shown faded. The axis is
-  piecewise: the decades before 2012 take the left fifth, and the period since 2023 takes half the
-  width. The dashed lines mark three inflections: the theory of metareasoning (1991), language-model
-  research agents (August 2024) and outcome-based training of forecasters (2025). Hovering shows the
-  one-line story, and clicking opens the work.</p>
+  <p>Seven strands over seventy-six years. arXiv papers are placed at their v1 date and journal
+  papers at their publication date. Faded markers have an uncertain month. The axis is piecewise:
+  the decades before 2012 take the left fifth, and the period since 2023 takes half the width.
+  Squares mark the metareasoning literature proper, the same papers the map draws inside its
+  circle.</p>
   <div class="legend" id="lane-legend"></div>
   <div id="timeline"></div>
   <p class="hint">Corrections welcome: file an issue on
@@ -196,7 +195,7 @@ const EVENTS = [
 "label": "Gârleanu–Pedersen",
 "url": "https://doi.org/10.1111/jofi.12080",
 "big": false,
-"note": "Trade partway toward an aim portfolio. Persistent signals get more weight."
+"note": "The optimal portfolio trades partway toward an aim portfolio, and persistent signals get more weight."
 },
 {
 "d": "2014-03",
@@ -252,7 +251,7 @@ const EVENTS = [
 "label": "Smart Predict-then-Optimize",
 "url": "https://arxiv.org/abs/1710.08005",
 "big": true,
-"note": "Elmachtoub & Grigas. Train on decision error. SPO+ is a convex, statistically consistent surrogate."
+"note": "Elmachtoub & Grigas. Prediction models trained on decision error rather than prediction error. SPO+ is a convex, statistically consistent surrogate."
 },
 {
 "d": "2017-11",
@@ -556,7 +555,7 @@ const EVENTS = [
 "label": "Future-as-Label",
 "url": "https://arxiv.org/abs/2601.06336",
 "big": true,
-"note": "Turtel et al. Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only; deployment-time loops are not evaluated."
+"note": "Turtel et al. Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only. Deployment-time loops are not evaluated."
 },
 {
 "d": "2026-01",
@@ -637,6 +636,14 @@ const EVENTS = [
 "url": "https://arxiv.org/abs/2608.27964",
 "big": false,
 "note": "Wang et al. Present confidence is a poor guide to whether more computation helps. Learns the future value of computation instead, cutting completion tokens by 95.99% for a 0.4-point accuracy cost on held-out GSM8K."
+},
+{
+"d": "2026-09",
+"lane": "classic",
+"label": "Budgeted Brownian races",
+"url": "https://brownianbandit.microprediction.org/papers.html",
+"big": true,
+"note": "A controller pays per unit time for every Brownian path kept alive and prunes to maximise the expected terminal maximum. A path is kept while its future pivotal value exceeds its carrying cost. The value of computation for parallel rollouts and agent fleets."
 }
 ];
 
@@ -669,17 +676,6 @@ Object.entries(byLane).forEach(([k, evs]) => {
   evs.forEach((e,i)=>{ e.y = LANES[k].y0 + 16 + (i%rows)*24; });
 });
 
-[["1991-05","1991: theory of metareasoning"],
- ["2024-08","Aug 2024: LM research agents"],
- ["2025-02","2025: outcome-trained forecasters"]].forEach(([d,txt],i)=>{
-  const xx = x(frac(d));
-  svg.append("line").attr("x1",xx).attr("x2",xx).attr("y1",40).attr("y2",H-30)
-     .attr("stroke","#c0392b").attr("stroke-dasharray","6,4").attr("stroke-width",1.2).attr("opacity",0.8);
-  svg.append("text").attr("x",xx+6).attr("y",20+i*13).attr("text-anchor", i===0?"start":"end")
-     .attr("dx", i===0?0:-12)
-     .attr("fill","#c0392b").attr("font-size","11px").attr("font-style","italic").text(txt);
-});
-
 const tooltip = d3.select("#tooltip");
 const ev = svg.append("g").selectAll("g").data(EVENTS).join("g")
   .style("cursor","pointer")
@@ -689,9 +685,18 @@ const ev = svg.append("g").selectAll("g").data(EVENTS).join("g")
       .html(`<b>${d.label}</b> — ${d.d}${d.sure===false?" (month approximate)":""}<br>${d.note}`); })
   .on("mouseout", ()=>tooltip.style("display","none"));
 
-ev.append("circle")
-  .attr("cx", d=>x(frac(d.d))).attr("cy", d=>d.y)
-  .attr("r", d=>d.big?8:5.5)
+// the metareasoning literature proper is drawn as squares, the same papers the map circles
+const sz = d => d.big?8:5.5;
+const NOT_CORE = new Set(["Gittins indices","Knowledge gradient","Info-directed sampling"]);
+const core = d => d.lane==="classic" && !NOT_CORE.has(d.label);
+ev.filter(d=>!core(d)).append("circle")
+  .attr("cx", d=>x(frac(d.d))).attr("cy", d=>d.y).attr("r", sz)
+  .attr("fill", d=>LANES[d.lane].color)
+  .attr("stroke", "#fff").attr("stroke-width", 1.5)
+  .attr("opacity", d=>d.sure===false?0.55:1);
+ev.filter(core).append("rect")
+  .attr("x", d=>x(frac(d.d))-sz(d)).attr("y", d=>d.y-sz(d))
+  .attr("width", d=>2*sz(d)).attr("height", d=>2*sz(d))
   .attr("fill", d=>LANES[d.lane].color)
   .attr("stroke", "#fff").attr("stroke-width", 1.5)
   .attr("opacity", d=>d.sure===false?0.55:1);

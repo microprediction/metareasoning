@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Literature Map</title>
-  <meta name="description" content="An interactive map of the metareasoning literature: classical value of computation, information acquisition, metareasoning in language models, learning from resolved outcomes, research agents, self-improvement, relational data, decisions and evaluation, with dashed edges marking connections not yet made.">
+  <meta name="description" content="An interactive map of the metareasoning literature: classical value of computation, information acquisition, metareasoning in language models, learning from resolved outcomes, research agents, self-improvement, relational data, decisions and evaluation, with the connections not yet made listed.">
   <link rel="stylesheet" href="./style.css">
   <style>
     #map-wrap { max-width: 1140px; margin: 0 auto; padding: 16px 24px 40px; }
@@ -12,7 +12,6 @@
     .legend { font-size: 0.85em; color: #444; display: flex; flex-wrap: wrap; gap: 14px 22px; margin: 10px 0; }
     .legend span { display: inline-flex; align-items: center; gap: 6px; }
     .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
-    .line { width: 26px; height: 0; border-top: 2.5px solid #999; display: inline-block; }
     #tooltip { position: absolute; pointer-events: none; background: rgba(20,20,20,0.95); color: #eee;
         padding: 8px 11px; border-radius: 4px; font-size: 13px; max-width: 350px; display: none; line-height: 1.35; }
     text.nodelabel { font: 11px sans-serif; fill: #222; pointer-events: none; }
@@ -25,17 +24,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -47,31 +46,21 @@
   </header>
 <div id="map-wrap">
   <h1>Literature Map</h1>
-  <p>Each node is a paper or a hub concept, coloured by literature. Grey edges mark descent,
-  blue edges conceptual links between literatures, and dotted purple edges rebuttals or
-  contrasting results. <span style="color:#c0392b">Dashed red edges are connections that do not
-  yet exist</span>: searched for and not found as of 30 September 2026. They are dated, scoped
-  search claims rather than proofs of absence, and are withdrawn when someone finds the missing
-  work. Clicking a node opens the work, dragging rearranges, and hovering shows the one-line
-  story.</p>
+  <p>Each node is a paper, coloured by literature. The circle holds the metareasoning literature
+  proper: the classical theory of selecting computations and its descendants inside language
+  models. Edge labels name the relation. Six edges join works that the literature has not yet
+  connected, searched for and not found as of 30 September 2026.</p>
   <div class="legend" id="cluster-legend"></div>
-  <div class="legend">
-    <span><span class="line" style="border-color:#999"></span> builds on or extends</span>
-    <span><span class="line" style="border-color:#2471a3"></span> conceptual link</span>
-    <span><span class="line" style="border-color:#1e8449"></span> reaches the organising question</span>
-    <span><span class="line" style="border-top-style:dotted; border-color:#7d3c98"></span> rebuts or contrasts</span>
-    <span><span class="line" style="border-top-style:dashed; border-color:#c0392b"></span> gap: not found</span>
-  </div>
   <div id="graph"></div>
   <p class="hint">Corrections welcome: file an issue on
   <a href="https://github.com/microprediction/metareasoning">microprediction/metareasoning</a>.</p>
 
   <h2>Gaps</h2>
   <p>Each gap rests on keyword searches of arXiv titles and abstracts run on 30 September 2026,
-  plus the reference lists of the papers at either end. An absence is informative only if someone
-  looked, and only honest if it is withdrawn when the missing work turns up.</p>
+  plus the reference lists of the papers at either end. A gap is withdrawn when the missing work
+  turns up.</p>
   <ol class="gaps">
-    <li>
+    <li><p style="margin:0">
       <em>Research controllers do not value an experiment by its effect on a decision.</em>
       The classical theory values a computation by the change it makes to a later action
       (Russell &amp; Wefald, Hay et al.). Research agents choose directions by tree search or a
@@ -80,9 +69,13 @@
       <a href="https://arxiv.org/abs/2608.23848">ExTS</a>, treats tree expansion as a
       value-of-information decision, and <a href="https://arxiv.org/abs/2608.14354">ScienceFlow</a>
       allocates compute by validated progress. Both value against the score being optimised.
+      </p><p style="margin-top:6px">
       <a href="https://arxiv.org/abs/2602.05340">Decision-focused experimental design</a> values
-      experiments by decision loss, but for linear optimisation rather than an agent.
-      <em>Confidence: moderate.</em>
+      experiments by decision loss, but for linear optimisation rather than an agent. The
+      <a href="https://brownianbandit.microprediction.org/papers.html">budgeted Brownian race</a>
+      prices each parallel path by its pivotal value for the terminal payoff, as a mean-field
+      theory rather than inside an agent.
+      <em>Confidence: moderate.</em></p>
     </li>
     <li>
       <em>No research loop uses an outcome-trained forecaster as its object level.</em>
@@ -132,15 +125,15 @@
 <div id="tooltip"></div>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script>
-const CLUSTERS = {"hub": {"label": "Where effort goes", "color": "#10212b"}, "classic": {"label": "Classical metareasoning", "color": "#8e44ad"}, "acquire": {"label": "Information acquisition", "color": "#e67e22"}, "llmmeta": {"label": "Metareasoning in language models", "color": "#0d7d8c"}, "outcomes": {"label": "Learning from outcomes", "color": "#27ae60"}, "agents": {"label": "Research loops", "color": "#2471a3"}, "update": {"label": "Self-improvement mechanisms", "color": "#a04000"}, "data": {"label": "Relational data & weak labels", "color": "#7f8c8d"}, "decide": {"label": "Forecasts to decisions", "color": "#b7950b"}, "eval": {"label": "Evaluating a search", "color": "#c0392b"}};
+const CLUSTERS = {"classic": {"label": "Classical metareasoning", "color": "#8e44ad"}, "acquire": {"label": "Information acquisition", "color": "#e67e22"}, "llmmeta": {"label": "Metareasoning in language models", "color": "#0d7d8c"}, "outcomes": {"label": "Learning from outcomes", "color": "#27ae60"}, "agents": {"label": "Research loops", "color": "#2471a3"}, "update": {"label": "Self-improvement mechanisms", "color": "#a04000"}, "data": {"label": "Relational data & weak labels", "color": "#7f8c8d"}, "decide": {"label": "Forecasts to decisions", "color": "#b7950b"}, "eval": {"label": "Evaluating a search", "color": "#c0392b"}};
 const NODES = [
 {
-"id": "hub",
-"c": "hub",
-"label": "Value of a research action",
-"url": null,
+"id": "bb",
+"c": "classic",
+"label": "Budgeted Brownian races",
+"url": "https://brownianbandit.microprediction.org/papers.html",
 "big": true,
-"note": "The organising question: which next computation, query or experiment has the greatest expected effect on a later decision, net of its cost."
+"note": "Cotton 2026. A controller pays per unit time for every path kept alive and prunes to maximise the expected terminal maximum. A path is kept while its future pivotal value exceeds its carrying cost, which is the value of computation for parallel rollouts and agent fleets."
 },
 {
 "id": "rw",
@@ -212,7 +205,7 @@ const NODES = [
 "label": "Resource-rational analysis",
 "url": "https://doi.org/10.1017/s0140525x1900061x",
 "big": false,
-"note": "The research programme stated in full, with commentary."
+"note": "The research programme, with open peer commentary."
 },
 {
 "id": "gittins",
@@ -372,7 +365,7 @@ const NODES = [
 "label": "Future-as-Label",
 "url": "https://arxiv.org/abs/2601.06336",
 "big": true,
-"note": "Turtel et al. 2026. Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only; deployment-time loops are not evaluated."
+"note": "Turtel et al. 2026. Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only. Deployment-time loops are not evaluated."
 },
 {
 "id": "bosse",
@@ -652,7 +645,7 @@ const NODES = [
 "label": "Smart Predict-then-Optimize",
 "url": "https://doi.org/10.1287/mnsc.2020.3922",
 "big": true,
-"note": "Train on decision error. SPO+ is a convex, statistically consistent surrogate."
+"note": "Prediction models trained on decision error rather than prediction error. SPO+ is a convex, statistically consistent surrogate."
 },
 {
 "id": "gp",
@@ -660,7 +653,7 @@ const NODES = [
 "label": "Gârleanu–Pedersen",
 "url": "https://doi.org/10.1111/jofi.12080",
 "big": false,
-"note": "Trade partway toward an aim portfolio. Persistent signals get more weight."
+"note": "The optimal portfolio trades partway toward an aim portfolio, and persistent signals get more weight."
 },
 {
 "id": "dr",
@@ -775,71 +768,74 @@ const NODES = [
 "note": "Gençay 2026. Leakage-safe tools by construction and deflation by the agent’s own trial count. Rejects every LLM-discovered strategy tested, and shows a leaky oracle with Sharpe 35 passing both the deflated Sharpe ratio and the backtest-overfitting test."
 }
 ];
-const LINKS = [{"s": "rw", "t": "hub", "k": "link"}, {"s": "howard", "t": "matheson", "k": "builds"}, {"s": "matheson", "t": "rw", "k": "builds"}, {"s": "horvitz", "t": "rw", "k": "link"}, {"s": "rw", "t": "hay", "k": "builds"}, {"s": "hay", "t": "tolpin", "k": "link"}, {"s": "tolpin", "t": "sezener", "k": "link"}, {"s": "hay", "t": "callaway", "k": "builds"}, {"s": "callaway", "t": "rr", "k": "builds"}, {"s": "callaway", "t": "desab", "k": "builds"}, {"s": "rr", "t": "desab", "k": "link"}, {"s": "howard", "t": "kg", "k": "link"}, {"s": "gittins", "t": "kg", "k": "link"}, {"s": "kg", "t": "ids", "k": "link"}, {"s": "kg", "t": "hub", "k": "link"}, {"s": "afa", "t": "hub", "k": "link"}, {"s": "hyperband", "t": "kg", "k": "rebut", "lab": "allocation without a model"}, {"s": "spo", "t": "dfsed", "k": "builds"}, {"s": "kg", "t": "dfsed", "k": "builds"}, {"s": "dfsed", "t": "hub", "k": "bridge", "lab": "decision loss, not error"}, {"s": "act", "t": "snell", "k": "link"}, {"s": "snell", "t": "desab", "k": "link"}, {"s": "desab", "t": "metar", "k": "link"}, {"s": "snell", "t": "aera", "k": "link"}, {"s": "aera", "t": "hub", "k": "bridge"}, {"s": "exts", "t": "hub", "k": "bridge"}, {"s": "tolpin", "t": "exts", "k": "link"}, {"s": "brier", "t": "gr", "k": "link"}, {"s": "gr", "t": "fal", "k": "link"}, {"s": "autocast", "t": "halawi", "k": "builds"}, {"s": "halawi", "t": "fbench", "k": "builds"}, {"s": "fbench", "t": "paleka", "k": "link"}, {"s": "paleka", "t": "halawi", "k": "rebut"}, {"s": "teach", "t": "orl", "k": "builds"}, {"s": "orl", "t": "fal", "k": "builds"}, {"s": "bosse", "t": "fal", "k": "link"}, {"s": "fal", "t": "hub", "k": "bridge", "lab": "outcomes price research"}, {"s": "delay", "t": "fal", "k": "link"}, {"s": "aci", "t": "delay", "k": "link"}, {"s": "aisci", "t": "aisci2", "k": "builds"}, {"s": "beel", "t": "aisci", "k": "rebut"}, {"s": "aide", "t": "mle", "k": "link"}, {"s": "aide", "t": "aisci2", "k": "link"}, {"s": "mle", "t": "sflow", "k": "builds"}, {"s": "sflow", "t": "hub", "k": "bridge", "lab": "value-driven compute"}, {"s": "funsearch", "t": "alphaevolve", "k": "builds"}, {"s": "qlib", "t": "rdq", "k": "builds"}, {"s": "aide", "t": "rdq", "k": "link"}, {"s": "rdq", "t": "alphaagent", "k": "link"}, {"s": "tradingagents", "t": "finsaber", "k": "builds"}, {"s": "finsaber", "t": "tradingagents", "k": "rebut"}, {"s": "rdq", "t": "hub", "k": "bridge", "lab": "bandit scheduler"}, {"s": "dspy", "t": "gepa", "k": "builds"}, {"s": "opro", "t": "gepa", "k": "link"}, {"s": "textgrad", "t": "gepa", "k": "link"}, {"s": "reflexion", "t": "memrl", "k": "link"}, {"s": "godel", "t": "stop", "k": "link"}, {"s": "stop", "t": "adas", "k": "link"}, {"s": "adas", "t": "dgm", "k": "builds"}, {"s": "godel", "t": "dgm", "k": "builds"}, {"s": "huang", "t": "reflexion", "k": "rebut", "lab": "only with external feedback"}, {"s": "ren", "t": "gepa", "k": "link"}, {"s": "ren", "t": "memrl", "k": "link"}, {"s": "ren", "t": "lightning", "k": "link"}, {"s": "dfs", "t": "rdl", "k": "builds"}, {"s": "rdl", "t": "relbench", "k": "builds"}, {"s": "relbench", "t": "rdblearn", "k": "builds"}, {"s": "dfs", "t": "rdblearn", "k": "link", "lab": "aggregates, revisited"}, {"s": "snorkel", "t": "textdata", "k": "link"}, {"s": "spo", "t": "gp", "k": "link"}, {"s": "dr", "t": "crm", "k": "link"}, {"s": "crm", "t": "cql", "k": "link"}, {"s": "dml", "t": "dr", "k": "link"}, {"s": "white", "t": "hansen", "k": "builds"}, {"s": "hansen", "t": "pbo", "k": "link"}, {"s": "pbo", "t": "gencay", "k": "builds"}, {"s": "dwork", "t": "kapoor", "k": "link"}, {"s": "glasserman", "t": "dated", "k": "link"}, {"s": "dated", "t": "gencay", "k": "link"}, {"s": "gencay", "t": "rdq", "k": "rebut", "lab": "every LLM strategy rejected"}, {"s": "gencay", "t": "alphaagent", "k": "rebut"}, {"s": "hay", "t": "rdq", "k": "gap", "lab": "VOC of an experiment"}, {"s": "fal", "t": "rdq", "k": "gap", "lab": "outcome-trained core"}, {"s": "dr", "t": "rdq", "k": "gap", "lab": "OPE of research policies"}, {"s": "dwork", "t": "gencay", "k": "gap", "lab": "holdout reuse for agents"}, {"s": "relbench", "t": "rdq", "k": "gap", "lab": "own logs as substrate"}, {"s": "spo", "t": "exts", "k": "gap", "lab": "decision-valued search"}];
-
-const EDGE = {
-  builds: {stroke:"#999",    w:1.4, dash:null},
-  link:   {stroke:"#2471a3", w:1.3, dash:null},
-  same:   {stroke:"#2471a3", w:2.6, dash:null},
-  bridge: {stroke:"#1e8449", w:1.8, dash:null},
-  rebut:  {stroke:"#7d3c98", w:1.6, dash:"2,3"},
-  gap:    {stroke:"#c0392b", w:1.8, dash:"6,4"},
-};
+const LINKS = [{"s": "howard", "t": "matheson", "k": "builds"}, {"s": "matheson", "t": "rw", "k": "builds"}, {"s": "horvitz", "t": "rw", "k": "link"}, {"s": "rw", "t": "hay", "k": "builds"}, {"s": "hay", "t": "tolpin", "k": "link"}, {"s": "tolpin", "t": "sezener", "k": "link"}, {"s": "hay", "t": "callaway", "k": "builds"}, {"s": "callaway", "t": "rr", "k": "builds"}, {"s": "callaway", "t": "desab", "k": "builds"}, {"s": "rr", "t": "desab", "k": "link"}, {"s": "howard", "t": "kg", "k": "link"}, {"s": "gittins", "t": "kg", "k": "link"}, {"s": "kg", "t": "ids", "k": "link"}, {"s": "hyperband", "t": "kg", "k": "rebut", "lab": "allocation without a model"}, {"s": "spo", "t": "dfsed", "k": "builds"}, {"s": "kg", "t": "dfsed", "k": "builds"}, {"s": "act", "t": "snell", "k": "link"}, {"s": "snell", "t": "desab", "k": "link"}, {"s": "desab", "t": "metar", "k": "link"}, {"s": "snell", "t": "aera", "k": "link"}, {"s": "tolpin", "t": "exts", "k": "link"}, {"s": "brier", "t": "gr", "k": "link"}, {"s": "gr", "t": "fal", "k": "link"}, {"s": "autocast", "t": "halawi", "k": "builds"}, {"s": "halawi", "t": "fbench", "k": "builds"}, {"s": "fbench", "t": "paleka", "k": "link"}, {"s": "paleka", "t": "halawi", "k": "rebut"}, {"s": "teach", "t": "orl", "k": "builds"}, {"s": "orl", "t": "fal", "k": "builds"}, {"s": "bosse", "t": "fal", "k": "link"}, {"s": "delay", "t": "fal", "k": "link"}, {"s": "aci", "t": "delay", "k": "link"}, {"s": "aisci", "t": "aisci2", "k": "builds"}, {"s": "beel", "t": "aisci", "k": "rebut"}, {"s": "aide", "t": "mle", "k": "link"}, {"s": "aide", "t": "aisci2", "k": "link"}, {"s": "mle", "t": "sflow", "k": "builds"}, {"s": "funsearch", "t": "alphaevolve", "k": "builds"}, {"s": "qlib", "t": "rdq", "k": "builds"}, {"s": "aide", "t": "rdq", "k": "link"}, {"s": "rdq", "t": "alphaagent", "k": "link"}, {"s": "tradingagents", "t": "finsaber", "k": "builds"}, {"s": "finsaber", "t": "tradingagents", "k": "rebut"}, {"s": "dspy", "t": "gepa", "k": "builds"}, {"s": "opro", "t": "gepa", "k": "link"}, {"s": "textgrad", "t": "gepa", "k": "link"}, {"s": "reflexion", "t": "memrl", "k": "link"}, {"s": "godel", "t": "stop", "k": "link"}, {"s": "stop", "t": "adas", "k": "link"}, {"s": "adas", "t": "dgm", "k": "builds"}, {"s": "godel", "t": "dgm", "k": "builds"}, {"s": "huang", "t": "reflexion", "k": "rebut", "lab": "only with external feedback"}, {"s": "ren", "t": "gepa", "k": "link"}, {"s": "ren", "t": "memrl", "k": "link"}, {"s": "ren", "t": "lightning", "k": "link"}, {"s": "dfs", "t": "rdl", "k": "builds"}, {"s": "rdl", "t": "relbench", "k": "builds"}, {"s": "relbench", "t": "rdblearn", "k": "builds"}, {"s": "dfs", "t": "rdblearn", "k": "link", "lab": "aggregates, revisited"}, {"s": "snorkel", "t": "textdata", "k": "link"}, {"s": "spo", "t": "gp", "k": "link"}, {"s": "dr", "t": "crm", "k": "link"}, {"s": "crm", "t": "cql", "k": "link"}, {"s": "dml", "t": "dr", "k": "link"}, {"s": "white", "t": "hansen", "k": "builds"}, {"s": "hansen", "t": "pbo", "k": "link"}, {"s": "pbo", "t": "gencay", "k": "builds"}, {"s": "dwork", "t": "kapoor", "k": "link"}, {"s": "glasserman", "t": "dated", "k": "link"}, {"s": "dated", "t": "gencay", "k": "link"}, {"s": "gencay", "t": "rdq", "k": "rebut", "lab": "every LLM strategy rejected"}, {"s": "gencay", "t": "alphaagent", "k": "rebut"}, {"s": "tolpin", "t": "bb", "k": "link", "lab": "terminal payoff"}, {"s": "bb", "t": "exts", "k": "link", "lab": "pruning by value"}, {"s": "bb", "t": "sflow", "k": "link", "lab": "agent fleets"}, {"s": "hay", "t": "bb", "k": "link", "lab": "selecting computations"}, {"s": "bb", "t": "snell", "k": "link", "lab": "parallel rollouts"}, {"s": "hay", "t": "rdq", "k": "gap", "lab": "VOC of an experiment"}, {"s": "fal", "t": "rdq", "k": "gap", "lab": "outcome-trained core"}, {"s": "dr", "t": "rdq", "k": "gap", "lab": "OPE of research policies"}, {"s": "dwork", "t": "gencay", "k": "gap", "lab": "holdout reuse for agents"}, {"s": "relbench", "t": "rdq", "k": "gap", "lab": "own logs as substrate"}, {"s": "spo", "t": "exts", "k": "gap", "lab": "decision-valued search"}];
 
 const W = document.getElementById("graph").clientWidth, H = 860;
 const svg = d3.select("#graph").append("svg")
   .attr("width","100%").attr("height",H).attr("viewBox",[0,0,W,H]);
 const tooltip = d3.select("#tooltip");
+const show = (e, html) => tooltip.style("display","block")
+  .style("left",(e.pageX+14)+"px").style("top",(e.pageY+8)+"px").html(html);
+const hide = () => tooltip.style("display","none");
 
+// the metareasoning literature proper sits inside a labelled circle at the centre
+const CORE = new Set(["classic","llmmeta"]);
+const R = Math.min(W, H) * 0.24, CX = W/2, CY = H/2;
+const OUTER = ["acquire","decide","eval","data","update","agents","outcomes"];
+const home = {};
+OUTER.forEach((c,i)=>{ const th = -Math.PI/2 + 2*Math.PI*(i+0.5)/OUTER.length;
+  home[c] = [CX + 0.40*W*Math.cos(th), CY + 0.41*H*Math.sin(th)]; });
 const links = LINKS.map(l => ({...l, source:l.s, target:l.t}));
 const nodes = NODES.map(n => ({...n}));
-const hub = nodes.find(n => n.id === "hub"); hub.fx = W/2; hub.fy = H/2;
+nodes.forEach(n => {
+  const [hx,hy] = CORE.has(n.c) ? [CX, CY] : home[n.c];
+  n.x = hx + (Math.random()-0.5)*80; n.y = hy + (Math.random()-0.5)*80; });
 
-// each literature gets a sector around the hub; links then pull related sectors together
-const ORDER = ["classic","acquire","decide","eval","data","update","agents","outcomes","llmmeta"];
-const home = {hub:[W/2, H/2]};
-ORDER.forEach((c,i)=>{ const th = -Math.PI/2 + 2*Math.PI*i/ORDER.length;
-  home[c] = [W/2 + 0.36*W*Math.cos(th), H/2 + 0.38*H*Math.sin(th)]; });
-nodes.forEach(n => { const [hx,hy] = home[n.c]; n.x = hx + (Math.random()-0.5)*60; n.y = hy + (Math.random()-0.5)*60; });
+svg.append("circle").attr("cx",CX).attr("cy",CY).attr("r",R)
+  .attr("fill","#f6f1fa").attr("stroke","#8e44ad").attr("stroke-width",1.5);
+svg.append("text").attr("x",CX).attr("y",CY-R-8).attr("text-anchor","middle")
+  .attr("font-size",13).attr("font-weight",600).attr("fill","#8e44ad").text("Metareasoning");
+
+function contain(alpha){
+  nodes.forEach(n => {
+    const dx = n.x-CX, dy = n.y-CY, d = Math.hypot(dx,dy) || 1;
+    if (CORE.has(n.c) && d > R-26) { const k=(d-(R-26))/d*alpha*2; n.vx -= dx*k; n.vy -= dy*k; }
+    if (!CORE.has(n.c) && d < R+30) { const k=((R+30)-d)/d*alpha*2; n.vx += dx*k; n.vy += dy*k; }
+  });
+}
 const sim = d3.forceSimulation(nodes)
-  .force("link", d3.forceLink(links).id(d=>d.id).distance(d=>d.k==="builds"||d.k==="rebut"?60:120).strength(d=>(d.k==="builds"||d.k==="rebut")?0.35:0.02))
-  .force("charge", d3.forceManyBody().strength(-240))
-  .force("x", d3.forceX(d=>home[d.c][0]).strength(0.22))
-  .force("y", d3.forceY(d=>home[d.c][1]).strength(0.22))
-  .force("collide", d3.forceCollide().radius(46));
+  .force("link", d3.forceLink(links).id(d=>d.id).distance(70).strength(d=>d.k==="builds"||d.k==="rebut"?0.3:0.02))
+  .force("charge", d3.forceManyBody().strength(-200))
+  .force("x", d3.forceX(d=>CORE.has(d.c)?CX:home[d.c][0]).strength(d=>CORE.has(d.c)?0.05:0.22))
+  .force("y", d3.forceY(d=>CORE.has(d.c)?CY:home[d.c][1]).strength(d=>CORE.has(d.c)?0.05:0.22))
+  .force("collide", d3.forceCollide().radius(44))
+  .force("contain", contain);
 
+const KIND = {builds:"builds on", link:"related", same:"same object", bridge:"related",
+              rebut:"rebuts or contrasts", gap:"not yet connected"};
 const link = svg.append("g").selectAll("line").data(links).join("line")
-  .attr("stroke", d=>EDGE[d.k].stroke)
-  .attr("stroke-width", d=>EDGE[d.k].w)
-  .attr("stroke-dasharray", d=>EDGE[d.k].dash)
-  .attr("opacity", d=>d.k==="builds"||d.k==="rebut"||d.k==="gap"?0.85:0.35);
-
-const edgelabel = svg.append("g").selectAll("text").data(links.filter(d=>d.lab)).join("text")
-  .attr("font-size", 9.5).attr("font-style","italic")
-  .attr("fill", d=>d.k==="gap"?"#c0392b":"#777")
-  .attr("text-anchor","middle")
-  .attr("paint-order","stroke").attr("stroke","#fdfdfd").attr("stroke-width",3.5).attr("stroke-linejoin","round")
-  .text(d=>d.lab);
+  .attr("stroke","#9a9a9a").attr("stroke-width",1.3).attr("opacity",0.55)
+  .style("cursor","help")
+  .on("mousemove",(e,d)=>show(e,`<b>${KIND[d.k]}</b>${d.lab?": "+d.lab:""}<br>${d.source.label} — ${d.target.label}`))
+  .on("mouseout",hide);
 
 const node = svg.append("g").selectAll("g").data(nodes).join("g")
   .style("cursor", d=>d.url?"pointer":"grab")
   .on("click", (e,d)=>{ if(d.url) window.open(d.url,"_blank"); })
-  .on("mousemove", (e,d)=>{ tooltip.style("display","block")
-      .style("left",(e.pageX+14)+"px").style("top",(e.pageY+8)+"px")
-      .html(`<b>${d.label}</b><br>${d.note}`); })
-  .on("mouseout", ()=>tooltip.style("display","none"))
+  .on("mousemove", (e,d)=>show(e,`<b>${d.label}</b><br>${d.note}`))
+  .on("mouseout", hide)
   .call(d3.drag()
     .on("start",(e,d)=>{ if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
     .on("drag", (e,d)=>{ d.fx=e.x; d.fy=e.y; })
-    .on("end",  (e,d)=>{ if(!e.active) sim.alphaTarget(0); if(d.id!=="hub"){ d.fx=null; d.fy=null; } }));
+    .on("end",  (e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
 
 node.append("circle")
-  .attr("r", d=>d.id==="hub"?14:(d.big?10:6.5))
+  .attr("r", d=>d.big?10:6.5)
   .attr("fill", d=>CLUSTERS[d.c].color)
   .attr("stroke","#fff").attr("stroke-width",1.6);
 
 node.append("text").attr("class","nodelabel")
-  .attr("x", 0).attr("y", d=>(d.id==="hub"?14:(d.big?10:6.5))+13)
+  .attr("x", 0).attr("y", d=>(d.big?10:6.5)+13)
   .attr("text-anchor","middle")
   .attr("font-weight", d=>d.big?600:400)
   .attr("paint-order","stroke").attr("stroke","#fdfdfd").attr("stroke-width",3.5).attr("stroke-linejoin","round")
@@ -849,7 +845,6 @@ sim.on("tick", () => {
   nodes.forEach(d => { d.x = Math.max(60, Math.min(W-60, d.x)); d.y = Math.max(24, Math.min(H-24, d.y)); });
   link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
       .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
-  edgelabel.attr("x",d=>(d.source.x+d.target.x)/2).attr("y",d=>(d.source.y+d.target.y)/2-3);
   node.attr("transform", d=>`translate(${d.x},${d.y})`);
 });
 

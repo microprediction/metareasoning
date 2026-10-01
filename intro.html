@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -37,10 +37,9 @@
     </div>
   </header>
   <main>
-    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
     <h1>Introduction</h1>
-    <p class="subtitle">Two levels of reasoning, the value of a computation, and the vocabularies
-    that border the subject.</p>
+    <p class="subtitle">Two levels of reasoning, the value of a computation, and the neighbouring
+    vocabularies.</p>
 
     <h2>Object level and meta level</h2>
     <p>
@@ -110,8 +109,7 @@
       reward that penalises reasoning whose value of computation does not cover its cost.
       <a href="https://arxiv.org/abs/2608.27964">AERA (2026)</a> learns whether generating another
       block of candidate answers is likely to recover a better one, using future correctness only to
-      build offline supervision. The <a href="./selection.html">selecting computations</a> page
-      covers this line from its origins.
+      build offline supervision.
     </p>
     <p>
       A research system is the same problem at a larger grain. The computations are experiments,
@@ -192,7 +190,7 @@
         <text x="680" y="120" text-anchor="middle" font-size="11" fill="#9a9a9a">sets the evidential bar</text>
 
         <path d="M 680 144 L 680 185 L 120 185 L 120 144" fill="none" stroke="#0d7d8c" stroke-width="1.6"
-              stroke-dasharray="5 3" marker-end="url(#arrow2)"/>
+              marker-end="url(#arrow2)"/>
         <text x="400" y="200" text-anchor="middle" font-size="11" fill="#5a5a5a">the controller learns which kinds of proposal paid off, under which circumstances, at what cost</text>
       </svg>
       <p class="caption">The controller never touches data or scores directly. Every proposal passes
@@ -215,8 +213,7 @@
 
     <h2>Constraints on the data</h2>
     <p>
-      The literature on evaluation, surveyed on the <a href="./evaluation.html">evaluating a
-      search</a> page, implies a short list of requirements for any system that learns from its own
+      The <a href="./evaluation.html">literature on evaluating a search</a> implies a short list of requirements for any system that learns from its own
       history.
     </p>
     <ul>
@@ -254,16 +251,6 @@
       </li>
     </ul>
 
-    <div class="next-steps">
-      <p>The topic pages follow the loop. <a href="./selection.html">Selecting computations</a> covers
-      the metalevel theory, <a href="./outcomes.html">learning from resolved outcomes</a> the labels,
-      <a href="./agents.html">autonomous research loops</a> and
-      <a href="./updating.html">what a self-improving system updates</a> the machinery,
-      <a href="./data.html">relational features and weak labels</a> the substrate,
-      <a href="./decisions.html">from forecasts to decisions</a> the bridge to action, and
-      <a href="./evaluation.html">evaluating a search</a> the statistics that make an improvement
-      believable.</p>
-    </div>
   </main>
 
   <footer>

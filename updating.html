@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>What a Self-Improving System Updates</title>
+  <title>Self-Improvement Mechanisms</title>
   <meta name="description" content="Self-improvement organised by what changes: prompts and programs, episodic memory, code and agent design, and model weights, with the evidence on self-correction without external feedback." />
   <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -37,8 +37,7 @@
     </div>
   </header>
   <main>
-    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
-    <h1>What a Self-Improving System Updates</h1>
+    <h1>Self-Improvement Mechanisms</h1>
     <p class="subtitle">Prompts, memory, code, control logic and weights, and the feedback each
     one needs.</p>
 
@@ -134,8 +133,8 @@
       examples.
     </p>
     <p>
-      The <a href="./outcomes.html">resolved-outcomes</a> page covers weight updates driven by
-      forecast outcomes. <a href="https://arxiv.org/abs/2004.05439">Hospedales et al. (2020)</a>
+      Weights can also be trained on resolved forecasts, as in
+      <a href="./outcomes.html">outcome-based reinforcement learning</a>. <a href="https://arxiv.org/abs/2004.05439">Hospedales et al. (2020)</a>
       survey the older meta-learning literature, which improves a learning algorithm from many
       learning episodes.
     </p>
@@ -147,7 +146,7 @@
       reasoning tasks models struggle to improve this way, and their performance sometimes falls.
     </p>
     <p>
-      Every method above with a reported gain uses an external signal: a test suite, a benchmark
+      Every method with a reported gain in this literature uses an external signal: a test suite, a benchmark
       score, an environment reward or a resolved outcome. For a research system that signal comes
       from the evaluation service, which is why all proposed changes pass through one interface
       and why failed changes are kept.

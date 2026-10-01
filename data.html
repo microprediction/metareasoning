@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -37,15 +37,14 @@
     </div>
   </header>
   <main>
-    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
     <h1>Relational Features and Weak Labels</h1>
     <p class="subtitle">Linked tables, text, and noisy sources of supervision.</p>
 
     <p class="lead">
-      A research system&rsquo;s history usually lives in a relational database: documents, events,
+      A research system&rsquo;s history is usually stored in a relational database: documents, events,
       extracted facts, forecasts, comments, decisions and outcomes, joined by keys and stamped with
-      times. Two questions follow. How should features be built from linked, timestamped tables?
-      And how should the many imperfect judgements in those tables be turned into labels?
+      times. Features have to be built from those linked, timestamped tables, and the many imperfect
+      judgements they hold have to be turned into labels.
     </p>
 
     <h2>Relational databases as temporal graphs</h2>

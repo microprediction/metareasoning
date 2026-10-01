@@ -1,4 +1,4 @@
-# metareasoning
+# metareasoning (view as [web page](https://metareasoning.microprediction.org))
 
 Source for a curated map of research on metareasoning and self-improving research systems:
 systems that decide what to compute, investigate or learn next, and that improve those decisions
@@ -26,13 +26,13 @@ estimates it from logged histories, with resolved outcomes supplying the labels.
 | `selection.html` | Classical metareasoning, information acquisition, metareasoning inside language models |
 | `outcomes.html` | Proper scoring rules, forecasting benchmarks, training on resolved outcomes, delayed feedback |
 | `agents.html` | Research agents, program search, quantitative research and trading agents, and their evaluations |
-| `updating.html` | What self-improving systems update: prompts, memory, code, weights |
+| `updating.html` | Self-improvement mechanisms: prompts, memory, code, weights |
 | `data.html` | Relational deep learning, feature synthesis, text as data, weak supervision |
 | `decisions.html` | Decision-focused learning, dynamic trading, off-policy evaluation, offline RL, causal estimation |
 | `evaluation.html` | Data snooping, backtest overfitting, adaptive data analysis, leakage, look-ahead in language models |
 | `bibliography.html` | Annotated bibliography, grouped by role |
 | `implementations.html` | Open code, with repository status |
-| `map.html` | d3 force-directed literature map, with dashed edges for connections not yet made |
+| `map.html` | d3 force-directed literature map, with the metareasoning literature inside a circle and a list of connections not yet made |
 | `timeline.html` | d3 swimlane timeline across seven strands |
 
 Plain static HTML with one shared `style.css`. No build step. KaTeX and d3 from CDN.
@@ -44,8 +44,8 @@ Plain static HTML with one shared `style.css`. No build step. KaTeX and d3 from 
 - Numbers are reported as the source reports them, with the benchmark they were measured on.
 - Independent evaluations sit next to the results they test. Reported gains in this field often
   shrink under search-aware, leakage-safe evaluation.
-- Dashed edges on the literature map are claims about absences, so each is written out with the
-  searches behind it and a confidence level.
+- Gaps on the literature map are claims about absences, so each is written out with the searches
+  behind it and a confidence level.
 
 ## Contributing
 

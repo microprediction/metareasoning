@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -37,10 +37,9 @@
     </div>
   </header>
   <main>
-    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
     <h1>Selecting Computations</h1>
-    <p class="subtitle">Deciding what to compute, measure or acquire next, by its expected effect on
-    a later decision.</p>
+    <p class="subtitle">A computation, measurement or acquisition is worth making when its expected
+    effect on a later decision exceeds its cost.</p>
 
     <h2>Pricing information and analysis</h2>
     <p>
@@ -76,7 +75,7 @@
       to monitor such algorithms and decide when to stop them.
     </p>
 
-    <h3>Selection problems, not bandits</h3>
+    <h3>Metalevel control as a selection problem</h3>
     <p>
       <a href="https://arxiv.org/abs/1207.5879">Hay, Russell, Tolpin and Shimony (2012)</a> place
       metalevel decisions in the framework of Bayesian selection problems and argue that this is
@@ -98,6 +97,37 @@
       directions with a bandit, as <a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a> does,
       inherits an objective that rewards every trial. A research budget spent on exploration is
       rewarded only through the final choice of what to deploy.
+    </p>
+
+    <h2>Pruning parallel computations under a budget</h2>
+    <p>
+      <a href="https://github.com/microprediction/brownianbandit">Cotton (2026)</a> poses the
+      <em>budgeted Brownian race</em>. A controller watches a cloud of Brownian paths, pays per unit
+      time for every path kept alive, may prune irreversibly, and spends a finite path-time budget to
+      maximise the expected terminal maximum. The optimal policy keeps a path while its future
+      pivotal value, the expected gain from one more path at that level, exceeds its carrying cost.
+    </p>
+    <p>
+      The rule is the value of computation applied to computations that run in parallel. The
+      <a href="https://brownianbandit.microprediction.org/applications.html">applications</a> name
+      two cases directly: reasoning rollouts, where tokens are the cost and a verifier scores the best
+      completion, and fleets of research agents, where compute and API spend are the cost and the
+      best finding that survives review is the payoff.
+    </p>
+    <p>
+      In the committed example, with initial intensity 100 and a path-time budget of 10, the
+      adaptive policy reaches an expected maximum of 1.960. The best one-shot screening reaches
+      1.643 and static random thinning 1.509. The policies are optimal among population-blind
+      controls, which decide each path from its own state, and a population-aware controller can do
+      better.
+    </p>
+    <p>
+      The payoff is the terminal best rather than a sum over trials, the same objective Tolpin and
+      Shimony argue for in tree search. <a href="https://github.com/microprediction/browniansearch">browniansearch</a>
+      treats the search side, a few evaluations of one path rather than pruning many. The note
+      <a href="https://brownianbandit.microprediction.org/passk_posterior.pdf"><em>Posterior-Predictive
+      Pass-at-k</em></a> estimates the payoff of a best-of-$k$ batch from a posterior rather than a
+      plug-in, and cuts held-out log loss from 3.37 to 0.48 on nine thousand rollout prompts.
     </p>
 
     <h2>Learned and resource-rational metareasoning</h2>
@@ -191,8 +221,8 @@
     <div class="caveat">
       <p>The recent systems value computation against the correctness of an answer or a benchmark
       score. The classical theory values it against the utility of a decision. The two coincide only
-      when the benchmark is the decision. Only the decision-focused experimental-design paper above
-      works in the second sense, and it does so for linear optimisation rather than for an agent.</p>
+      when the benchmark is the decision. Wan et al. (2026) work in the second sense, for linear
+      optimisation rather than for an agent.</p>
     </div>
   </main>
 

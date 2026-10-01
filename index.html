@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -64,8 +64,8 @@
           <marker id="arrow" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
             <path d="M0,0 L6.5,3 L0,6 Z" fill="#0d7d8c"/>
           </marker>
-          <marker id="arrowr" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
-            <path d="M0,0 L6.5,3 L0,6 Z" fill="#b03a2e"/>
+          <marker id="arrowg" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
+            <path d="M0,0 L6.5,3 L0,6 Z" fill="#9a9a9a"/>
           </marker>
         </defs>
 
@@ -108,12 +108,12 @@
         <text x="676" y="210" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Outcome resolves</text>
         <text x="676" y="230" text-anchor="middle" font-size="11.5" fill="#5a5a5a">later, and scores both</text>
 
-        <path d="M 676 254 L 676 284 L 129 284 L 129 130" fill="none" stroke="#b03a2e" stroke-width="1.5"
-              stroke-dasharray="5 3" marker-end="url(#arrowr)"/>
-        <text x="402" y="278" text-anchor="middle" font-size="11" fill="#b03a2e">resolved outcomes price the computations that preceded them</text>
+        <path d="M 676 254 L 676 284 L 129 284 L 129 130" fill="none" stroke="#9a9a9a" stroke-width="1.5"
+              marker-end="url(#arrowg)"/>
+        <text x="402" y="278" text-anchor="middle" font-size="11" fill="#5a5a5a">resolved outcomes price the computations that preceded them</text>
       </svg>
       <p class="caption">
-        The meta level chooses what the object level gets to know. Time supplies the labels for both.
+        The meta level chooses which computations run. Resolved outcomes score both levels.
       </p>
     </div>
 
@@ -126,11 +126,11 @@
       vocabularies: self-improving agents, autonomous research, meta-learning and continual learning.
     </p>
 
-    <h2>The state of play, September 2026</h2>
+    <h2>State of play in September 2026</h2>
 
-    <h4>Research loops exist, and their controllers are simple</h4>
+    <h4>Research-loop controllers are simple</h4>
     <p>
-      Agents now run the whole cycle of hypothesis, code, experiment and interpretation.
+      Agents run the whole cycle of hypothesis, code, experiment and interpretation.
       <a href="https://arxiv.org/abs/2502.13138">AIDE</a> treats machine-learning engineering as a
       tree search over code, and <a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a> chooses
       its next research direction with a multi-armed bandit scheduler.
@@ -143,8 +143,14 @@
       likely to recover a better answer. Both value computation against a benchmark score. Neither
       values it against a downstream decision.
     </p>
+    <p>
+      For computations run in parallel, the <a href="https://github.com/microprediction/brownianbandit">budgeted
+      Brownian race</a> gives the pruning rule. A rollout or an agent is kept while its future
+      pivotal value exceeds its carrying cost. In its committed example the rule beats one-shot screening
+      and static thinning at the same expected budget.
+    </p>
 
-    <h4>Time supplies labels</h4>
+    <h4>Resolved outcomes as labels</h4>
     <p>
       Forecasts resolve, so the passage of time produces supervision that needs no annotator.
       <a href="https://arxiv.org/abs/2601.06336">Future-as-Label</a> trains a model on causally
@@ -164,7 +170,7 @@
       mechanism with a reported gain relies on an external evaluator.
     </p>
 
-    <h4>Honest evaluation removes most reported edges</h4>
+    <h4>Reported gains under search-aware evaluation</h4>
     <p>
       Systems that generate many candidates and report the best one need search-aware evaluation.
       <a href="https://arxiv.org/abs/2505.07078">FINSABER</a> finds previously reported advantages
@@ -176,7 +182,7 @@
       correction does not detect look-ahead.
     </p>
 
-    <h4>Look-ahead in language models is now measurable</h4>
+    <h4>Look-ahead in language models is measurable</h4>
     <p>
       Model families with annual training cutoffs, such as
       <a href="https://arxiv.org/abs/2603.11838">DatedGPT</a> and
@@ -188,7 +194,7 @@
       its later returns.
     </p>
 
-    <h2>Further reading, by depth</h2>
+    <h2>Further reading</h2>
     <ul>
       <li>
         <a href="https://doi.org/10.1016/0004-3702(91)90015-C">Russell &amp; Wefald (1991)</a>,
@@ -204,6 +210,11 @@
         <a href="https://arxiv.org/abs/1711.06892">Callaway et al. (2017)</a>, <em>Learning to
         Select Computations</em>: a learned approximation to optimal metareasoning, bracketed by the
         myopic value of information and the value of perfect information.
+      </li>
+      <li>
+        <a href="https://brownianbandit.microprediction.org/papers.html">Cotton (2026)</a>,
+        <em>Wavefront Pruning in Budgeted Brownian Races</em>: the value of computation for many
+        parallel paths under a path-time budget, solved in the mean-field limit.
       </li>
       <li>
         <a href="https://arxiv.org/abs/2601.06336">Turtel et al. (2026)</a>,
@@ -227,12 +238,6 @@
       </li>
     </ul>
 
-    <div class="next-steps">
-      <p>The <a href="./bibliography.html">bibliography</a> has every work cited here, grouped by the
-      role it plays, each with a note on the result that matters. The same material is drawn as a
-      <a href="./map.html">literature map</a> with dashed edges for connections not yet made, and as
-      a <a href="./timeline.html">timeline</a>.</p>
-    </div>
   </main>
 
   <footer>

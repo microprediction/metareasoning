@@ -16,17 +16,17 @@
     <div class="nav-inner">
       <a class="brand" href="./index.html">metareasoning</a>
       <nav>
-        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
           <a href="./intro.html">Introduction</a>
           <a href="./selection.html">Selecting computations</a>
           <a href="./outcomes.html">Learning from resolved outcomes</a>
           <a href="./agents.html">Autonomous research loops</a>
-          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
           <a href="./data.html">Relational features and weak labels</a>
           <a href="./decisions.html">From forecasts to decisions</a>
           <a href="./evaluation.html">Evaluating a search</a>
         </span></span>
-        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
           <a href="./bibliography.html">Annotated bibliography</a>
           <a href="./implementations.html">Implementations</a>
           <a href="./map.html">Literature map</a>
@@ -37,9 +37,8 @@
     </div>
   </header>
   <main>
-    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
     <h1>Learning from Resolved Outcomes</h1>
-    <p class="subtitle">Forecasts resolve, and the resolution is a label nobody had to write.</p>
+    <p class="subtitle">Resolved forecasts supply labels without annotation.</p>
 
     <p class="lead">
       A system that records what it knew at each date, and what it predicted, receives a stream of
@@ -62,7 +61,7 @@
       be gamed by a forecaster who reports something other than their belief.
     </p>
 
-    <h2>Forecasting benchmarks built on time</h2>
+    <h2>Forecasting benchmarks on unresolved events</h2>
     <p>
       <a href="https://arxiv.org/abs/2206.15474">Autocast</a> (Zou et al. 2022) pairs questions from
       forecasting tournaments with a news corpus organised by date, so that a model can be shown
@@ -116,7 +115,7 @@
       and on a Metaculus benchmark.
     </p>
     <p>
-      The limitations are stated plainly in the paper. Training is offline on resolved events,
+      The paper lists its limitations. Training is offline on resolved events,
       deployment-time feedback loops &ldquo;are not evaluated in this study,&rdquo; and the
       experiments cover binary outcomes only. Richer outcome spaces and fully online settings are
       left for future work.
@@ -148,8 +147,8 @@
       remains open.
     </p>
     <p>
-      The <a href="./evaluation.html">evaluating a search</a> page covers look-ahead bias inside
-      the language model itself, which a date filter on retrieved documents does not remove.
+      A date filter on retrieved documents does not remove look-ahead bias inside the model
+      itself, and <a href="./evaluation.html">tools for measuring that bias</a> exist.
     </p>
   </main>
 
