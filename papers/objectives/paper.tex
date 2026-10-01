@@ -33,29 +33,28 @@
 \maketitle
 
 \begin{abstract}
-A self-improving system accepts or rejects changes to itself according to some per-step
-objective, and is judged by where it ends up. We compare the per-step objectives in common use (absolute scores, win rates against a
-predecessor, win rates against a fixed anchor, selection of a population's best, and relative
-wealth under compounding) by asking which of them select the same trajectories as the long-term
-goal. Only improvement in a fixed absolute score, plus a
-constant cost per step, is consistent for every feasible set of trajectories. The others reward
-churn, distort attitudes to risk, reward variance, or credit evaluator drift as progress. One
-relative scheme is consistent: compounded relative wealth selects the largest expected log
-return, which is the long-run objective of a log-score forecaster.
+A self-improving system accepts or rejects changes to itself by a per-step objective, and is
+judged by where it ends up. We ask which per-step objectives select the same trajectories as
+that long-term goal, comparing absolute scores, win rates against a predecessor or a fixed
+anchor, selection of a population's best, and relative wealth under compounding. Improvement
+in a fixed absolute score, less a constant cost per step, is the only per-step reward
+consistent for every feasible set of trajectories. Compounded relative wealth is consistent
+with expected log return, and the other relative schemes reward churn, distort attitudes to
+risk, reward variance, or record evaluator drift as progress.
 \end{abstract}
 
 \section{Introduction}
 
-Self-improving systems are judged on two time scales. Each proposed change to a prompt, a
-memory, a piece of code or a set of weights is accepted or rejected on evidence available now.
+Each proposed change to a self-improving system, whether to a prompt, a memory, a piece of
+code or a set of weights, is accepted or rejected on evidence available now.
 The system as a whole is judged later, by what it has become. The two judgements coincide only
 for particular choices of the per-step objective.
 
-The choices in use split along two lines. Some objectives are \emph{absolute}: a benchmark
-score, a test pass rate, a proper scoring rule against resolved outcomes. Others are
-\emph{relative}: a win rate against the previous version, as in self-play and self-rewarding
-language models \citep{yuan2024selfrewarding}; a position on a pairwise leaderboard
-\citep{chiang2024arena}; or survival in a population, as in evolutionary search over agents
+Some objectives in use are \emph{absolute}, such as a benchmark score, a test pass rate, or
+a proper scoring rule against resolved outcomes. Others are \emph{relative}. Self-play and
+self-rewarding language models score a version against its predecessor
+\citep{yuan2024selfrewarding}. Leaderboards rank versions by pairwise preference
+\citep{chiang2024arena}. Evolutionary search over agents keeps the survivors of a population
 \citep{zhang2025dgm,iacob2026redqueen}.
 
 The literature on each line is large. Reward shaping characterises which per-step rewards
@@ -68,7 +67,7 @@ propriety of scoring rules \citep{lichtendahl2007competition,witkowski2021compet
 Evolutionary finance shows which beliefs survive market selection
 \citep{blume1992evolution,sandroni2000markets,blume2006smart}.
 
-These results are rarely put side by side. Recent frameworks classify self-improving systems
+The literature rarely puts these results side by side. Recent frameworks classify self-improving systems
 by whether their standard is grounded outside the agent \citep{tang2026gai} and catalogue
 evaluator drift as a safety risk \citep{gong2026evolutionary}. The Red Queen G\"odel Machine
 holds the evaluator fixed within epochs so that improvement guarantees hold per epoch
@@ -80,8 +79,9 @@ checked numerically.
 
 A system passes through versions $\theta_0,\theta_1,\dots,\theta_T$. At each step it chooses
 $\theta_{t+1}$ from a feasible set $N(\theta_t)$, which may or may not include staying put. The \emph{long-term
-objective} is a utility of the final version, $U(\theta_T)$. Discounted sums of deployed
-utility give the same conclusions with heavier notation. A \emph{per-step reward}
+objective} is a utility of the final version, $U(\theta_T)$. For a discounted sum of deployed
+utility, the potential term in Proposition~\ref{prop:potential} becomes
+$\gamma\Phi(\theta')-\Phi(\theta)$ \citep{ng1999shaping}. A \emph{per-step reward}
 $R(\theta,\theta')$ scores a single change, and the system maximises
 $\sum_{t<T} R(\theta_t,\theta_{t+1})$, or a greedy approximation to it.
 
@@ -92,8 +92,8 @@ $\sum_{t<T}R(\theta_t,\theta_{t+1})$ are exactly those that maximise $U(\theta_T
 \end{definition}
 
 The definition asks for agreement on the whole set of maximisers. A reward that agrees with $U$
-on most problems but not all will be found out by a system that searches hard enough, which is
-the point of Goodhart's law \citep{manheim2018goodhart}.
+on most problems but not all fails on the problems a thorough search finds, which is the
+mechanism behind Goodhart's law \citep{manheim2018goodhart}.
 
 \section{Absolute assessment}
 
@@ -104,6 +104,9 @@ R(\theta,\theta') = \Phi(\theta') - \Phi(\theta) + k
 \]
 for some constant $k$ and some strictly increasing transformation $\Phi$ of $U$.
 \end{proposition}
+
+The reward for a change is the rise in a monotone transformation of the long-term score, plus
+the same constant for every step.
 
 \begin{proof}
 Sufficiency is telescoping: the sum over a path of length $T$ equals
@@ -121,7 +124,7 @@ constant $k$, so $R(a,b)=\alpha(a)-\alpha(b)+k$. Set $\Phi=-\alpha$. The $T=1$ c
 $\Phi$ increasing in $U$.
 \end{proof}
 
-The constant $k$ is a cost per step, and a negative $k$ is the price of a computation in the
+A negative $k$ is a cost per step, and $-k$ can be read as the price of a computation in the
 sense of \citet{russell1991metareasoning}. Proposition~\ref{prop:potential} is the undiscounted
 case of the shaping theorem of \citet{ng1999shaping}, specialised to a system whose state is its
 own version. Under uncertainty only affine $\Phi$ preserve rankings of expected utility, so in
@@ -191,7 +194,8 @@ entirely above, any mean-preserving spread lowers it.
 \end{proposition}
 
 \begin{proof}
-$\sigma$ is convex on $(-\infty,0)$ and concave on $(0,\infty)$. Apply Jensen's inequality.
+The logistic function $\sigma$ is convex on $(-\infty,0)$ and concave on $(0,\infty)$, and
+Jensen's inequality gives both claims.
 \end{proof}
 
 In a normal example with the anchor three units ahead, nearly all of the mass lies where
@@ -210,21 +214,28 @@ highest realised score.
 Let candidate $i$ post $S_i=\mu_i+s_iZ_i$ with independent standard normal $Z_i$. For two
 candidates,
 \[
-P(S_1>S_2)=\Phi\!\left(\frac{\mu_1-\mu_2}{\sqrt{s_1^2+s_2^2}}\right),
+P(S_1>S_2)=\mathcal{N}\!\left(\frac{\mu_1-\mu_2}{\sqrt{s_1^2+s_2^2}}\right),
 \]
-which increases in $s_1$ whenever $\mu_1<\mu_2$.
+where $\mathcal{N}$ is the standard normal distribution function. The probability increases
+in $s_1$ whenever $\mu_1<\mu_2$.
 \end{proposition}
+
+\begin{proof}
+The difference $S_1-S_2$ is normal with mean $\mu_1-\mu_2$ and variance $s_1^2+s_2^2$, which
+gives the formula. When $\mu_1<\mu_2$ the argument of $\mathcal{N}$ is negative, and raising
+$s_1$ moves it towards zero.
+\end{proof}
 
 A trailing candidate gains by being noisier. With $\mu_2-\mu_1=0.5$ and $s_2=1$, raising $s_1$
 from $0.5$ to $4$ lifts its chance of selection from $0.33$ to $0.45$. Take a field of ten
 candidates with unit standard deviation and equal means, except that one is better by half a
 unit. Doubling the standard deviation of another candidate makes it the most likely winner: it
-is selected $23\%$ of the time, against $17\%$ for the better candidate. The
-certificates confirm both figures by Monte Carlo.
+is selected $23\%$ of the time, against $17\%$ for the better candidate. Closed forms and Monte Carlo
+agree to within $2\times10^{-3}$ in win probability.
 
-The same mechanism drives three known results. Forecasters competing for a single prize report
-more extreme probabilities than they believe \citep{lichtendahl2007competition}, which is the
-problem incentive-compatible competitions solve \citep{witkowski2021competitions}. The selected
+Forecasters competing for a single prize report more extreme probabilities than they believe
+\citep{lichtendahl2007competition}, for the same reason, and incentive-compatible competitions
+are designed to remove the distortion \citep{witkowski2021competitions}. The selected
 alternative's realised score overstates its value \citep{smith2006optimizer}. In backtests the
 best of many strategies needs a deflated threshold \citep{bailey2014deflated}, and LLM-discovered
 trading strategies fail once the agent's own trial count is accounted for
@@ -233,8 +244,8 @@ trading strategies fail once the agent's own trial count is accounted for
 \paragraph{When rewarding variance is right.} If the long-term objective is itself an expected
 maximum, selection by realised maximum is consistent with it. Best-of-$k$ deployment and
 pass@$k$ pay the best of several attempts, and there variance has value
-\citep{cotton2026wavefront,cotton2026passk}. The objective must match the deployment, a
-maximum for a maximum and a mean for a mean.
+\citep{cotton2026wavefront,cotton2026passk}. Selection by maximum suits a deployment that pays the
+maximum, and misleads one that pays the mean.
 
 \paragraph{Finite populations and spite.} Relative fitness in a finite population rewards
 lowering a rival's payoff as much as raising one's own. \citet{hamilton1970spite} identified
@@ -245,7 +256,8 @@ absolute terms.
 
 \section{Relative assessment under compounding}
 
-One relative scheme is consistent with an absolute long-term objective. Let strategies compound
+Relative assessment becomes consistent with an absolute objective when wealth compounds. Let
+strategies compound
 wealth by gross returns $R_{i,t}$, independent over time with finite $\E|\log R_i|$, and let
 assessment be relative: the share $w_{i,t}/\sum_j w_{j,t}$.
 
@@ -267,19 +279,20 @@ A strategy with returns $1.6$ or $0.5$ with equal probability has $\E R=1.05$ an
 $\E\log R=-0.11$. A strategy with returns $1.1$ or $0.95$ has $\E R=1.025$ and
 $\E\log R=+0.022$. The first wins on one-step expected return, and its expected wealth after
 400 steps exceeds $10^8$. It loses the population in every one of $20{,}000$ simulated runs,
-since its median log wealth falls by $0.11$ a step. Expected value and long-run outcome part
-company because wealth is not ergodic \citep{peters2019ergodicity}.
+since its median log wealth falls by $0.11$ a step. Expected wealth and typical wealth
+diverge because wealth is not ergodic \citep{peters2019ergodicity}.
 
 \paragraph{Beliefs.} In markets the same selection operates on forecasts. Agents survive in
 proportion to how well their beliefs track the truth
 \citep{blume1992evolution,sandroni2000markets}, with qualifications for incomplete markets
 \citep{blume2006smart}. A forecaster paid by the log score relative to a market grows its share
 at the rate of its log-score advantage, so compounded relative assessment recovers the log
-score, a strictly proper absolute objective. Prediction networks that pay algorithms relative to
-one another \citep{cotton2022microprediction} sit in this class when the rewards compound.
+score, a strictly proper absolute objective. \citet[ch.~5]{cotton2022microprediction} considers agents that solicit, compensate and
+combine the predictions of other agents. When such compensation is relative and compounds, it
+belongs to this class.
 
-\paragraph{Absolute selection.} When fitness does not depend on the population, selection is
-benign in the other direction. Under replicator dynamics \citep{taylor1978ess} with constant
+\paragraph{Absolute selection.} When fitness does not depend on the population, selection
+raises mean fitness. Under replicator dynamics \citep{taylor1978ess} with constant
 fitnesses, mean fitness rises at a rate equal to the variance of fitness. This is the simplest
 case of Fisher's fundamental theorem, whose precise statement is due to
 \citet{price1972fisher}. The guarantee does not survive frequency-dependent fitness, the setting
@@ -312,7 +325,7 @@ rises. Holding the evaluator fixed within an epoch restores telescoping within t
 accumulating real data rather than replacing it avoids collapse in the settings studied by
 \citet{gerstgrasser2024collapse}.
 
-\section{Summary of the comparison}
+\section{Objectives compared}
 
 \begin{center}
 \small
@@ -338,8 +351,8 @@ Neither absolute nor relative assessment dominates. Absolute improvement in a fi
 is the one per-step objective consistent for every feasibility structure, but it needs a score
 that can be computed, and a search that values option value as well as immediate gain.
 Relative assessment is cheaper and often the only signal available. It is consistent in two
-cases, ordinal acceptance under a transitive latent strength and multiplicative compounding, and
-its failures elsewhere are specific: churn, distorted risk, rewarded variance, spite and drift.
+cases, ordinal acceptance under a transitive latent strength and multiplicative compounding.
+Elsewhere it produces churn, distorted risk, rewarded variance, spite or drift.
 
 The trade-off is not particular to machine learning. Rank-order tournaments for workers
 \citep{lazear1981tournaments}, forecasting contests and natural selection face the same
@@ -393,7 +406,8 @@ platform for evaluating LLMs by human preference. 2024.
 \href{https://arxiv.org/abs/2403.04132}{arXiv:2403.04132}.
 
 \bibitem[Cotton(2022)]{cotton2022microprediction}
-P.~Cotton. \emph{Microprediction: Building an Open AI Network}. MIT Press, 2022.
+P.~Cotton. \emph{Microprediction: Building an Open AI Network}. MIT Press, 2022. Chapter~5,
+``Micromanagers'', pp.~81--120.
 \href{https://doi.org/10.7551/mitpress/13636.001.0001}{doi:10.7551/mitpress/13636.001.0001}.
 
 \bibitem[Cotton(2026a)]{cotton2026wavefront}
