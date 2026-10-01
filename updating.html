@@ -95,6 +95,16 @@
       stored episodes are useful, and improves at runtime with the model weights fixed.
     </p>
     <p>
+      Memory can also be kept as latent state rather than text.
+      <a href="https://arxiv.org/abs/2609.37725">Context Language Models</a> (Shao et al. 2026) let a
+      model rewrite its own context as a text file and train the edits with reinforcement learning.
+      <a href="https://arxiv.org/abs/2604.18002">Neural Garbage Collection</a> (Li et al. 2026) trains
+      a model to evict entries from its own KV cache from outcome reward alone. The latent
+      counterparts, from model-chosen cache edits to weights as context and caches shared between
+      agents, are surveyed under <a href="https://latentreasoning.net/context.html">latent
+      context</a> on the companion site.
+    </p>
+    <p>
       For a research system, useful memory is often procedural: a record that one extraction
       procedure handles a class of document correctly, or that a set of historical analogues
       improved a class of forecast. Learning of this kind needs no weight update.
