@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Papers</title>
+  <meta name="description" content="Papers on metareasoning and self-improving systems: consistent objectives for self-improving systems, comparing absolute, relative and evolutionary assessment over short and long horizons." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Methods</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">Self-improvement mechanisms</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Literature</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="./papers.html">Papers</a>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <h1>Papers</h1>
+    <p class="subtitle">Technical notes on the objectives and controllers of self-improving systems.</p>
+
+    <div class="family">
+      <h3><a href="./consistent-objectives.pdf">Consistent Objectives for Self-Improving Systems: Absolute,
+      Relative and Evolutionary Assessment Over Short and Long Horizons</a></h3>
+      <p class="muted">Peter Cotton &middot; working draft, October 2026 &middot;
+      <a href="./consistent-objectives.pdf">PDF</a> &middot;
+      <a href="https://github.com/microprediction/metareasoning/blob/main/papers/objectives/paper.tex">tex</a> &middot;
+      <a href="https://github.com/microprediction/metareasoning/blob/main/papers/objectives/verify_objectives.py">certificate</a></p>
+      <p>
+        A self-improving system accepts changes by a per-step objective and is judged by where it
+        ends up. Improvement in a fixed proper score, less a constant cost per step, is the only
+        per-step reward that selects the same trajectories as the long-term goal for every
+        feasibility structure. It is the undiscounted case of potential-based reward shaping.
+      </p>
+      <p>
+        Win rates against a predecessor pay for the number of changes rather than their size.
+        A fixed anchor makes laggards risk-seeking. Selecting a population's realised best rewards
+        variance, which is consistent only when the deployed payoff is itself a maximum, and
+        finite-population fitness rewards spite.
+      </p>
+      <p>
+        Compounded relative wealth is consistent, selecting the largest expected log return, the
+        long-run objective of a log-score forecaster. A system that helps write its own evaluator
+        records evaluator drift as progress. An exact identity separates the two.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

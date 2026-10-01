@@ -31,6 +31,7 @@ estimates it from logged histories, with resolved outcomes supplying the labels.
 | `decisions.html` | Decision-focused learning, dynamic trading, off-policy evaluation, offline RL, causal estimation |
 | `evaluation.html` | Data snooping, backtest overfitting, adaptive data analysis, leakage, look-ahead in language models |
 | `bibliography.html` | Annotated bibliography, grouped by role |
+| `papers.html` | Technical notes, with PDF, source and certificate |
 | `implementations.html` | Open code, with repository status |
 | `map.html` | d3 force-directed literature map, with the metareasoning literature inside a circle and a list of connections not yet made |
 | `timeline.html` | d3 swimlane timeline across seven strands |
@@ -46,6 +47,12 @@ Plain static HTML with one shared `style.css`. No build step. KaTeX and d3 from 
   shrink under search-aware, leakage-safe evaluation.
 - Gaps on the literature map are claims about absences, so each is written out with the searches
   behind it and a confidence level.
+
+## Papers
+
+`papers/objectives/` holds *Consistent Objectives for Self-Improving Systems*: `paper.tex`, and
+`verify_objectives.py`, which checks every number in the note two ways and writes `numerics.json`.
+The compiled PDF is served as `consistent-objectives.pdf`.
 
 ## Contributing
 

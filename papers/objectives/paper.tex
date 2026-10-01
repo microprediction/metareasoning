@@ -1,0 +1,553 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{natbib}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}{-1em}%
+  {\normalfont\normalsize\itshape}}
+\makeatother
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+
+\title{Consistent Objectives for Self-Improving Systems \\[4pt]
+\large Absolute, Relative and Evolutionary Assessment Over Short and Long Horizons}
+\author{Peter Cotton\thanks{Working draft, October 2026. Numerical certificates:
+\texttt{papers/objectives/verify\_objectives.py} in
+\url{https://github.com/microprediction/metareasoning}.}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A self-improving system accepts or rejects changes to itself according to some per-step
+objective, and is judged by where it ends up. We compare the per-step objectives in common use (absolute scores, win rates against a
+predecessor, win rates against a fixed anchor, selection of a population's best, and relative
+wealth under compounding) by asking which of them select the same trajectories as the long-term
+goal. Only improvement in a fixed absolute score, plus a
+constant cost per step, is consistent for every feasible set of trajectories. The others reward
+churn, distort attitudes to risk, reward variance, or credit evaluator drift as progress. One
+relative scheme is consistent: compounded relative wealth selects the largest expected log
+return, which is the long-run objective of a log-score forecaster.
+\end{abstract}
+
+\section{Introduction}
+
+Self-improving systems are judged on two time scales. Each proposed change to a prompt, a
+memory, a piece of code or a set of weights is accepted or rejected on evidence available now.
+The system as a whole is judged later, by what it has become. The two judgements coincide only
+for particular choices of the per-step objective.
+
+The choices in use split along two lines. Some objectives are \emph{absolute}: a benchmark
+score, a test pass rate, a proper scoring rule against resolved outcomes. Others are
+\emph{relative}: a win rate against the previous version, as in self-play and self-rewarding
+language models \citep{yuan2024selfrewarding}; a position on a pairwise leaderboard
+\citep{chiang2024arena}; or survival in a population, as in evolutionary search over agents
+\citep{zhang2025dgm,iacob2026redqueen}.
+
+The literature on each line is large. Reward shaping characterises which per-step rewards
+preserve optimal policies \citep{ng1999shaping}. Goodhart's law, reward hacking and reward-model
+overoptimisation describe what goes wrong when a proxy is optimised hard
+\citep{manheim2018goodhart,skalse2022hacking,gao2022overoptimization,karwowski2023goodhart}.
+Non-transitive games show that beating a predecessor need not mean getting stronger
+\citep{balduzzi2019openended,czarnecki2020spinning}. Forecasting competitions break the
+propriety of scoring rules \citep{lichtendahl2007competition,witkowski2021competitions}.
+Evolutionary finance shows which beliefs survive market selection
+\citep{blume1992evolution,sandroni2000markets,blume2006smart}.
+
+These results are rarely put side by side. Recent frameworks classify self-improving systems
+by whether their standard is grounded outside the agent \citep{tang2026gai} and catalogue
+evaluator drift as a safety risk \citep{gong2026evolutionary}. The Red Queen G\"odel Machine
+holds the evaluator fixed within epochs so that improvement guarantees hold per epoch
+\citep{iacob2026redqueen}. None of them compares the objectives themselves for consistency
+between the step and the horizon. We make that comparison with elementary propositions, each
+checked numerically.
+
+\section{Setup}
+
+A system passes through versions $\theta_0,\theta_1,\dots,\theta_T$. At each step it chooses
+$\theta_{t+1}$ from a feasible set $N(\theta_t)$, which may or may not include staying put. The \emph{long-term
+objective} is a utility of the final version, $U(\theta_T)$. Discounted sums of deployed
+utility give the same conclusions with heavier notation. A \emph{per-step reward}
+$R(\theta,\theta')$ scores a single change, and the system maximises
+$\sum_{t<T} R(\theta_t,\theta_{t+1})$, or a greedy approximation to it.
+
+\begin{definition}[Horizon consistency]
+A per-step reward $R$ is \emph{horizon consistent} with $U$ if, for every horizon $T$, every
+starting version and every feasibility structure $N$, the trajectories that maximise
+$\sum_{t<T}R(\theta_t,\theta_{t+1})$ are exactly those that maximise $U(\theta_T)$.
+\end{definition}
+
+The definition asks for agreement on the whole set of maximisers. A reward that agrees with $U$
+on most problems but not all will be found out by a system that searches hard enough, which is
+the point of Goodhart's law \citep{manheim2018goodhart}.
+
+\section{Absolute assessment}
+
+\begin{proposition}[Only potential differences are consistent]\label{prop:potential}
+A per-step reward $R$ is horizon consistent with $U$ if and only if
+\[
+R(\theta,\theta') = \Phi(\theta') - \Phi(\theta) + k
+\]
+for some constant $k$ and some strictly increasing transformation $\Phi$ of $U$.
+\end{proposition}
+
+\begin{proof}
+Sufficiency is telescoping: the sum over a path of length $T$ equals
+$\Phi(\theta_T)-\Phi(\theta_0)+kT$, which ranks endpoints as $U$ does.
+
+For necessity, take $T=1$
+and let $N(\theta_0)$ be an arbitrary set of versions: $R(\theta_0,\cdot)$ must rank versions as
+$U$ does. Take $T=2$ with $N(a)=\{b,b'\}$ and $N(b)=N(b')=\{c\}$. The two feasible paths
+$a\to b\to c$ and $a\to b'\to c$ share their endpoint, so both maximise $U$ and they must tie, and $R(a,b)+R(b,c)$ cannot depend on
+$b$.
+
+Write it as $h(a,c)$. Fixing $c=c_0$ gives $R(a,b)=\alpha(a)-\beta(b)$ with
+$\alpha(a)=h(a,c_0)$ and $\beta(b)=R(b,c_0)$. Substituting back, $\alpha(b)-\beta(b)$ must be a
+constant $k$, so $R(a,b)=\alpha(a)-\alpha(b)+k$. Set $\Phi=-\alpha$. The $T=1$ condition makes
+$\Phi$ increasing in $U$.
+\end{proof}
+
+The constant $k$ is a cost per step, and a negative $k$ is the price of a computation in the
+sense of \citet{russell1991metareasoning}. Proposition~\ref{prop:potential} is the undiscounted
+case of the shaping theorem of \citet{ng1999shaping}, specialised to a system whose state is its
+own version. Under uncertainty only affine $\Phi$ preserve rankings of expected utility, so in
+practice the consistent reward is improvement in the long-term score itself, less a cost.
+
+\paragraph{The score must be proper.} If $U$ is an expected score of probabilistic forecasts
+against resolved outcomes, a strictly proper scoring rule makes truthful reporting optimal
+\citep{brier1950verification,gneiting2007proper}. An improper score adds a second
+inconsistency, between the forecasts the system holds and the forecasts it reports. Training on
+resolved outcomes with a proper score \citep{turtel2026futureaslabel} meets both conditions.
+
+\paragraph{Greedy acceptance is a separate failure.} Proposition~\ref{prop:potential} concerns
+the objective, not the search. A system that accepts the change with the largest immediate
+improvement can still be arbitrarily far from optimal. If one change gains $\epsilon$ and leads
+nowhere while another gains nothing and unlocks a gain of one, greedy acceptance takes the
+first. The remedy is to value a change by its effect on what can follow, which is the value of
+computation \citep{russell1991metareasoning,hay2012selecting}. For changes that run in
+parallel, the corresponding rule keeps a path while its future pivotal value exceeds its
+carrying cost \citep{cotton2026wavefront}.
+
+\section{Relative assessment against a predecessor}
+
+Pairwise comparison is attractive because a judge can often say which of two outputs is better
+when it cannot score either. Suppose comparisons follow a Bradley--Terry model
+\citep{bradley1952rank}, so that $\theta'$ beats $\theta$ with probability
+$\sigma(u(\theta')-u(\theta))$ for a latent strength $u$ and the logistic function $\sigma$.
+
+\begin{proposition}[Win rate against the predecessor rewards churn]\label{prop:churn}
+Let $R(\theta,\theta')=\sigma(u(\theta')-u(\theta))$.
+\begin{enumerate}
+\item Accepting a change exactly when $R>\tfrac12$ accepts exactly the changes that raise $u$.
+\item Splitting any gain $D>0$ into two steps of $D/2$ raises the cumulative reward from
+$\sigma(D)<1$ to $2\sigma(D/2)>1$. Two changes that leave $u$ unchanged earn $1$, more than any
+single change of any size.
+\item $R$ is not horizon consistent. There are feasibility structures in which the cumulative
+reward selects an endpoint of lower $u$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The first part is monotonicity of $\sigma$. The second uses $\sigma(0)=\tfrac12$ and
+$\sigma<1$. For the third, let the start have $u=0$ and offer two routes over four steps: a jump
+to $u=5$ followed by staying put, or a ladder of four unit steps to $u=4$. The jump route earns
+$\sigma(5)+\tfrac32\approx 2.49$ and the ladder $4\sigma(1)\approx 2.92$. The cumulative win
+rate takes the ladder to the worse endpoint.
+\end{proof}
+
+The ordinal acceptance rule is sound and the cumulative objective is not. A system trained to
+maximise accumulated wins against its own predecessors is paid for the number of changes, not
+for their size. Without a transitive latent strength the failure is worse: in a game with
+strategic cycles, every step can beat its predecessor while the sequence returns to its start
+\citep{balduzzi2019openended}. Real games combine a transitive axis with many cycles at each
+level of strength \citep{czarnecki2020spinning}, which is why population methods evaluate
+against mixtures rather than the last version
+\citep{lanctot2017unified,balduzzi2018reevaluating}.
+
+\section{Relative assessment against a fixed anchor}
+
+Comparing every version with one fixed reference, $R=\sigma(u(\theta)-u_{\mathrm{ref}})$, is a
+strictly increasing transformation of $u$. It is horizon consistent when outcomes are certain.
+It is not affine, so it changes the system's attitude to risk.
+
+\begin{proposition}[A fixed anchor makes laggards risk-seeking]\label{prop:anchor}
+If the uncertain strength of a proposed version has support entirely below $u_{\mathrm{ref}}$,
+any mean-preserving spread raises the expected win rate against the anchor. If the support lies
+entirely above, any mean-preserving spread lowers it.
+\end{proposition}
+
+\begin{proof}
+$\sigma$ is convex on $(-\infty,0)$ and concave on $(0,\infty)$. Apply Jensen's inequality.
+\end{proof}
+
+In a normal example with the anchor three units ahead, nearly all of the mass lies where
+$\sigma$ is convex. Widening the standard deviation of a proposal from $0.1$ to $1$ raises its
+expected win rate from $0.048$ to $0.069$. Three units behind, the same spread
+lowers it from $0.952$ to $0.931$. A system that trails its anchor is paid to gamble, and a
+system that leads is paid to stop experimenting.
+
+\section{Relative assessment within a population}
+
+Evolutionary and tournament methods keep the best of several candidates, judged on realised
+scores. The candidate with the highest expected score is not the one most likely to post the
+highest realised score.
+
+\begin{proposition}[Selection of the realised best rewards variance]\label{prop:variance}
+Let candidate $i$ post $S_i=\mu_i+s_iZ_i$ with independent standard normal $Z_i$. For two
+candidates,
+\[
+P(S_1>S_2)=\Phi\!\left(\frac{\mu_1-\mu_2}{\sqrt{s_1^2+s_2^2}}\right),
+\]
+which increases in $s_1$ whenever $\mu_1<\mu_2$.
+\end{proposition}
+
+A trailing candidate gains by being noisier. With $\mu_2-\mu_1=0.5$ and $s_2=1$, raising $s_1$
+from $0.5$ to $4$ lifts its chance of selection from $0.33$ to $0.45$. Take a field of ten
+candidates with unit standard deviation and equal means, except that one is better by half a
+unit. Doubling the standard deviation of another candidate makes it the most likely winner: it
+is selected $23\%$ of the time, against $17\%$ for the better candidate. The
+certificates confirm both figures by Monte Carlo.
+
+The same mechanism drives three known results. Forecasters competing for a single prize report
+more extreme probabilities than they believe \citep{lichtendahl2007competition}, which is the
+problem incentive-compatible competitions solve \citep{witkowski2021competitions}. The selected
+alternative's realised score overstates its value \citep{smith2006optimizer}. In backtests the
+best of many strategies needs a deflated threshold \citep{bailey2014deflated}, and LLM-discovered
+trading strategies fail once the agent's own trial count is accounted for
+\citep{gencay2026honest}.
+
+\paragraph{When rewarding variance is right.} If the long-term objective is itself an expected
+maximum, selection by realised maximum is consistent with it. Best-of-$k$ deployment and
+pass@$k$ pay the best of several attempts, and there variance has value
+\citep{cotton2026wavefront,cotton2026passk}. The objective must match the deployment, a
+maximum for a maximum and a mean for a mean.
+
+\paragraph{Finite populations and spite.} Relative fitness in a finite population rewards
+lowering a rival's payoff as much as raising one's own. \citet{hamilton1970spite} identified
+spiteful behaviour, and \citet{schaffer1988finite} showed that evolutionarily stable strategies
+in finite populations maximise relative rather than absolute payoff. A population of agents
+judged against one another can therefore select changes that make every member worse in
+absolute terms.
+
+\section{Relative assessment under compounding}
+
+One relative scheme is consistent with an absolute long-term objective. Let strategies compound
+wealth by gross returns $R_{i,t}$, independent over time with finite $\E|\log R_i|$, and let
+assessment be relative: the share $w_{i,t}/\sum_j w_{j,t}$.
+
+\begin{proposition}[Relative wealth selects the largest expected log return]\label{prop:kelly}
+If $\E\log R_1>\E\log R_j$ for all $j\neq1$, the share of strategy 1 tends to one almost
+surely, whatever the expected returns $\E R_j$.
+\end{proposition}
+
+\begin{proof}
+By the strong law of large numbers, $t^{-1}\log w_{i,t}\to\E\log R_i$ almost surely. The ratio
+$w_{j,t}/w_{1,t}$ therefore tends to zero for every $j\neq1$.
+\end{proof}
+
+The proposition is the selection side of \citet{kelly1956information} and
+\citet{breiman1961optimal}. It separates the short-term and long-term readings of an absolute
+objective.
+
+A strategy with returns $1.6$ or $0.5$ with equal probability has $\E R=1.05$ and
+$\E\log R=-0.11$. A strategy with returns $1.1$ or $0.95$ has $\E R=1.025$ and
+$\E\log R=+0.022$. The first wins on one-step expected return, and its expected wealth after
+400 steps exceeds $10^8$. It loses the population in every one of $20{,}000$ simulated runs,
+since its median log wealth falls by $0.11$ a step. Expected value and long-run outcome part
+company because wealth is not ergodic \citep{peters2019ergodicity}.
+
+\paragraph{Beliefs.} In markets the same selection operates on forecasts. Agents survive in
+proportion to how well their beliefs track the truth
+\citep{blume1992evolution,sandroni2000markets}, with qualifications for incomplete markets
+\citep{blume2006smart}. A forecaster paid by the log score relative to a market grows its share
+at the rate of its log-score advantage, so compounded relative assessment recovers the log
+score, a strictly proper absolute objective. Prediction networks that pay algorithms relative to
+one another \citep{cotton2022microprediction} sit in this class when the rewards compound.
+
+\paragraph{Absolute selection.} When fitness does not depend on the population, selection is
+benign in the other direction. Under replicator dynamics \citep{taylor1978ess} with constant
+fitnesses, mean fitness rises at a rate equal to the variance of fitness. This is the simplest
+case of Fisher's fundamental theorem, whose precise statement is due to
+\citet{price1972fisher}. The guarantee does not survive frequency-dependent fitness, the setting
+of evolutionary game theory \citep{maynardsmith1973conflict}.
+
+\section{Moving evaluators}
+
+A system that helps write its own evaluator breaks the telescoping in
+Proposition~\ref{prop:potential}. Let $\Phi_t$ be the evaluator in force at step $t$, and let the
+system record the improvement $\Phi_t(\theta_{t+1})-\Phi_t(\theta_t)$ at each step.
+
+\begin{proposition}[Measured progress includes evaluator drift]\label{prop:drift}
+\[
+\sum_{t<T}\big[\Phi_t(\theta_{t+1})-\Phi_t(\theta_t)\big]
+=\Phi_T(\theta_T)-\Phi_0(\theta_0)-\sum_{t<T}\big[\Phi_{t+1}(\theta_{t+1})-\Phi_t(\theta_{t+1})\big].
+\]
+\end{proposition}
+
+The identity follows by adding and subtracting $\Phi_{t+1}(\theta_{t+1})$ at each step. Recorded
+progress equals the change in the current evaluator's opinion, less the drift in the evaluator
+at the versions actually visited. With a fixed anchored evaluator the drift term vanishes and
+recorded progress is real.
+
+The drift term has either sign. An evaluator that tightens as the system improves makes recorded
+progress understate the change, which is the intent of co-evolving evaluators
+\citep{iacob2026redqueen}. An evaluator that comes to share the system's errors, as when a model
+judges its own outputs \citep{yuan2024selfrewarding,huang2023selfcorrect} or trains on them
+\citep{shumailov2024collapse}, can make the anchored score stand still while the measured one
+rises. Holding the evaluator fixed within an epoch restores telescoping within the epoch, and
+accumulating real data rather than replacing it avoids collapse in the settings studied by
+\citet{gerstgrasser2024collapse}.
+
+\section{Summary of the comparison}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.3\textwidth}@{}}
+\toprule
+Per-step objective & Consistent with the long-term goal & Failure when optimised \\
+\midrule
+Improvement in a fixed proper score, less cost & Yes, for every feasibility structure & Greedy search misses option value \\
+Win rate against the predecessor & Ordinal acceptance only & Churn, and cycles if non-transitive \\
+Win rate against a fixed anchor & Yes under certainty & Risk-seeking behind, risk-averse ahead \\
+Best of a population on realised score & Only for expected-maximum goals & Rewards variance, winner's curse \\
+Relative fitness in a finite population & No & Spite \\
+Relative wealth under compounding & Yes, for expected log return & One-step expected value loses \\
+Improvement under a moving evaluator & Only with a fixed anchor & Drift recorded as progress \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Closing}
+
+Neither absolute nor relative assessment dominates. Absolute improvement in a fixed proper score
+is the one per-step objective consistent for every feasibility structure, but it needs a score
+that can be computed, and a search that values option value as well as immediate gain.
+Relative assessment is cheaper and often the only signal available. It is consistent in two
+cases, ordinal acceptance under a transitive latent strength and multiplicative compounding, and
+its failures elsewhere are specific: churn, distorted risk, rewarded variance, spite and drift.
+
+The trade-off is not particular to machine learning. Rank-order tournaments for workers
+\citep{lazear1981tournaments}, forecasting contests and natural selection face the same
+choice between paying for level and paying for rank. We leave to future work the empirical
+measurement of these effects in a running self-improving system, where the drift term in
+Proposition~\ref{prop:drift} can be estimated by re-scoring past versions under the current
+evaluator.
+
+\begin{thebibliography}{}\small
+
+\bibitem[Bailey and L\'opez de Prado(2014)]{bailey2014deflated}
+D.~H. Bailey and M.~L\'opez de Prado. The deflated Sharpe ratio: correcting for selection bias,
+backtest overfitting and non-normality. \emph{Journal of Portfolio Management}, 40(5):94--107,
+2014. \href{https://doi.org/10.3905/jpm.2014.40.5.094}{doi:10.3905/jpm.2014.40.5.094}.
+
+\bibitem[Balduzzi et~al.(2018)]{balduzzi2018reevaluating}
+D.~Balduzzi, K.~Tuyls, J.~Perolat and T.~Graepel. Re-evaluating evaluation. In \emph{NeurIPS},
+2018. \href{https://arxiv.org/abs/1806.02643}{arXiv:1806.02643}.
+
+\bibitem[Balduzzi et~al.(2019)]{balduzzi2019openended}
+D.~Balduzzi, M.~Garnelo, Y.~Bachrach, W.~M. Czarnecki, J.~Perolat, M.~Jaderberg and T.~Graepel.
+Open-ended learning in symmetric zero-sum games. In \emph{ICML}, 2019.
+\href{https://arxiv.org/abs/1901.08106}{arXiv:1901.08106}.
+
+\bibitem[Blume and Easley(1992)]{blume1992evolution}
+L.~Blume and D.~Easley. Evolution and market behavior. \emph{Journal of Economic Theory},
+58:9--40, 1992. \href{https://doi.org/10.1016/0022-0531(92)90099-4}{doi:10.1016/0022-0531(92)90099-4}.
+
+\bibitem[Blume and Easley(2006)]{blume2006smart}
+L.~Blume and D.~Easley. If you're so smart, why aren't you rich? Belief selection in complete
+and incomplete markets. \emph{Econometrica}, 74:929--966, 2006.
+\href{https://doi.org/10.1111/j.1468-0262.2006.00691.x}{doi:10.1111/j.1468-0262.2006.00691.x}.
+
+\bibitem[Bradley and Terry(1952)]{bradley1952rank}
+R.~A. Bradley and M.~E. Terry. Rank analysis of incomplete block designs: I. The method of
+paired comparisons. \emph{Biometrika}, 39:324--345, 1952.
+\href{https://doi.org/10.1093/biomet/39.3-4.324}{doi:10.1093/biomet/39.3-4.324}.
+
+\bibitem[Breiman(1961)]{breiman1961optimal}
+L.~Breiman. Optimal gambling systems for favorable games. In \emph{Proceedings of the Fourth
+Berkeley Symposium on Mathematical Statistics and Probability}, volume~1, 1961.
+\href{https://projecteuclid.org/proceedings/berkeley-symposium-on-mathematical-statistics-and-probability/Proceedings-of-the-Fourth-Berkeley-Symposium-on-Mathematical-Statistics-and/Chapter/Optimal-gambling-systems-for-favorable-games/bsmsp/1200512159}{Project Euclid}.
+
+\bibitem[Brier(1950)]{brier1950verification}
+G.~W. Brier. Verification of forecasts expressed in terms of probability. \emph{Monthly Weather
+Review}, 78(1):1--3, 1950.
+
+\bibitem[Chiang et~al.(2024)]{chiang2024arena}
+W.-L. Chiang, L.~Zheng, Y.~Sheng, A.~N. Angelopoulos, T.~Li et~al. Chatbot Arena: an open
+platform for evaluating LLMs by human preference. 2024.
+\href{https://arxiv.org/abs/2403.04132}{arXiv:2403.04132}.
+
+\bibitem[Cotton(2022)]{cotton2022microprediction}
+P.~Cotton. \emph{Microprediction: Building an Open AI Network}. MIT Press, 2022.
+\href{https://doi.org/10.7551/mitpress/13636.001.0001}{doi:10.7551/mitpress/13636.001.0001}.
+
+\bibitem[Cotton(2026a)]{cotton2026wavefront}
+P.~Cotton. Wavefront pruning in budgeted Brownian races. Working draft, 2026.
+\url{https://brownianbandit.microprediction.org/papers.html}.
+
+\bibitem[Cotton(2026b)]{cotton2026passk}
+P.~Cotton. Posterior-predictive pass-at-$k$. Note, 2026.
+\url{https://brownianbandit.microprediction.org/passk_posterior.pdf}.
+
+\bibitem[Czarnecki et~al.(2020)]{czarnecki2020spinning}
+W.~M. Czarnecki, G.~Gidel, B.~Tracey, K.~Tuyls, S.~Omidshafiei et~al. Real world games look
+like spinning tops. 2020. \href{https://arxiv.org/abs/2004.09468}{arXiv:2004.09468}.
+
+\bibitem[Gao et~al.(2022)]{gao2022overoptimization}
+L.~Gao, J.~Schulman and J.~Hilton. Scaling laws for reward model overoptimization. 2022.
+\href{https://arxiv.org/abs/2210.10760}{arXiv:2210.10760}.
+
+\bibitem[Gen\c{c}ay(2026)]{gencay2026honest}
+E.~Gen\c{c}ay. What survives honest evaluation? Leakage-safe, search-aware assessment of
+LLM-driven trading strategy discovery. 2026.
+\href{https://arxiv.org/abs/2608.27734}{arXiv:2608.27734}.
+
+\bibitem[Gerstgrasser et~al.(2024)]{gerstgrasser2024collapse}
+M.~Gerstgrasser, R.~Schaeffer, A.~Dey, R.~Rafailov et~al. Is model collapse inevitable?
+Breaking the curse of recursion by accumulating real and synthetic data. 2024.
+\href{https://arxiv.org/abs/2404.01413}{arXiv:2404.01413}.
+
+\bibitem[Gneiting and Raftery(2007)]{gneiting2007proper}
+T.~Gneiting and A.~E. Raftery. Strictly proper scoring rules, prediction, and estimation.
+\emph{Journal of the American Statistical Association}, 102:359--378, 2007.
+\href{https://doi.org/10.1198/016214506000001437}{doi:10.1198/016214506000001437}.
+
+\bibitem[Gong et~al.(2026)]{gong2026evolutionary}
+C.~Gong, J.~Bi, D.~Yao, X.~Liang et~al. Evolutionary safety of recursive self-improving AI:
+taxonomy, risk discovery, and evaluation. 2026.
+\href{https://arxiv.org/abs/2609.31186}{arXiv:2609.31186}.
+
+\bibitem[Hamilton(1970)]{hamilton1970spite}
+W.~D. Hamilton. Selfish and spiteful behaviour in an evolutionary model. \emph{Nature},
+228:1218--1220, 1970. \href{https://doi.org/10.1038/2281218a0}{doi:10.1038/2281218a0}.
+
+\bibitem[Hay et~al.(2012)]{hay2012selecting}
+N.~Hay, S.~Russell, D.~Tolpin and S.~E. Shimony. Selecting computations: theory and
+applications. In \emph{UAI}, 2012. \href{https://arxiv.org/abs/1207.5879}{arXiv:1207.5879}.
+
+\bibitem[Huang et~al.(2023)]{huang2023selfcorrect}
+J.~Huang, X.~Chen, S.~Mishra, H.~S. Zheng, A.~W. Yu, X.~Song and D.~Zhou. Large language models
+cannot self-correct reasoning yet. 2023.
+\href{https://arxiv.org/abs/2310.01798}{arXiv:2310.01798}.
+
+\bibitem[Iacob et~al.(2026)]{iacob2026redqueen}
+A.~Iacob, A.~Jovanovi\'c, W.~F. Shen, D.~Burkhardt et~al. The Red Queen G\"odel Machine:
+co-evolving agents and their evaluators. 2026.
+\href{https://arxiv.org/abs/2606.26294}{arXiv:2606.26294}.
+
+\bibitem[Karwowski et~al.(2023)]{karwowski2023goodhart}
+J.~Karwowski, O.~Hayman, X.~Bai, K.~Kiendlhofer, C.~Griffin et~al. Goodhart's law in
+reinforcement learning. 2023. \href{https://arxiv.org/abs/2310.09144}{arXiv:2310.09144}.
+
+\bibitem[Kelly(1956)]{kelly1956information}
+J.~L. Kelly. A new interpretation of information rate. \emph{Bell System Technical Journal},
+35:917--926, 1956.
+\href{https://doi.org/10.1002/j.1538-7305.1956.tb03809.x}{doi:10.1002/j.1538-7305.1956.tb03809.x}.
+
+\bibitem[Lanctot et~al.(2017)]{lanctot2017unified}
+M.~Lanctot, V.~Zambaldi, A.~Gruslys, A.~Lazaridou, K.~Tuyls et~al. A unified game-theoretic
+approach to multiagent reinforcement learning. In \emph{NeurIPS}, 2017.
+\href{https://arxiv.org/abs/1711.00832}{arXiv:1711.00832}.
+
+\bibitem[Lazear and Rosen(1981)]{lazear1981tournaments}
+E.~P. Lazear and S.~Rosen. Rank-order tournaments as optimum labor contracts. \emph{Journal of
+Political Economy}, 89:841--864, 1981.
+\href{https://doi.org/10.1086/261010}{doi:10.1086/261010}.
+
+\bibitem[Lichtendahl and Winkler(2007)]{lichtendahl2007competition}
+K.~C. Lichtendahl and R.~L. Winkler. Probability elicitation, scoring rules, and competition
+among forecasters. \emph{Management Science}, 53:1745--1755, 2007.
+\href{https://doi.org/10.1287/mnsc.1070.0729}{doi:10.1287/mnsc.1070.0729}.
+
+\bibitem[Manheim and Garrabrant(2018)]{manheim2018goodhart}
+D.~Manheim and S.~Garrabrant. Categorizing variants of Goodhart's law. 2018.
+\href{https://arxiv.org/abs/1803.04585}{arXiv:1803.04585}.
+
+\bibitem[Maynard Smith and Price(1973)]{maynardsmith1973conflict}
+J.~Maynard Smith and G.~R. Price. The logic of animal conflict. \emph{Nature}, 246:15--18, 1973.
+\href{https://doi.org/10.1038/246015a0}{doi:10.1038/246015a0}.
+
+\bibitem[Ng et~al.(1999)]{ng1999shaping}
+A.~Y. Ng, D.~Harada and S.~Russell. Policy invariance under reward transformations: theory and
+application to reward shaping. In \emph{ICML}, 1999.
+\url{https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf}.
+
+\bibitem[Peters(2019)]{peters2019ergodicity}
+O.~Peters. The ergodicity problem in economics. \emph{Nature Physics}, 15:1216--1221, 2019.
+\href{https://doi.org/10.1038/s41567-019-0732-0}{doi:10.1038/s41567-019-0732-0}.
+
+\bibitem[Price(1972)]{price1972fisher}
+G.~R. Price. Fisher's `fundamental theorem' made clear. \emph{Annals of Human Genetics},
+36:129--140, 1972. \href{https://doi.org/10.1111/j.1469-1809.1972.tb00764.x}{doi:10.1111/j.1469-1809.1972.tb00764.x}.
+
+\bibitem[Russell and Wefald(1991)]{russell1991metareasoning}
+S.~Russell and E.~Wefald. Principles of metareasoning. \emph{Artificial Intelligence},
+49:361--395, 1991.
+\href{https://doi.org/10.1016/0004-3702(91)90015-C}{doi:10.1016/0004-3702(91)90015-C}.
+
+\bibitem[Sandroni(2000)]{sandroni2000markets}
+A.~Sandroni. Do markets favor agents able to make accurate predictions? \emph{Econometrica},
+68:1303--1341, 2000. \href{https://doi.org/10.1111/1468-0262.00163}{doi:10.1111/1468-0262.00163}.
+
+\bibitem[Schaffer(1988)]{schaffer1988finite}
+M.~E. Schaffer. Evolutionarily stable strategies for a finite population and a variable contest
+size. \emph{Journal of Theoretical Biology}, 132:469--478, 1988.
+\href{https://doi.org/10.1016/s0022-5193(88)80085-7}{doi:10.1016/s0022-5193(88)80085-7}.
+
+\bibitem[Shumailov et~al.(2024)]{shumailov2024collapse}
+I.~Shumailov, Z.~Shumaylov, Y.~Zhao, N.~Papernot et~al. AI models collapse when trained on
+recursively generated data. \emph{Nature}, 631:755--759, 2024.
+\href{https://doi.org/10.1038/s41586-024-07566-y}{doi:10.1038/s41586-024-07566-y}.
+
+\bibitem[Skalse et~al.(2022)]{skalse2022hacking}
+J.~Skalse, N.~H.~R. Howe, D.~Krasheninnikov and D.~Krueger. Defining and characterizing reward
+hacking. 2022. \href{https://arxiv.org/abs/2209.13085}{arXiv:2209.13085}.
+
+\bibitem[Smith and Winkler(2006)]{smith2006optimizer}
+J.~E. Smith and R.~L. Winkler. The optimizer's curse: skepticism and postdecision surprise in
+decision analysis. \emph{Management Science}, 52:311--322, 2006.
+\href{https://doi.org/10.1287/mnsc.1050.0451}{doi:10.1287/mnsc.1050.0451}.
+
+\bibitem[Tang et~al.(2026)]{tang2026gai}
+H.~Tang, Y.~Ma, P.~Li and Y.~Yuan. Generalized agent iteration: one formal framework for
+iterative policy improvement and recursive self-improvement. 2026.
+\href{https://arxiv.org/abs/2609.13406}{arXiv:2609.13406}.
+
+\bibitem[Taylor and Jonker(1978)]{taylor1978ess}
+P.~D. Taylor and L.~B. Jonker. Evolutionary stable strategies and game dynamics.
+\emph{Mathematical Biosciences}, 40:145--156, 1978.
+\href{https://doi.org/10.1016/0025-5564(78)90077-9}{doi:10.1016/0025-5564(78)90077-9}.
+
+\bibitem[Turtel et~al.(2026)]{turtel2026futureaslabel}
+B.~Turtel, P.~Wilczewski, D.~Franklin and K.~Skothiem. Future-as-label: scalable supervision
+from real-world outcomes. 2026. \href{https://arxiv.org/abs/2601.06336}{arXiv:2601.06336}.
+
+\bibitem[Witkowski et~al.(2021)]{witkowski2021competitions}
+J.~Witkowski, R.~Freeman, J.~W. Vaughan, D.~M. Pennock and A.~Krause. Incentive-compatible
+forecasting competitions. 2021. \href{https://arxiv.org/abs/2101.01816}{arXiv:2101.01816}.
+
+\bibitem[Yuan et~al.(2024)]{yuan2024selfrewarding}
+W.~Yuan, R.~Y. Pang, K.~Cho, X.~Li, S.~Sukhbaatar et~al. Self-rewarding language models. In
+\emph{ICML}, 2024. \href{https://arxiv.org/abs/2401.10020}{arXiv:2401.10020}.
+
+\bibitem[Zhang et~al.(2025)]{zhang2025dgm}
+J.~Zhang, S.~Hu, C.~Lu, R.~Lange and J.~Clune. Darwin G\"odel Machine: open-ended evolution of
+self-improving agents. 2025. \href{https://arxiv.org/abs/2505.22954}{arXiv:2505.22954}.
+
+\end{thebibliography}
+\end{document}
