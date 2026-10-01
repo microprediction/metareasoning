@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Selecting Computations</title>
+  <meta name="description" content="The theory of metareasoning: the value of information and computation, metalevel control as a selection problem, learned and resource-rational metareasoning, information acquisition as a decision, and metareasoning inside language models." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Selecting Computations</h1>
+    <p class="subtitle">Deciding what to compute, measure or acquire next, by its expected effect on
+    a later decision.</p>
+
+    <h2>Pricing information and analysis</h2>
+    <p>
+      <a href="https://doi.org/10.1109/tssc.1966.300074">Howard (1966)</a> defined the value of
+      information as the increase in expected utility from observing a variable before deciding.
+      <a href="https://doi.org/10.1109/tssc.1968.300126">Matheson (1968)</a> extended the idea from
+      observations to analysis. A model run or a calculation also changes what the decision maker
+      believes, and can be priced the same way.
+    </p>
+    <p>
+      <a href="https://doi.org/10.1111/j.2517-6161.1979.tb01068.x">Gittins (1979)</a> solved a
+      related allocation problem exactly. For a class of bandit processes, each alternative can be
+      given an index computed from its own state alone, and the optimal policy works on the
+      alternative with the highest index. The result is the prototype for allocating effort among
+      competing lines of investigation, under assumptions that research problems rarely satisfy.
+    </p>
+
+    <h2>Metareasoning in artificial intelligence</h2>
+    <p>
+      <a href="https://arxiv.org/abs/1304.2759">Horvitz (1987)</a> argued that a reasoning system
+      with limited resources should weigh the expected costs and benefits of alternative
+      approximation procedures, and should balance the benefit of more computation against the cost
+      of acting on a partial result.
+      <a href="https://doi.org/10.1016/0004-3702(91)90015-C">Russell and Wefald (1991)</a> turned
+      this into a general theory. A computation is an action whose value lies in its effect on later
+      actions, and a rational agent performs the computation of highest net value until none
+      remains positive.
+    </p>
+    <p>
+      Anytime algorithms supply a practical setting. They return a usable answer whenever
+      interrupted and improve with more time, so the control question is when to stop.
+      <a href="https://doi.org/10.1145/242587.242593">Hansen and Zilberstein (1996)</a> address how
+      to monitor such algorithms and decide when to stop them.
+    </p>
+
+    <h3>Selection problems, not bandits</h3>
+    <p>
+      <a href="https://arxiv.org/abs/1207.5879">Hay, Russell, Tolpin and Shimony (2012)</a> place
+      metalevel decisions in the framework of Bayesian selection problems and argue that this is
+      more appropriate than the bandit framework. A bandit algorithm is designed to minimise regret
+      summed over every trial. In a selection problem only the final choice collects a reward, and
+      the trials are pure information gathering. The paper derives finite sampling bounds for
+      optimal policies in some cases, and heuristics that beat bandit-based ones in one-shot
+      decisions and in Go.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/1207.5536">Tolpin and Shimony (2012)</a> make the same point
+      for Monte Carlo tree search: UCT minimises cumulative regret, while search needs low simple
+      regret at the root. <a href="https://arxiv.org/abs/2002.04335">Sezener and Dayan (2020)</a>
+      value simulations directly by their expected effect on the action eventually chosen, including
+      the effect of computations further ahead.
+    </p>
+    <p>
+      The distinction carries over to research controllers. A controller that schedules research
+      directions with a bandit, as <a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a> does,
+      inherits an objective that rewards every trial. A research budget spent on exploration is
+      rewarded only through the final choice of what to deploy.
+    </p>
+
+    <h2>Learned and resource-rational metareasoning</h2>
+    <p>
+      <a href="https://arxiv.org/abs/1711.06892">Callaway et al. (2017)</a> propose Bayesian
+      metalevel policy search, which learns a policy for selecting computations. It rests on the
+      observation that the value of information lies between the myopic value of information and
+      the value of perfect information. It reaches near-optimal performance on stopping, on
+      allocation between competing options, and on planning.
+    </p>
+    <p>
+      The same group models human cognition this way. People choose strategies as if by rational
+      metareasoning (<a href="https://doi.org/10.1037/rev0000075">Lieder &amp; Griffiths 2017</a>),
+      adapt cognitive control in ways rational metareasoning explains
+      (<a href="https://doi.org/10.1371/journal.pcbi.1006043">Lieder et al. 2018</a>), and can be
+      analysed as making optimal use of limited computational resources
+      (<a href="https://doi.org/10.1017/s0140525x1900061x">Lieder &amp; Griffiths 2020</a>).
+    </p>
+
+    <h2>Information acquisition as a decision</h2>
+    <p>
+      A second literature asks which observation to acquire rather than which computation to run.
+      The <a href="https://doi.org/10.1137/070693424">knowledge-gradient policy</a> of Frazier,
+      Powell and Dayanik (2008) measures the one-step expected improvement in the value of the best
+      alternative. It is the myopic value of information applied to sequential sampling.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/1403.5556">Information-directed sampling</a> (Russo &amp; Van
+      Roy 2014) chooses actions to minimise the ratio of squared expected regret to the information
+      gained about the optimal action. The authors show it accounts for kinds of information that
+      alternative approaches do not adequately address.
+    </p>
+    <p>
+      Bayesian optimisation applies the same reasoning to expensive functions.
+      <a href="https://arxiv.org/abs/1807.02811">Frazier&rsquo;s tutorial</a> covers expected
+      improvement, entropy search and the knowledge gradient, along with multi-fidelity and
+      multi-source variants. <a href="https://arxiv.org/abs/1603.06560">Hyperband</a> (Li et al.
+      2016) takes the opposite approach and allocates resources to random configurations with early
+      stopping. It reports order-of-magnitude speedups over Bayesian methods on its benchmarks.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2010.02433">Active feature acquisition</a> (Li &amp; Oliva
+      2020) decides at prediction time which missing features to pay for, using a generative model
+      of the features to estimate the information gain of each acquisition.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2602.05340">Wan, Liu, Grigas and Shen (2026)</a> join this
+      line to decision-focused learning. When predictions feed a linear optimisation, experiments
+      chosen to reduce prediction error are inefficient, because decision loss rather than
+      prediction error is what counts. Their design criterion targets uncertainty in the direction
+      that affects the decision, and stops earlier than decision-blind designs.
+    </p>
+
+    <h2>Metareasoning inside language models</h2>
+    <p>
+      <a href="https://arxiv.org/abs/1603.08983">Adaptive Computation Time</a> (Graves 2016) lets a
+      recurrent network learn how many internal steps to take before emitting an output. On
+      character-level language modelling it allocates more computation to harder-to-predict
+      transitions such as word boundaries.
+    </p>
+    <p>
+      Test-time reasoning has made the question urgent. <a href="https://arxiv.org/abs/2408.03314">Snell
+      et al. (2024)</a> find the best use of inference compute depends on prompt difficulty, and a
+      per-prompt compute-optimal allocation improves efficiency more than fourfold over best-of-N.
+      <a href="https://arxiv.org/abs/2412.21187">Chen et al. (2024)</a> document the reverse
+      failure. Reasoning models spend large amounts of computation on easy problems for little
+      benefit.
+    </p>
+    <p>
+      Several methods train the metalevel explicitly.
+      <a href="https://arxiv.org/abs/2410.05563">De Sabbata et al. (2024)</a> penalise reasoning
+      whose value of computation does not justify its cost and report 20&ndash;37% fewer generated
+      tokens at unchanged task performance. <a href="https://arxiv.org/abs/2502.19918">Meta-Reasoner</a>
+      (Sui et al. 2025) uses a contextual bandit to decide whether to continue, backtrack, switch
+      strategy or restart.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2608.27964">AERA</a> (Wang et al. 2026) shows that present
+      confidence is a poor guide to whether more computation will help, since correctness can evolve
+      non-monotonically. It learns the future value of computation instead. On 300 held-out GSM8K
+      questions it reports 92.61% accuracy against 93.01% for 128 responses, with 95.99% fewer
+      completion tokens.
+    </p>
+    <p>
+      At the scale of agentic search, <a href="https://arxiv.org/abs/2608.23848">ExTS</a> (Fang
+      &amp; Wang 2026) treats the expansion of a search tree as a value-of-information decision when
+      each evaluation is expensive, and reports an average relative gain of 5.5% over task-specific
+      tree search across prompt optimisation, code generation and workflow optimisation.
+    </p>
+
+    <div class="caveat">
+      <p>The recent systems value computation against the correctness of an answer or a benchmark
+      score. The classical theory values it against the utility of a decision. The two coincide only
+      when the benchmark is the decision. Only the decision-focused experimental-design paper above
+      works in the second sense, and it does so for linear optimisation rather than for an agent.</p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Metareasoning</title>
+  <meta name="description" content="Research on systems that decide what to compute, investigate or learn next, and that improve those decisions from experience: the value of computation, learning from resolved outcomes, autonomous research loops, self-improving agents, and the evaluation of a search." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <h1>Metareasoning</h1>
+    <p class="subtitle">Research on systems that decide what to investigate next, and that learn to
+    make that decision better.</p>
+
+    <p class="lead">
+      A forecasting system reasons about the world. It also makes a second set of choices: which
+      source to read, which hypothesis to test, which model to fit, and when to stop. Metareasoning
+      is the study of that second set of choices. Its central quantity is the <em>value of a
+      computation</em>, the expected improvement in a later decision that the computation buys, net
+      of what it costs.
+    </p>
+
+    <p>
+      The idea is old. Howard priced information in 1966, Matheson priced analysis and computation
+      in 1968, and Russell and Wefald built a theory of metareasoning on the value of computation in
+      1991. Language-model agents have changed the economics. They propose research actions cheaply
+      and in quantity, so the choice among actions becomes the bottleneck, and their logged
+      histories supply data from which that choice can be learned.
+    </p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 780 300" role="img"
+           aria-label="Two levels: a meta level that selects computations by their value, and an object level that forecasts and decides; resolved outcomes feed back to both">
+        <defs>
+          <marker id="arrow" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
+            <path d="M0,0 L6.5,3 L0,6 Z" fill="#0d7d8c"/>
+          </marker>
+          <marker id="arrowr" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
+            <path d="M0,0 L6.5,3 L0,6 Z" fill="#b03a2e"/>
+          </marker>
+        </defs>
+
+        <text x="14" y="24" font-size="12" font-weight="600" fill="#0d7d8c">META LEVEL</text>
+        <rect x="14" y="34" width="230" height="92" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="129" y="58" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Candidate computations</text>
+        <text x="129" y="79" text-anchor="middle" font-size="11.5" fill="#5a5a5a">query a source &#183; fit a model</text>
+        <text x="129" y="96" text-anchor="middle" font-size="11.5" fill="#5a5a5a">test a hypothesis &#183; find a counterexample</text>
+        <text x="129" y="113" text-anchor="middle" font-size="11.5" fill="#5a5a5a">or stop</text>
+
+        <line x1="248" y1="80" x2="296" y2="80" stroke="#0d7d8c" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <rect x="300" y="46" width="230" height="68" rx="34" fill="#0d7d8c"/>
+        <text x="415" y="75" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">value of computation</text>
+        <text x="415" y="94" text-anchor="middle" font-size="11" fill="#bfe2e7">expected change in the decision, less cost</text>
+
+        <line x1="534" y1="80" x2="582" y2="80" stroke="#0d7d8c" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <rect x="586" y="34" width="180" height="92" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="676" y="68" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Run the best one</text>
+        <text x="676" y="89" text-anchor="middle" font-size="11.5" fill="#5a5a5a">or stop when no value</text>
+        <text x="676" y="105" text-anchor="middle" font-size="11.5" fill="#5a5a5a">exceeds its cost</text>
+
+        <line x1="676" y1="130" x2="676" y2="176" stroke="#0d7d8c" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <text x="14" y="170" font-size="12" font-weight="600" fill="#10212b">OBJECT LEVEL</text>
+        <rect x="14" y="180" width="230" height="70" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="129" y="210" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Information state</text>
+        <text x="129" y="230" text-anchor="middle" font-size="11.5" fill="#5a5a5a">what was knowable at time t</text>
+
+        <line x1="248" y1="215" x2="296" y2="215" stroke="#9a9a9a" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+        <rect x="300" y="180" width="230" height="70" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="415" y="210" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Forecast and decision</text>
+        <text x="415" y="230" text-anchor="middle" font-size="11.5" fill="#5a5a5a">a distribution, then an action</text>
+
+        <line x1="534" y1="215" x2="582" y2="215" stroke="#9a9a9a" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+        <rect x="586" y="180" width="180" height="70" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="676" y="210" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Outcome resolves</text>
+        <text x="676" y="230" text-anchor="middle" font-size="11.5" fill="#5a5a5a">later, and scores both</text>
+
+        <path d="M 676 254 L 676 284 L 129 284 L 129 130" fill="none" stroke="#b03a2e" stroke-width="1.5"
+              stroke-dasharray="5 3" marker-end="url(#arrowr)"/>
+        <text x="402" y="278" text-anchor="middle" font-size="11" fill="#b03a2e">resolved outcomes price the computations that preceded them</text>
+      </svg>
+      <p class="caption">
+        The meta level chooses what the object level gets to know. Time supplies the labels for both.
+      </p>
+    </div>
+
+    <p>
+      Reasoning answers a question such as &ldquo;what does this filing imply for next quarter&rsquo;s
+      revenue?&rdquo; Metareasoning asks whether the system should read the filing&rsquo;s notes,
+      pull last year&rsquo;s comparable, fit an elasticity, look for a disconfirming source, or stop
+      because nothing it could learn would change the decision. The
+      <a href="./intro.html">introduction</a> sets out the value of computation and the neighbouring
+      vocabularies: self-improving agents, autonomous research, meta-learning and continual learning.
+    </p>
+
+    <h2>The state of play, September 2026</h2>
+
+    <h4>Research loops exist, and their controllers are simple</h4>
+    <p>
+      Agents now run the whole cycle of hypothesis, code, experiment and interpretation.
+      <a href="https://arxiv.org/abs/2502.13138">AIDE</a> treats machine-learning engineering as a
+      tree search over code, and <a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a> chooses
+      its next research direction with a multi-armed bandit scheduler.
+    </p>
+    <p>
+      Value-of-information reasoning has started to enter these controllers.
+      <a href="https://arxiv.org/abs/2608.23848">ExTS</a> treats tree expansion as a
+      value-of-information decision under a small evaluation budget, and
+      <a href="https://arxiv.org/abs/2608.27964">AERA</a> learns whether further computation is
+      likely to recover a better answer. Both value computation against a benchmark score. Neither
+      values it against a downstream decision.
+    </p>
+
+    <h4>Time supplies labels</h4>
+    <p>
+      Forecasts resolve, so the passage of time produces supervision that needs no annotator.
+      <a href="https://arxiv.org/abs/2601.06336">Future-as-Label</a> trains a model on causally
+      masked information and rewards it with a proper scoring rule once events resolve. It reports a
+      27% Brier improvement for Qwen3-32B over its pretrained baseline. Training is offline on
+      resolved binary events. The paper states that deployment-time feedback loops &ldquo;are not
+      evaluated in this study.&rdquo;
+    </p>
+
+    <h4>Much of the improvement happens outside the weights</h4>
+    <p>
+      Prompts, memory, tools and control logic can all be updated from experience.
+      <a href="https://arxiv.org/abs/2507.19457">GEPA</a> evolves prompts by reflecting on execution
+      traces and reports beating GRPO by 6% on average with up to 35 times fewer rollouts. Against
+      this, <a href="https://arxiv.org/abs/2310.01798">Huang et al.</a> find that models struggle to
+      correct their own reasoning without external feedback, and sometimes get worse. Every
+      mechanism with a reported gain relies on an external evaluator.
+    </p>
+
+    <h4>Honest evaluation removes most reported edges</h4>
+    <p>
+      Systems that generate many candidates and report the best one need search-aware evaluation.
+      <a href="https://arxiv.org/abs/2505.07078">FINSABER</a> finds previously reported advantages
+      of LLM investing strategies deteriorate over two decades and more than a hundred symbols.
+      <a href="https://arxiv.org/abs/2608.27734">Gen&ccedil;ay (2026)</a> deflates every reported
+      result by the agent&rsquo;s own trial count and rejects every LLM-discovered strategy it
+      tests. The same paper shows a deliberately leaky oracle with a Sharpe ratio of 35 passing both
+      the deflated Sharpe ratio and the probability-of-backtest-overfitting test. Statistical
+      correction does not detect look-ahead.
+    </p>
+
+    <h4>Look-ahead in language models is now measurable</h4>
+    <p>
+      Model families with annual training cutoffs, such as
+      <a href="https://arxiv.org/abs/2603.11838">DatedGPT</a> and
+      <a href="https://arxiv.org/abs/2502.21206">ChronoGPT</a>, let a backtest use only what a model
+      could have known. A <a href="https://arxiv.org/abs/2512.23847">recall-based test</a> estimates
+      the probability that a model has internalised a realised outcome. The effect is not always the
+      expected one: <a href="https://arxiv.org/abs/2309.17322">Glasserman and Lin</a> find that
+      in-sample, general knowledge of a company distorts sentiment more than specific knowledge of
+      its later returns.
+    </p>
+
+    <h2>Further reading, by depth</h2>
+    <ul>
+      <li>
+        <a href="https://doi.org/10.1016/0004-3702(91)90015-C">Russell &amp; Wefald (1991)</a>,
+        <em>Principles of Metareasoning</em>: the value of computation as a decision-theoretic
+        quantity, and the case for spending computation where it changes the action.
+      </li>
+      <li>
+        <a href="https://arxiv.org/abs/1207.5879">Hay, Russell, Tolpin &amp; Shimony (2012)</a>,
+        <em>Selecting Computations</em>: metalevel control as a Bayesian selection problem, with the
+        argument that the bandit framing is the wrong one.
+      </li>
+      <li>
+        <a href="https://arxiv.org/abs/1711.06892">Callaway et al. (2017)</a>, <em>Learning to
+        Select Computations</em>: a learned approximation to optimal metareasoning, bracketed by the
+        myopic value of information and the value of perfect information.
+      </li>
+      <li>
+        <a href="https://arxiv.org/abs/2601.06336">Turtel et al. (2026)</a>,
+        <em>Future-as-Label</em>: resolved outcomes as a reward, with the information cutoff
+        enforced on the predictor.
+      </li>
+      <li>
+        <a href="https://arxiv.org/abs/2505.15155">Li et al. (2025)</a>, <em>R&amp;D-Agent-Quant</em>:
+        a complete research loop over factors and models, and the most direct template for an
+        automated quantitative researcher.
+      </li>
+      <li>
+        <a href="https://arxiv.org/abs/2608.27734">Gen&ccedil;ay (2026)</a>, <em>What Survives
+        Honest Evaluation?</em>: what such a loop looks like after search and leakage are
+        accounted for.
+      </li>
+      <li>
+        <a href="https://arxiv.org/abs/2607.13104">Ren et al. (2026)</a>, <em>Self-Improvements in
+        Modern Agentic Systems</em>: a survey that organises adaptation by what is updated, from
+        model weights to prompts, memory, tools and control logic.
+      </li>
+    </ul>
+
+    <div class="next-steps">
+      <p>The <a href="./bibliography.html">bibliography</a> has every work cited here, grouped by the
+      role it plays, each with a note on the result that matters. The same material is drawn as a
+      <a href="./map.html">literature map</a> with dashed edges for connections not yet made, and as
+      a <a href="./timeline.html">timeline</a>.</p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

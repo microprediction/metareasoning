@@ -1,0 +1,200 @@
+:root {
+  --bg: #fafafa;
+  --panel: #ffffff;
+  --text: #1a1a1a;
+  --muted: #5a5a5a;
+  --faint: #9a9a9a;
+  --accent: #0d7d8c;
+  --accent-soft: #e6f3f5;
+  --warn: #b03a2e;
+  --border: #e2e2e2;
+  --ink: #10212b;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6; font-size: 17px;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header.site-header {
+  background: var(--ink); color: #fff;
+  padding: 12px 24px; border-bottom: 1px solid #07141b;
+  line-height: 1.5;
+}
+header.site-header .nav-inner {
+  max-width: 880px; margin: 0 auto;
+  display: flex; gap: 6px 18px; align-items: baseline; flex-wrap: wrap;
+}
+header.site-header .brand { font-weight: 600; font-size: 1.1rem; color: #fff; letter-spacing: -0.01em; }
+header.site-header nav { display: flex; flex-wrap: wrap; gap: 6px 16px; row-gap: 6px; }
+header.site-header nav a { color: #fff; opacity: 0.82; font-size: 0.92rem; white-space: nowrap; }
+header.site-header nav a:hover { opacity: 1; }
+
+main { max-width: 880px; margin: 32px auto; padding: 0 24px 60px; }
+h1 { font-size: 2.1rem; margin: 0 0 4px; line-height: 1.2; letter-spacing: -0.015em; }
+.subtitle { color: var(--muted); font-size: 1.12rem; margin: 0 0 24px; }
+h2 {
+  font-size: 1.3rem; margin: 2.2em 0 0.6em;
+  border-bottom: 1px solid var(--border); padding-bottom: 4px;
+}
+h3 { font-size: 1.06rem; margin: 1.6em 0 0.4em; color: var(--ink); }
+h4 { font-size: 0.97rem; margin: 1.5em 0 0.3em; color: var(--ink); font-weight: 600; }
+p { margin: 0.8em 0; }
+.lead { font-size: 1.07rem; }
+ul, ol { padding-left: 1.3em; }
+li { margin-bottom: 8px; }
+.muted { color: var(--muted); }
+code {
+  background: #f1f4f5; padding: 1px 5px;
+  border-radius: 3px; font-size: 0.92em;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+}
+pre {
+  background: #f1f4f5; padding: 12px 14px; border-radius: 6px;
+  overflow-x: auto; font-size: 0.85em;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace; line-height: 1.5;
+}
+blockquote {
+  margin: 18px 0; padding: 10px 18px;
+  border-left: 3px solid #ddd; color: var(--muted);
+}
+.equation-card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 18px; margin: 18px 0;
+  text-align: center; overflow-x: auto;
+}
+
+/* diagrams */
+.diagram { margin: 26px 0 10px; }
+.diagram svg { width: 100%; height: auto; display: block; }
+.diagram .caption {
+  text-align: center; color: var(--muted);
+  font-size: 0.9rem; margin: 6px 0 0;
+}
+
+/* tables */
+.table-wrap { overflow-x: auto; margin: 18px 0; }
+table.impl { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+table.impl th, table.impl td {
+  text-align: left; padding: 11px 14px;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+table.impl thead th {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border);
+}
+table.impl tbody td:first-child { font-weight: 600; }
+table.impl tr:last-child td { border-bottom: none; }
+table.impl .mode { color: var(--muted); font-size: 0.9rem; }
+table.impl .nowrap { white-space: nowrap; }
+
+/* bibliography */
+.bib h3 { font-size: 1.02rem; margin-top: 1.4em; color: var(--ink); }
+.bib ul { list-style: none; padding-left: 0; }
+.bib li { margin-bottom: 12px; padding-left: 1.2em; text-indent: -1.2em; }
+
+/* callouts */
+.pagenav { margin: 0 0 22px; font-size: 0.95rem; }
+.next-steps {
+  background: var(--accent-soft); border-radius: 8px;
+  padding: 4px 20px; margin: 24px 0;
+}
+.caveat {
+  background: #f7f7f5; border-left: 3px solid #c9c9c4;
+  border-radius: 0 6px 6px 0; padding: 4px 18px; margin: 20px 0;
+}
+.caveat h3, .caveat h4 { color: var(--ink); margin-top: 0.9em; }
+.caveat strong:first-child { color: var(--warn); }
+
+/* family cards */
+.family {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 2px 20px 14px; margin: 18px 0;
+}
+.family h3 { margin-top: 0.9em; }
+.family .tag {
+  display: inline-block; background: var(--accent-soft); color: var(--accent);
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+  font-weight: 600; padding: 2px 8px; border-radius: 10px; margin-left: 8px;
+  vertical-align: middle;
+}
+
+footer {
+  max-width: 880px; margin: 40px auto 24px; padding: 16px 24px;
+  font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--border);
+}
+
+/* reviews */
+.review {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 2px 20px 14px; margin: 20px 0;
+}
+.review h3 { margin-top: 0.9em; }
+.review .meta { color: var(--faint); font-size: 0.85rem; margin: 0 0 8px; }
+.review .line { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; }
+.verdict {
+  display: inline-block; font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.06em; font-weight: 700; padding: 2px 9px;
+  border-radius: 10px; margin-left: 8px; vertical-align: middle;
+}
+.verdict.shines   { background: #e3f4ea; color: #1e8449; }
+.verdict.mixed    { background: #fdf3e3; color: #b9770e; }
+.verdict.critique { background: #fdecea; color: #b03a2e; }
+
+/* nav dropdown */
+.navdrop { position: relative; display: inline-block; }
+.navdrop > a::after { content: " \25be"; font-size: 0.8em; opacity: 0.7; }
+.navdrop-menu {
+  display: none;
+  position: absolute; top: 100%; left: 0; z-index: 100;
+  min-width: 250px; padding: 6px 0;
+  background: #fff; border: 1px solid var(--border); border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+.navdrop:hover .navdrop-menu,
+.navdrop:focus-within .navdrop-menu { display: block; }
+header.site-header .navdrop-menu a {
+  display: block; color: var(--ink); opacity: 1;
+  padding: 8px 14px; font-size: 0.88rem; line-height: 1.35; white-space: normal;
+}
+header.site-header .navdrop-menu a:hover { background: var(--accent-soft); text-decoration: none; }
+@media (max-width: 640px) {
+  .navdrop { display: block; }
+  .navdrop-menu { position: static; display: block; min-width: 0; margin: 4px 0 4px 12px;
+    background: transparent; border: none; box-shadow: none; padding: 0; }
+  header.site-header .navdrop-menu a { color: #fff; opacity: 0.7; padding: 3px 0; font-size: 0.85rem; }
+}
+
+/* fold-out definitions */
+details.defn {
+  background: #fbfbfa; border-left: 3px solid var(--accent-soft);
+  border-radius: 0 6px 6px 0; margin: 12px 0 18px; padding: 0 16px;
+  font-size: 0.94rem;
+}
+details.defn > summary {
+  cursor: pointer; color: var(--accent); font-weight: 600;
+  font-size: 0.88rem; padding: 9px 0; list-style: none;
+}
+details.defn > summary::-webkit-details-marker { display: none; }
+details.defn > summary::before { content: "\25b8\00a0"; font-size: 0.85em; }
+details.defn[open] > summary::before { content: "\25be\00a0"; }
+details.defn[open] { border-left-color: var(--accent); }
+details.defn p { margin: 0 0 11px; color: var(--muted); }
+details.defn p:first-of-type { margin-top: 2px; }
+
+/* margin notes: brief term definitions beside the paragraph of first use */
+aside.note {
+  font-size: 0.8rem; line-height: 1.45; color: var(--muted);
+  border-left: 2px solid var(--border); padding: 2px 0 2px 10px; margin: 10px 0 14px 12px;
+}
+aside.note b { color: var(--ink); font-weight: 600; }
+@media (min-width: 1400px) {
+  aside.note {
+    float: right; clear: right; width: 220px;
+    margin: 4px -250px 10px 0; border-left: none; padding: 0;
+  }
+}

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Evaluating a Search</title>
+  <meta name="description" content="Making an automated improvement believable: data snooping and multiple testing, backtest overfitting, adaptive data analysis, leakage, look-ahead bias inside language models, and search-aware evaluation of research agents." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Evaluating a Search</h1>
+    <p class="subtitle">The best of many trials is biased upward, and a model trained on the future
+    cannot be tested on it.</p>
+
+    <p class="lead">
+      A self-improving research system is a search procedure. It tries many variants, keeps the
+      ones that score well, and adapts to what it has seen. Every such procedure produces an
+      optimistic estimate of its own best result. The unit of evaluation is therefore the whole
+      research-and-selection procedure through time, not the winning variant.
+    </p>
+
+    <h2>Data snooping and multiple testing</h2>
+    <p>
+      <a href="https://doi.org/10.1111/1468-0262.00152">White (2000)</a> introduced the reality
+      check: a bootstrap test of whether the best model found by a specification search truly beats
+      a benchmark, accounting for the search that found it.
+      <a href="https://doi.org/10.1198/073500105000000063">Hansen (2005)</a> improves its power with
+      the test for superior predictive ability, which reduces the influence of poor and irrelevant
+      alternatives. <a href="https://doi.org/10.1111/j.1468-0262.2005.00615.x">Romano and Wolf
+      (2005)</a> extend it to a stepwise procedure that identifies which of many strategies beat the
+      benchmark.
+    </p>
+    <p>
+      <a href="https://doi.org/10.1093/rfs/hhv059">Harvey, Liu and Zhu (2016)</a> apply multiple
+      testing to the hundreds of published return factors and argue that a new factor should clear
+      a much higher t-statistic than the conventional 2.0.
+    </p>
+
+    <h2>Backtest overfitting</h2>
+    <p>
+      <a href="https://doi.org/10.21314/JCF.2016.322">Bailey, Borwein, L&oacute;pez de Prado and
+      Zhu</a> define the probability of backtest overfitting: the probability that the
+      configuration selected as best in-sample underperforms the median configuration out of
+      sample. They estimate it by combinatorially symmetric cross-validation.
+      <a href="https://doi.org/10.3905/jpm.2014.40.5.094">Bailey and L&oacute;pez de Prado
+      (2014)</a> give the deflated Sharpe ratio, which corrects a reported Sharpe ratio for the
+      number of trials and for non-normal returns.
+    </p>
+    <p>
+      Both corrections need the trial count. A system that discards its failed experiments cannot
+      compute them.
+    </p>
+
+    <h2>Adaptive data analysis</h2>
+    <p>
+      Classical inference assumes the hypotheses were fixed before the data were seen. In practice
+      each analysis is chosen after the results of earlier ones.
+      <a href="https://arxiv.org/abs/1411.2664">Dwork et al. (2014)</a> show that a holdout can be
+      reused for an exponential number of adaptively chosen queries if its answers are perturbed
+      with techniques from differential privacy. <a href="https://doi.org/10.1126/science.aaa9375">The
+      reusable holdout</a> (Science, 2015) gives the practical version.
+    </p>
+    <p>
+      The guarantees rest on independent samples from a fixed distribution. Financial time series
+      are neither independent nor stationary, so the methods identify the problem more reliably
+      than they solve it there. Once an agent sees a period&rsquo;s results and adapts to them, that
+      period is no longer untouched evidence for the adapted system.
+    </p>
+
+    <h2>Leakage</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2207.07048">Kapoor and Narayanan (2022)</a> find data leakage
+      in 17 fields, affecting 329 papers, and give a taxonomy of eight types. In their civil-war
+      prediction case study, every paper claiming that complex models beat logistic regression
+      failed to reproduce once leakage was removed.
+    </p>
+
+    <h2>Look-ahead inside language models</h2>
+    <p>
+      Restricting retrieved documents by date does not produce a clean historical test when the
+      model itself was trained on the period. <a href="https://arxiv.org/abs/2309.17322">Glasserman
+      and Lin (2023)</a> separate two effects in news-sentiment strategies: look-ahead, where the
+      model knows what followed, and distraction, where general knowledge of a company interferes
+      with reading the text. Anonymised headlines outperform in-sample, so distraction was the
+      larger effect in their data.
+    </p>
+    <p>
+      Several tools now measure or remove the bias.
+      <a href="https://arxiv.org/abs/2502.21206">ChronoBERT and ChronoGPT</a> (He et al. 2025) are
+      trained only on text available at each point in time, and find the bias modest in a
+      next-day return application. <a href="https://arxiv.org/abs/2603.11838">DatedGPT</a> (Yan et
+      al. 2026) is a family of twelve 1.3B models with annual cutoffs from 2013 to 2024. It
+      estimates a look-ahead premium of 26.4 basis points per standard deviation for models whose
+      training covers the outcome period.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2512.23847">Gao, Jiang and Yan (2025)</a> estimate a
+      look-ahead propensity from date-only recall queries and test whether forecast accuracy
+      interacts with it. <a href="https://arxiv.org/abs/2601.13770">Look-Ahead-Bench</a> (Benhenda
+      2026) measures the bias through performance decay across market regimes.
+      <a href="https://arxiv.org/abs/2605.24564">FinCAD</a> (Li, Wang &amp; Ma 2026) attenuates
+      memorised outcomes at inference time without retraining.
+    </p>
+
+    <h2>Search-aware evaluation of research agents</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2608.27734">Gen&ccedil;ay (2026)</a> builds the corrections into
+      the system. The agent acts only through registry-validated tools whose feature space excludes
+      look-ahead, every evaluation is recorded, and all reported performance is deflated by the
+      trial count. As the search proceeds, the best in-sample Sharpe ratio climbs, and the
+      deflation threshold driven by the agent&rsquo;s own search climbs faster.
+    </p>
+    <p>
+      Across a 453-stock point-in-time universe and a 39-ETF universe with realistic costs, the
+      evaluation certifies passive benchmarks and rejects every LLM-discovered strategy, across two
+      frontier models, budgets of up to a hundred candidates and five repeated runs. A deliberately
+      leaky oracle with a Sharpe ratio of 35 passes both the deflated Sharpe ratio and the
+      probability-of-backtest-overfitting test. Structural guards against look-ahead and statistical
+      corrections for search catch different failures, and a credible evaluation needs both.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2505.07078">FINSABER</a> (Li et al. 2025) re-tests LLM timing
+      strategies over two decades and more than a hundred symbols, and finds their reported
+      advantages deteriorate, with strategies too conservative in bull markets and too aggressive
+      in bear markets. <a href="https://arxiv.org/abs/2603.27539">Nguyen and Pham (2026)</a> propose
+      minimum evaluation standards for multi-agent trading systems.
+    </p>
+
+    <h2>Prospective evaluation</h2>
+    <p>
+      The cleanest test is a forecast made before the outcome exists.
+      <a href="https://arxiv.org/abs/2409.19839">ForecastBench</a> asks only about unresolved events.
+      <a href="https://arxiv.org/abs/2410.07095">MLE-bench</a> studies contamination from
+      pretraining alongside its main results. A research system can run the same design internally.
+      Shadow forecasts are recorded and frozen at the time, and a change is promoted only on later
+      evidence, with gaps between training and test periods wide enough for overlapping labels to
+      resolve.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

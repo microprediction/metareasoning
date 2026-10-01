@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Autonomous Research Loops</title>
+  <meta name="description" content="Agents that generate hypotheses, write code, run experiments and choose what to try next: general research agents, evolutionary program search, quantitative research agents, trading agents, and the independent evaluations of each." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Autonomous Research Loops</h1>
+    <p class="subtitle">Agents that propose, implement, test and interpret, and then decide what to
+    try next.</p>
+
+    <p class="lead">
+      A research loop has four stages: a hypothesis, an executable implementation, a measured
+      result, and a choice of the next hypothesis. The first three have improved quickly. The
+      fourth, the metalevel choice, is usually a tree search or a bandit over a benchmark score.
+    </p>
+
+    <h2>General research agents</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2408.06292">The AI Scientist</a> (Lu et al. 2024) generates
+      ideas, writes code, runs experiments, writes a paper and reviews it with an automated
+      reviewer, at under $15 per paper. Its successor,
+      <a href="https://arxiv.org/abs/2504.08066">The AI Scientist-v2</a> (Yamada et al. 2025),
+      drops the human-written code templates and adds an agentic tree search managed by an
+      experiment-manager agent. One of three fully generated manuscripts submitted to an ICLR
+      workshop scored above the average human acceptance threshold.
+    </p>
+    <p>
+      An independent evaluation is less favourable.
+      <a href="https://arxiv.org/abs/2502.14297">Beel, Kan and Baumgart (2025)</a> report that 42% of
+      the original system&rsquo;s experiments failed through coding errors, that its novelty
+      assessments misclassified established ideas as new, and that some generated papers contained
+      hallucinated numerical results.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2502.13138">AIDE</a> (Jiang et al. 2025) frames
+      machine-learning engineering as optimisation over code, and trial and error as tree search
+      over candidate solutions that reuses and refines the promising ones. On
+      <a href="https://arxiv.org/abs/2410.07095">MLE-bench</a>, 75 Kaggle competitions with human
+      leaderboards, the best configuration at publication was o1-preview with AIDE scaffolding, at
+      bronze-medal level or better in 16.9% of competitions.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2310.03302">MLAgentBench</a> (Huang et al. 2023) shows how
+      much the task matters. Success rates run from 100% on established datasets to 0% on Kaggle
+      challenges created after the underlying model was trained.
+      <a href="https://arxiv.org/abs/2608.14354">ScienceFlow</a> (Zhao et al. 2026) addresses
+      long-horizon continuity, recovery from dead ends and value-driven compute allocation, and
+      reports 70.22% any-medal on MLE-bench within 24 hours.
+    </p>
+
+    <h2>Evolutionary program search</h2>
+    <p>
+      <a href="https://doi.org/10.1038/s41586-023-06924-6">FunSearch</a> (Romera-Paredes et al.
+      2023) pairs a language model with an evaluator and searches over programs rather than
+      answers. <a href="https://arxiv.org/abs/2506.13131">AlphaEvolve</a> (Novikov et al. 2025)
+      extends the approach to an evolutionary pipeline that edits code directly, with feedback from
+      one or more evaluators. It found a procedure for multiplying two
+      $4 \times 4$ complex-valued matrices with 48 scalar multiplications.
+    </p>
+    <p>
+      The same loop can target learning algorithms.
+      <a href="https://arxiv.org/abs/2406.08414">DiscoPOP</a> (Lu et al. 2024) has a model propose
+      and implement preference-optimisation losses from the scores of earlier proposals, and finds
+      a loss that blends logistic and exponential terms.
+    </p>
+    <p>
+      Program search works where the evaluator is cheap, exact and hard to fool. A research loop
+      over noisy financial or economic data has none of those properties, which is why the
+      <a href="./evaluation.html">evaluation</a> literature matters more there.
+    </p>
+
+    <h2>Quantitative research agents</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2009.11189">Qlib</a> (Yang et al. 2020) supplies the
+      infrastructure: data handling, model training and backtesting for AI-driven quantitative
+      research.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a> (Li et al. 2025) runs the full loop
+      on top of it. A research stage sets goals, forms hypotheses and maps them to tasks. A
+      development stage writes and runs the code in backtests. A feedback stage evaluates the
+      results and a multi-armed bandit scheduler picks the next direction. The paper reports up to
+      twice the annualised return of classical factor libraries using 70% fewer factors.
+    </p>
+    <p>
+      Its own limitations section lists the gaps. The framework &ldquo;relies solely on the
+      LLM&rsquo;s internal financial knowledge,&rdquo; and the authors name alternative data such as
+      news sentiment, macroeconomic indicators and corporate filings, domain knowledge, and online
+      adaptation as future work.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2502.16789">AlphaAgent</a> (Tang et al. 2025) constrains factor
+      discovery to resist decay. It enforces originality by abstract-syntax-tree similarity against
+      existing factors, checks consistency between the stated economic hypothesis and the generated
+      factor, and limits structural complexity.
+      <a href="https://arxiv.org/abs/2607.12455">EVOQUANT</a> (Mao et al. 2026) edits existing
+      strategies under a multi-stage verification pipeline and distils what it learns into reusable
+      knowledge. It reports the average test Sharpe ratio across seven strategies rising from
+      &minus;0.298 to 0.538.
+    </p>
+
+    <h2>Trading agents</h2>
+    <p>
+      A separate line builds agents that trade rather than research.
+      <a href="https://arxiv.org/abs/2311.13743">FinMem</a> adds layered memory,
+      <a href="https://arxiv.org/abs/2402.18485">FinAgent</a> multimodal inputs with dual-level
+      reflection, <a href="https://arxiv.org/abs/2407.06567">FinCon</a> a manager-analyst hierarchy
+      with verbal reinforcement, and <a href="https://arxiv.org/abs/2412.20138">TradingAgents</a>
+      a simulated trading firm of analysts, bull and bear researchers and a risk team. Each reports
+      gains over baselines. They are useful as references for memory, retrieval and reflection
+      designs.
+    </p>
+    <p>
+      Their evaluations are the weak point. <a href="https://arxiv.org/abs/2603.27539">Nguyen and
+      Pham (2026)</a> survey twelve multi-agent trading systems and document five pervasive
+      evaluation failures: look-ahead bias, survivorship bias, backtest overfitting, neglect of
+      transaction costs and blindness to regime shifts. They show these can reverse the sign of
+      reported returns. <a href="https://arxiv.org/abs/2505.07078">FINSABER</a> (Li et al. 2025)
+      re-tests timing strategies over two decades and more than a hundred symbols, and finds the
+      reported advantages deteriorate.
+    </p>
+
+    <h2>What an experiment returns</h2>
+    <p>
+      A research loop learns only from experiments that return three things: an executable
+      artifact, a statement of the information it needed, and a measured result on an interface
+      the agent does not control. An agent that reports an interesting narrative has not
+      yet produced evidence of learning.
+    </p>
+    <p>
+      The metalevel choice among experiments is covered on the
+      <a href="./selection.html">selecting computations</a> page. The components an agent may
+      rewrite between experiments are on the <a href="./updating.html">what a self-improving
+      system updates</a> page.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bibliography</title>
+  <meta name="description" content="Annotated bibliography of metareasoning and self-improving research systems: the value of computation, information acquisition, learning from resolved outcomes, autonomous research agents, self-improvement mechanisms, relational learning, decision-focused learning, off-policy methods, and the evaluation of a search." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Bibliography</h1>
+    <p class="subtitle">Work on choosing what to compute and learn next, and on making the result of
+    that choice believable.</p>
+
+    <div class="bib">
+
+      <p class="muted">arXiv identifiers were resolved against the arXiv API and journal DOIs against
+      Crossref in September 2026. Venues are given where the arXiv record states them. Entries are
+      grouped by the role each work plays. The same material is drawn as a
+      <a href="./map.html">map</a> and a <a href="./timeline.html">timeline</a>.</p>
+
+      <h3>The core</h3>
+      <ul>
+        <li>
+          Russell, S., and Wefald, E. (1991).
+          <a href="https://doi.org/10.1016/0004-3702(91)90015-C"><em>Principles of Metareasoning</em></a>. <em>Artificial Intelligence</em> 49(1&ndash;3), 361&ndash;395.
+          <em>Computations are actions valued by their effect on later actions. The rational agent performs the computation of highest net value and acts when none remains positive.</em>
+        </li>
+        <li>
+          Hay, N., Russell, S., Tolpin, D., and Shimony, S. E. (2012).
+          <a href="https://arxiv.org/abs/1207.5879"><em>Selecting Computations: Theory and Applications</em></a>. arXiv:1207.5879; UAI 2012.
+          <em>Metalevel control as a Bayesian selection problem rather than a bandit problem, since only the final choice collects reward. Finite sampling bounds in some cases, and a counterexample to the conjecture that an optimal policy always reaches a decision.</em>
+        </li>
+        <li>
+          Callaway, F., Gul, S., Krueger, P. M., Griffiths, T. L., and Lieder, F. (2017).
+          <a href="https://arxiv.org/abs/1711.06892"><em>Learning to select computations</em></a>. arXiv:1711.06892.
+          <em>Bayesian metalevel policy search. The value of information lies between the myopic value and the value of perfect information, and that bracket makes a learned metalevel policy tractable.</em>
+        </li>
+        <li>
+          Turtel, B., Wilczewski, P., Franklin, D., and Skothiem, K. (2026).
+          <a href="https://arxiv.org/abs/2601.06336"><em>Future-as-Label: Scalable Supervision from Real-World Outcomes</em></a>. arXiv:2601.06336.
+          <em>Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only; deployment-time loops are not evaluated.</em>
+        </li>
+        <li>
+          Li, Y., Yang, X., Yang, X., Xu, M., Wang, X., et al. (2025).
+          <a href="https://arxiv.org/abs/2505.15155"><em>R&amp;D-Agent-Quant: A Multi-Agent Framework for Data-Centric Factors and Model Joint Optimization</em></a>. arXiv:2505.15155; NeurIPS 2025.
+          <em>A full research loop over factors and models: research, development and feedback stages, with a multi-armed bandit choosing the next direction. Up to twice the annualised return of classical factor libraries with 70% fewer factors. Its limitations section names alternative data, domain knowledge and online adaptation as open.</em>
+        </li>
+        <li>
+          Gençay, E. (2026).
+          <a href="https://arxiv.org/abs/2608.27734"><em>What survives honest evaluation? Leakage-safe, search-aware assessment of LLM-driven trading strategy discovery</em></a>. arXiv:2608.27734.
+          <em>Leakage-safe tools by construction and deflation by the agent&rsquo;s own trial count. Rejects every LLM-discovered strategy tested, and shows a leaky oracle with Sharpe 35 passing both the deflated Sharpe ratio and the backtest-overfitting test.</em>
+        </li>
+      </ul>
+      <h3>Pricing information and computation</h3>
+      <ul>
+        <li>
+          Howard, R. A. (1966).
+          <a href="https://doi.org/10.1109/tssc.1966.300074"><em>Information Value Theory</em></a>. <em>IEEE Transactions on Systems Science and Cybernetics</em> 2(1), 22&ndash;26.
+          <em>The value of information as the gain in expected utility from observing before deciding.</em>
+        </li>
+        <li>
+          Matheson, J. E. (1968).
+          <a href="https://doi.org/10.1109/tssc.1968.300126"><em>The Economic Value of Analysis and Computation</em></a>. <em>IEEE Transactions on Systems Science and Cybernetics</em> 4(3), 325&ndash;332.
+          <em>Extends the value of information from observations to analysis. The earliest statement of the value of computation.</em>
+        </li>
+        <li>
+          Gittins, J. C. (1979).
+          <a href="https://doi.org/10.1111/j.2517-6161.1979.tb01068.x"><em>Bandit Processes and Dynamic Allocation Indices</em></a>. <em>Journal of the Royal Statistical Society, Series B</em> 41(2), 148&ndash;164.
+          <em>Index policies for allocating effort among alternatives, optimal under the bandit-process assumptions.</em>
+        </li>
+        <li>
+          Horvitz, E. J. (2013).
+          <a href="https://arxiv.org/abs/1304.2759"><em>Reasoning About Beliefs and Actions Under Computational Resource Constraints</em></a>. arXiv:1304.2759; UAI 1987.
+          <em>Decision-theoretic control of inference under resource limits: weigh the costs and benefits of approximation procedures, and of acting on a partial result.</em>
+        </li>
+        <li>
+          Hansen, E. A., and Zilberstein, S. (1996).
+          <a href="https://doi.org/10.1145/242587.242593"><em>Monitoring Anytime Algorithms</em></a>. <em>ACM SIGART Bulletin</em> 7(2), 28&ndash;33.
+          <em>When to stop an algorithm that improves with time and can be interrupted.</em>
+        </li>
+        <li>
+          Tolpin, D. and Shimony, S. E. (2012).
+          <a href="https://arxiv.org/abs/1207.5536"><em>MCTS Based on Simple Regret</em></a>. arXiv:1207.5536; AAAI 2012.
+          <em>UCT minimises cumulative regret, but search needs simple regret. Optimising the sampling is itself a metareasoning problem.</em>
+        </li>
+        <li>
+          Sezener, E. and Dayan, P. (2020).
+          <a href="https://arxiv.org/abs/2002.04335"><em>Static and Dynamic Values of Computation in MCTS</em></a>. arXiv:2002.04335; UAI 2020.
+          <em>Values Monte Carlo simulations by their expected effect on the action eventually chosen, beyond the myopic horizon.</em>
+        </li>
+      </ul>
+      <h3>Resource-rational metareasoning</h3>
+      <ul>
+        <li>
+          Lieder, F., and Griffiths, T. L. (2017).
+          <a href="https://doi.org/10.1037/rev0000075"><em>Strategy Selection as Rational Metareasoning</em></a>. <em>Psychological Review</em> 124(6), 762&ndash;794.
+          <em>Human strategy choice modelled as learned metareasoning.</em>
+        </li>
+        <li>
+          Lieder, F., Shenhav, A., Musslick, S., and Griffiths, T. L. (2018).
+          <a href="https://doi.org/10.1371/journal.pcbi.1006043"><em>Rational Metareasoning and the Plasticity of Cognitive Control</em></a>. <em>PLOS Computational Biology</em> 14(4), e1006043.
+          <em>Cognitive control adapted by learning which computations are worth their cost.</em>
+        </li>
+        <li>
+          Lieder, F., and Griffiths, T. L. (2020).
+          <a href="https://doi.org/10.1017/s0140525x1900061x"><em>Resource-Rational Analysis: Understanding Human Cognition as the Optimal Use of Limited Computational Resources</em></a>. <em>Behavioral and Brain Sciences</em> 43.
+          <em>The research programme, with open peer commentary.</em>
+        </li>
+      </ul>
+      <h3>Information acquisition</h3>
+      <ul>
+        <li>
+          Frazier, P. I., Powell, W. B., and Dayanik, S. (2008).
+          <a href="https://doi.org/10.1137/070693424"><em>A Knowledge-Gradient Policy for Sequential Information Collection</em></a>. <em>SIAM Journal on Control and Optimization</em> 47(5), 2410&ndash;2439.
+          <em>The one-step expected improvement in the value of the best alternative.</em>
+        </li>
+        <li>
+          Russo, D. and Van Roy, B. (2014).
+          <a href="https://arxiv.org/abs/1403.5556"><em>Learning to Optimize via Information-Directed Sampling</em></a>. arXiv:1403.5556.
+          <em>Acts to minimise squared expected regret per unit of information about the optimal action. A regret bound that scales with the entropy of the optimal action.</em>
+        </li>
+        <li>
+          Frazier, P. I. (2018).
+          <a href="https://arxiv.org/abs/1807.02811"><em>A Tutorial on Bayesian Optimization</em></a>. arXiv:1807.02811.
+          <em>Expected improvement, entropy search and the knowledge gradient, with multi-fidelity and multi-source variants.</em>
+        </li>
+        <li>
+          Li, L., Jamieson, K., DeSalvo, G., Rostamizadeh, A., and Talwalkar, A. (2016).
+          <a href="https://arxiv.org/abs/1603.06560"><em>Hyperband: A Novel Bandit-Based Approach to Hyperparameter Optimization</em></a>. arXiv:1603.06560.
+          <em>Adaptive resource allocation with early stopping over random configurations, reported an order of magnitude faster than Bayesian optimisation on its benchmarks. The non-Bayesian counterpoint.</em>
+        </li>
+        <li>
+          Li, Y. and Oliva, J. B. (2020).
+          <a href="https://arxiv.org/abs/2010.02433"><em>Active Feature Acquisition with Generative Surrogate Models</em></a>. arXiv:2010.02433.
+          <em>Which missing features to pay for at prediction time, with a generative surrogate estimating the information gain of each.</em>
+        </li>
+        <li>
+          Wan, B., Liu, M., Grigas, P., and Shen, Z.-J. M. (2026).
+          <a href="https://arxiv.org/abs/2602.05340"><em>Decision-Focused Sequential Experimental Design: A Directional Uncertainty-Guided Approach</em></a>. arXiv:2602.05340.
+          <em>Sequential experimental design aimed at decision loss rather than prediction error. Stops earlier than decision-blind designs.</em>
+        </li>
+      </ul>
+      <h3>Metareasoning in language models</h3>
+      <ul>
+        <li>
+          Graves, A. (2016).
+          <a href="https://arxiv.org/abs/1603.08983"><em>Adaptive Computation Time for Recurrent Neural Networks</em></a>. arXiv:1603.08983.
+          <em>A network learns how many internal steps to take. On text it spends more computation on harder transitions.</em>
+        </li>
+        <li>
+          Snell, C., Lee, J., Xu, K., and Kumar, A. (2024).
+          <a href="https://arxiv.org/abs/2408.03314"><em>Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters</em></a>. arXiv:2408.03314.
+          <em>Compute-optimal test-time scaling depends on prompt difficulty. More than four times the efficiency of best-of-N.</em>
+        </li>
+        <li>
+          Chen, X., Xu, J., Liang, T., He, Z., Pang, J., et al. (2024).
+          <a href="https://arxiv.org/abs/2412.21187"><em>Do NOT Think That Much for 2+3=? On the Overthinking of o1-Like LLMs</em></a>. arXiv:2412.21187.
+          <em>Reasoning models spend heavily on easy problems for little benefit.</em>
+        </li>
+        <li>
+          De Sabbata, C. N., Sumers, T. R., AlKhamissi, B., Bosselut, A., and Griffiths, T. L. (2024).
+          <a href="https://arxiv.org/abs/2410.05563"><em>Rational Metareasoning for Large Language Models</em></a>. arXiv:2410.05563.
+          <em>A reward built on the value of computation, trained by expert iteration. 20&ndash;37% fewer tokens at unchanged performance.</em>
+        </li>
+        <li>
+          Sui, Y., He, Y., Cao, T., Han, S., Chen, Y., and Hooi, B. (2025).
+          <a href="https://arxiv.org/abs/2502.19918"><em>Meta-Reasoner: Dynamic Guidance for Optimized Inference-time Reasoning in Large Language Models</em></a>. arXiv:2502.19918; ACL 2026.
+          <em>A contextual bandit chooses between continuing, backtracking, switching strategy and restarting.</em>
+        </li>
+        <li>
+          Wang, Z., Tsang, I., and Qian, H. (2026).
+          <a href="https://arxiv.org/abs/2608.27964"><em>AERA: Adaptive Evidence Residual Allocation for Efficient Test-Time Reasoning</em></a>. arXiv:2608.27964.
+          <em>Present confidence is a poor guide to whether more computation helps. Learns the future value of computation instead, cutting completion tokens by 95.99% for a 0.4-point accuracy cost on held-out GSM8K.</em>
+        </li>
+        <li>
+          Fang, H. and Wang, B. (2026).
+          <a href="https://arxiv.org/abs/2608.23848"><em>Exploit More, Explore Smarter for Budget-Constrained Agentic Search</em></a>. arXiv:2608.23848.
+          <em>Tree expansion as a value-of-information decision under a small evaluation budget.</em>
+        </li>
+      </ul>
+      <h3>Learning from resolved outcomes</h3>
+      <ul>
+        <li>
+          Brier, G. W. (1950).
+          <a href="https://doi.org/10.1175/1520-0493(1950)078%3C0001:VOFEIT%3E2.0.CO;2"><em>Verification of Forecasts Expressed in Terms of Probability</em></a>. <em>Monthly Weather Review</em> 78(1), 1&ndash;3.
+          <em>The squared-error score for probability forecasts.</em>
+        </li>
+        <li>
+          Gneiting, T., and Raftery, A. E. (2007).
+          <a href="https://doi.org/10.1198/016214506000001437"><em>Strictly Proper Scoring Rules, Prediction, and Estimation</em></a>. <em>Journal of the American Statistical Association</em> 102, 359&ndash;378.
+          <em>The general theory of proper scoring rules, and the reason they can serve as rewards.</em>
+        </li>
+        <li>
+          Zou, A., Xiao, T., Jia, R., Kwon, J., Mazeika, M., et al. (2022).
+          <a href="https://arxiv.org/abs/2206.15474"><em>Forecasting Future World Events with Neural Networks</em></a>. arXiv:2206.15474; NeurIPS 2022.
+          <em>Tournament questions paired with a date-ordered news corpus, so a model sees only what a forecaster could have seen.</em>
+        </li>
+        <li>
+          Halawi, D., Zhang, F., Chen, Y.-H., and Steinhardt, J. (2024).
+          <a href="https://arxiv.org/abs/2402.18563"><em>Approaching Human-Level Forecasting with Language Models</em></a>. arXiv:2402.18563.
+          <em>A retrieval-augmented forecasting system that nears the crowd aggregate on post-cutoff questions.</em>
+        </li>
+        <li>
+          Schoenegger, P., Tuminauskaite, I., Park, P. S., and Tetlock, P. E. (2024).
+          <a href="https://arxiv.org/abs/2402.19379"><em>Wisdom of the Silicon Crowd: LLM Ensemble Prediction Capabilities Rival Human Crowd Accuracy</em></a>. arXiv:2402.19379.
+          <em>A twelve-model ensemble is statistically indistinguishable from a 925-person crowd on 31 questions.</em>
+        </li>
+        <li>
+          Karger, E., Bastani, H., Chen, Y.-H., Jacobs, Z., Halawi, D., et al. (2024).
+          <a href="https://arxiv.org/abs/2409.19839"><em>ForecastBench: A Dynamic Benchmark of AI Forecasting Capabilities</em></a>. arXiv:2409.19839.
+          <em>A dynamic benchmark of questions about unresolved events. Experts beat the best language model, $p &lt; 0.001$.</em>
+        </li>
+        <li>
+          Bosse, N. I., Mühlbacher, P., Wildman, J., Phillips, L., and Schwarz, D. (2026).
+          <a href="https://arxiv.org/abs/2601.22444"><em>Automating Forecasting Question Generation and Resolution for AI Evaluation</em></a>. arXiv:2601.22444.
+          <em>Agents write and later resolve forecasting questions. About 96% verifiable and 95% correctly resolved.</em>
+        </li>
+        <li>
+          Turtel, B., Franklin, D., and Schoenegger, P. (2025).
+          <a href="https://arxiv.org/abs/2502.05253"><em>LLMs Can Teach Themselves to Better Predict the Future</em></a>. arXiv:2502.05253.
+          <em>Self-play forecasts ranked by distance to the outcome, then DPO. 7&ndash;10% accuracy gains over base and randomised-label controls.</em>
+        </li>
+        <li>
+          Turtel, B., Franklin, D., Skotheim, K., Hewitt, L., and Schoenegger, P. (2025).
+          <a href="https://arxiv.org/abs/2505.17989"><em>Outcome-based Reinforcement Learning to Predict the Future</em></a>. arXiv:2505.17989.
+          <em>Reinforcement learning with verifiable rewards on prediction-market questions. A 14B model matches frontier accuracy with better calibration.</em>
+        </li>
+        <li>
+          Joulani, P., György, A., and Szepesvári, C. (2013).
+          <a href="https://arxiv.org/abs/1306.0686"><em>Online Learning under Delayed Feedback</em></a>. arXiv:1306.0686; ICML 2013.
+          <em>Delay multiplies regret in adversarial problems and adds to it in stochastic ones.</em>
+        </li>
+        <li>
+          Cesa-Bianchi, N., and Lugosi, G. (2006).
+          <a href="https://doi.org/10.1017/cbo9780511546921"><em>Prediction, Learning, and Games</em></a>. Cambridge University Press.
+          <em>The reference for online combination of expert predictions.</em>
+        </li>
+        <li>
+          Gibbs, I. and Candès, E. (2021).
+          <a href="https://arxiv.org/abs/2106.00170"><em>Adaptive Conformal Inference Under Distribution Shift</em></a>. arXiv:2106.00170.
+          <em>Long-run coverage of prediction sets under arbitrary drift. Coverage is not conditional accuracy.</em>
+        </li>
+      </ul>
+      <h3>Autonomous research loops</h3>
+      <ul>
+        <li>
+          Lu, C., Lu, C., Lange, R. T., Foerster, J., Clune, J., and Ha, D. (2024).
+          <a href="https://arxiv.org/abs/2408.06292"><em>The AI Scientist: Towards Fully Automated Open-Ended Scientific Discovery</em></a>. arXiv:2408.06292.
+          <em>Ideas, code, experiments, paper and automated review, under $15 per paper.</em>
+        </li>
+        <li>
+          Beel, J., Kan, M.-Y., and Baumgart, M. (2025).
+          <a href="https://arxiv.org/abs/2502.14297"><em>Evaluating Sakana's AI Scientist: Bold Claims, Mixed Results, and a Promising Future?</em></a>. arXiv:2502.14297.
+          <em>Independent evaluation of the AI Scientist: 42% of experiments failed on coding errors, novelty checks misfired, some papers had hallucinated numbers.</em>
+        </li>
+        <li>
+          Yamada, Y., Lange, R. T., Lu, C., Hu, S., Lu, C., et al. (2025).
+          <a href="https://arxiv.org/abs/2504.08066"><em>The AI Scientist-v2: Workshop-Level Automated Scientific Discovery via Agentic Tree Search</em></a>. arXiv:2504.08066.
+          <em>Agentic tree search without human code templates. One of three workshop submissions scored above the average acceptance threshold.</em>
+        </li>
+        <li>
+          Jiang, Z., Schmidt, D., Srikanth, D., Xu, D., Kaplan, I., et al. (2025).
+          <a href="https://arxiv.org/abs/2502.13138"><em>AIDE: AI-Driven Exploration in the Space of Code</em></a>. arXiv:2502.13138.
+          <em>Machine-learning engineering as tree search over code.</em>
+        </li>
+        <li>
+          Chan, J. S., Chowdhury, N., Jaffe, O., Aung, J., Sherburn, D., et al. (2024).
+          <a href="https://arxiv.org/abs/2410.07095"><em>MLE-bench: Evaluating Machine Learning Agents on Machine Learning Engineering</em></a>. arXiv:2410.07095.
+          <em>75 Kaggle competitions. o1-preview with AIDE reached bronze or better in 16.9%.</em>
+        </li>
+        <li>
+          Huang, Q., Vora, J., Liang, P., and Leskovec, J. (2023).
+          <a href="https://arxiv.org/abs/2310.03302"><em>MLAgentBench: Evaluating Language Agents on Machine Learning Experimentation</em></a>. arXiv:2310.03302.
+          <em>Success from 100% on old datasets to 0% on post-training Kaggle challenges.</em>
+        </li>
+        <li>
+          Zhao, M., Dong, J., Xu, K., Hasan, Z., Fan, C., et al. (2026).
+          <a href="https://arxiv.org/abs/2608.14354"><em>ScienceFlow: A long-horizon agent for ML research, scientific discovery and beyond</em></a>. arXiv:2608.14354.
+          <em>Long-horizon research with recoverable executable states and value-driven compute allocation. 70.22% any-medal on MLE-bench within 24 hours.</em>
+        </li>
+        <li>
+          Romera-Paredes, B., Barekatain, M., Novikov, A., Balog, M., et al. (2023).
+          <a href="https://doi.org/10.1038/s41586-023-06924-6"><em>Mathematical Discoveries from Program Search with Large Language Models</em></a>. <em>Nature</em> 625, 468&ndash;475.
+          <em>FunSearch. Evolves programs against an evaluator.</em>
+        </li>
+        <li>
+          Novikov, A., Vũ, N., Eisenberger, M., Dupont, E., Huang, P.-S., et al. (2025).
+          <a href="https://arxiv.org/abs/2506.13131"><em>AlphaEvolve: A coding agent for scientific and algorithmic discovery</em></a>. arXiv:2506.13131.
+          <em>Evolutionary code editing with evaluator feedback. A 48-multiplication procedure for $4 \times 4$ complex matrices.</em>
+        </li>
+        <li>
+          Lu, C., Holt, S., Fanconi, C., Chan, A. J., Foerster, J., et al. (2024).
+          <a href="https://arxiv.org/abs/2406.08414"><em>Discovering Preference Optimization Algorithms with and for Large Language Models</em></a>. arXiv:2406.08414.
+          <em>A model proposes preference-optimisation losses from the scores of earlier ones.</em>
+        </li>
+      </ul>
+      <h3>Quantitative research and trading agents</h3>
+      <ul>
+        <li>
+          Yang, X., Liu, W., Zhou, D., Bian, J., and Liu, T.-Y. (2020).
+          <a href="https://arxiv.org/abs/2009.11189"><em>Qlib: An AI-oriented Quantitative Investment Platform</em></a>. arXiv:2009.11189.
+          <em>Infrastructure for AI-driven quantitative research.</em>
+        </li>
+        <li>
+          Tang, Z., Chen, Z., Yang, J., Mai, J., Zheng, Y., et al. (2025).
+          <a href="https://arxiv.org/abs/2502.16789"><em>AlphaAgent: LLM-Driven Alpha Mining with Regularized Exploration to Counteract Alpha Decay</em></a>. arXiv:2502.16789.
+          <em>Factor mining with originality, hypothesis alignment and complexity constraints to resist decay.</em>
+        </li>
+        <li>
+          Mao, J., Li, C., Li, X., Duan, Q., Yuan, J., et al. (2026).
+          <a href="https://arxiv.org/abs/2607.12455"><em>EVOQUANT: Self-Evolving Verifier-Guided Strategy Optimization for Robust Quantitative Trading</em></a>. arXiv:2607.12455.
+          <em>Verified strategy edits distilled into reusable knowledge.</em>
+        </li>
+        <li>
+          Yu, Y., Li, H., Chen, Z., Jiang, Y., Li, Y., et al. (2023).
+          <a href="https://arxiv.org/abs/2311.13743"><em>FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design</em></a>. arXiv:2311.13743.
+          <em>Layered memory for a trading agent.</em>
+        </li>
+        <li>
+          Zhang, W., Zhao, L., Xia, H., Sun, S., Sun, J., et al. (2024).
+          <a href="https://arxiv.org/abs/2402.18485"><em>A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist</em></a>. arXiv:2402.18485.
+          <em>FinAgent. Multimodal market intelligence with dual-level reflection.</em>
+        </li>
+        <li>
+          Yu, Y., Yao, Z., Li, H., Deng, Z., Cao, Y., et al. (2024).
+          <a href="https://arxiv.org/abs/2407.06567"><em>FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making</em></a>. arXiv:2407.06567.
+          <em>Manager-analyst hierarchy with conceptual verbal reinforcement.</em>
+        </li>
+        <li>
+          Xiao, Y., Sun, E., Luo, D., and Wang, W. (2024).
+          <a href="https://arxiv.org/abs/2412.20138"><em>TradingAgents: Multi-Agents LLM Financial Trading Framework</em></a>. arXiv:2412.20138.
+          <em>A simulated trading firm of specialised agents.</em>
+        </li>
+        <li>
+          Nguyen, P. and Pham, T. (2026).
+          <a href="https://arxiv.org/abs/2603.27539"><em>Toward Reliable Evaluation of LLM-Based Financial Multi-Agent Systems: Taxonomy, Coordination Primacy, and Cost Awareness</em></a>. arXiv:2603.27539.
+          <em>Five evaluation failures in multi-agent trading systems that can reverse the sign of reported returns.</em>
+        </li>
+        <li>
+          Li, W. W., Kim, H., Cucuringu, M., and Ma, T. (2025).
+          <a href="https://arxiv.org/abs/2505.07078"><em>Can LLM-based Financial Investing Strategies Outperform the Market in Long Run?</em></a>. arXiv:2505.07078.
+          <em>FINSABER. Reported LLM timing advantages deteriorate over two decades and 100+ symbols.</em>
+        </li>
+      </ul>
+      <h3>What a self-improving system updates</h3>
+      <ul>
+        <li>
+          Khattab, O., Singhvi, A., Maheshwari, P., Zhang, Z., Santhanam, K., et al. (2023).
+          <a href="https://arxiv.org/abs/2310.03714"><em>DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines</em></a>. arXiv:2310.03714.
+          <em>Pipelines as declarative modules compiled against a metric.</em>
+        </li>
+        <li>
+          Yang, C., Wang, X., Lu, Y., Liu, H., Le, Q. V., et al. (2023).
+          <a href="https://arxiv.org/abs/2309.03409"><em>Large Language Models as Optimizers</em></a>. arXiv:2309.03409; ICLR 2024.
+          <em>OPRO. Past solutions and scores in the prompt.</em>
+        </li>
+        <li>
+          Fernando, C., Banarse, D., Michalewski, H., Osindero, S., and Rocktäschel, T. (2023).
+          <a href="https://arxiv.org/abs/2309.16797"><em>Promptbreeder: Self-Referential Self-Improvement Via Prompt Evolution</em></a>. arXiv:2309.16797.
+          <em>Evolves task prompts and the mutation prompts that produce them.</em>
+        </li>
+        <li>
+          Yuksekgonul, M., Bianchi, F., Boen, J., Liu, S., Huang, Z., et al. (2024).
+          <a href="https://arxiv.org/abs/2406.07496"><em>TextGrad: Automatic "Differentiation" via Text</em></a>. arXiv:2406.07496.
+          <em>Textual feedback propagated backwards through a computation graph.</em>
+        </li>
+        <li>
+          Agrawal, L. A., Tan, S., Soylu, D., Ziems, N., Khare, R., et al. (2025).
+          <a href="https://arxiv.org/abs/2507.19457"><em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em></a>. arXiv:2507.19457; ICLR 2026.
+          <em>Reflective prompt evolution over execution traces. Beats GRPO by 6% on average with up to 35 times fewer rollouts.</em>
+        </li>
+        <li>
+          Shinn, N., Cassano, F., Berman, E., Gopinath, A., Narasimhan, K., and Yao, S. (2023).
+          <a href="https://arxiv.org/abs/2303.11366"><em>Reflexion: Language Agents with Verbal Reinforcement Learning</em></a>. arXiv:2303.11366.
+          <em>Verbal reflections kept in episodic memory across trials.</em>
+        </li>
+        <li>
+          Zhao, A., Huang, D., Xu, Q., Lin, M., Liu, Y.-J., and Huang, G. (2023).
+          <a href="https://arxiv.org/abs/2308.10144"><em>ExpeL: LLM Agents Are Experiential Learners</em></a>. arXiv:2308.10144; AAAI 2024.
+          <em>Insights extracted across tasks and recalled at inference.</em>
+        </li>
+        <li>
+          Wang, G., Xie, Y., Jiang, Y., Mandlekar, A., Xiao, C., et al. (2023).
+          <a href="https://arxiv.org/abs/2305.16291"><em>Voyager: An Open-Ended Embodied Agent with Large Language Models</em></a>. arXiv:2305.16291.
+          <em>A growing library of executable skills.</em>
+        </li>
+        <li>
+          Zhang, S., Wang, J., Zhou, R., Liao, J., Feng, Y., et al. (2026).
+          <a href="https://arxiv.org/abs/2601.03192"><em>MemRL: Self-Evolving Agents via Runtime Reinforcement Learning on Episodic Memory</em></a>. arXiv:2601.03192.
+          <em>Learns which episodic memories are useful from environmental feedback, with weights fixed.</em>
+        </li>
+        <li>
+          Schmidhuber, J. (2003).
+          <a href="https://arxiv.org/abs/cs/0309048"><em>G&ouml;del Machines: Self-Referential Universal Problem Solvers Making Provably Optimal Self-Improvements</em></a>. arXiv:cs/0309048.
+          <em>Provably optimal self-rewrites, conditional on finding the proof.</em>
+        </li>
+        <li>
+          Zelikman, E., Lorch, E., Mackey, L., and Kalai, A. T. (2023).
+          <a href="https://arxiv.org/abs/2310.02304"><em>Self-Taught Optimizer (STOP): Recursively Self-Improving Code Generation</em></a>. arXiv:2310.02304; COLM 2024.
+          <em>A scaffold that improves itself, with sandbox-bypass rates measured.</em>
+        </li>
+        <li>
+          Hu, S., Lu, C., and Clune, J. (2024).
+          <a href="https://arxiv.org/abs/2408.08435"><em>Automated Design of Agentic Systems</em></a>. arXiv:2408.08435.
+          <em>A meta agent programs new agents from an archive of discoveries.</em>
+        </li>
+        <li>
+          Yin, X., Wang, X., Pan, L., Lin, L., Wan, X., and Wang, W. Y. (2024).
+          <a href="https://arxiv.org/abs/2410.04444"><em>Gödel Agent: A Self-Referential Agent Framework for Recursive Self-Improvement</em></a>. arXiv:2410.04444; ACL 2025.
+          <em>An agent that modifies its own logic under a high-level objective.</em>
+        </li>
+        <li>
+          Zhang, J., Hu, S., Lu, C., Lange, R., and Clune, J. (2025).
+          <a href="https://arxiv.org/abs/2505.22954"><em>Darwin G&ouml;del Machine: Open-Ended Evolution of Self-Improving Agents</em></a>. arXiv:2505.22954.
+          <em>Empirical validation replaces proof. SWE-bench 20.0% to 50.0%.</em>
+        </li>
+        <li>
+          Luo, X., Zhang, Y., He, Z., Wang, Z., Zhao, S., et al. (2025).
+          <a href="https://arxiv.org/abs/2508.03680"><em>Agent Lightning: Train ANY AI Agents with Reinforcement Learning</em></a>. arXiv:2508.03680.
+          <em>Agent execution decoupled from RL training.</em>
+        </li>
+        <li>
+          He, Z., Zhang, S., Zhou, Z., Yang, Y., Kang, Y., et al. (2026).
+          <a href="https://arxiv.org/abs/2608.17528"><em>Agent Lightning v1.0: Towards Harnessed Agentic RL</em></a>. arXiv:2608.17528.
+          <em>The deployment harness owns the loop. SWE-bench Verified 41.8% to 56.4% for Qwen3.5-9B.</em>
+        </li>
+        <li>
+          Huang, J., Chen, X., Mishra, S., Zheng, H. S., Yu, A. W., et al. (2023).
+          <a href="https://arxiv.org/abs/2310.01798"><em>Large Language Models Cannot Self-Correct Reasoning Yet</em></a>. arXiv:2310.01798.
+          <em>Without external feedback, models struggle to correct their reasoning and sometimes get worse.</em>
+        </li>
+        <li>
+          Hospedales, T., Antoniou, A., Micaelli, P., and Storkey, A. (2020).
+          <a href="https://arxiv.org/abs/2004.05439"><em>Meta-Learning in Neural Networks: A Survey</em></a>. arXiv:2004.05439.
+          <em>The meta-learning literature before language agents.</em>
+        </li>
+      </ul>
+      <h3>Relational features and weak labels</h3>
+      <ul>
+        <li>
+          Kanter, J. M., and Veeramachaneni, K. (2015).
+          <a href="https://doi.org/10.1109/dsaa.2015.7344858"><em>Deep Feature Synthesis: Towards Automating Data Science Endeavors</em></a>. IEEE DSAA 2015.
+          <em>Stacked aggregations across related tables. The explicit baseline.</em>
+        </li>
+        <li>
+          Fey, M., Hu, W., Huang, K., Lenssen, J. E., Ranjan, R., et al. (2023).
+          <a href="https://arxiv.org/abs/2312.04615"><em>Relational Deep Learning: Graph Representation Learning on Relational Databases</em></a>. arXiv:2312.04615.
+          <em>A database as a temporal heterogeneous graph, one node per row.</em>
+        </li>
+        <li>
+          Robinson, J., Ranjan, R., Hu, W., Huang, K., Han, J., et al. (2024).
+          <a href="https://arxiv.org/abs/2407.20060"><em>RelBench: A Benchmark for Deep Learning on Relational Databases</em></a>. arXiv:2407.20060.
+          <em>The benchmark, with a user study against a data scientist&rsquo;s hand-built features.</em>
+        </li>
+        <li>
+          Gu, J., Ranjan, R., Kanatsoulis, C., Tang, H., Jurkovic, M., et al. (2026).
+          <a href="https://arxiv.org/abs/2602.12606"><em>RelBench v2: A Large-Scale Benchmark and Repository for Relational Data</em></a>. arXiv:2602.12606; ICLR 2026.
+          <em>11 datasets, 22 million rows, autocomplete tasks under temporal constraints.</em>
+        </li>
+        <li>
+          Zhang, Y., Xu, L., Gan, Q., Wipf, D., and Wang, M. (2026).
+          <a href="https://arxiv.org/abs/2602.18495"><em>RDBLearn: Simple In-Context Prediction Over Relational Databases</em></a>. arXiv:2602.18495.
+          <em>Relational aggregations plus a tabular foundation model, competitive with supervised baselines.</em>
+        </li>
+        <li>
+          Gentzkow, M., Kelly, B., and Taddy, M. (2019).
+          <a href="https://doi.org/10.1257/jel.20181020"><em>Text as Data</em></a>. <em>Journal of Economic Literature</em> 57(3), 535&ndash;574.
+          <em>Statistical methods for text in economics.</em>
+        </li>
+        <li>
+          Ke, Z. T., Kelly, B., and Xiu, D. (2019).
+          <a href="https://doi.org/10.3386/w26186"><em>Predicting Returns with Text Data</em></a>. NBER Working Paper 26186.
+          <em>Sentiment learned from subsequent returns rather than from a dictionary.</em>
+        </li>
+        <li>
+          Lopez-Lira, A. and Tang, Y. (2023).
+          <a href="https://arxiv.org/abs/2304.07619"><em>Can ChatGPT Forecast Stock Price Movements? Return Predictability and Large Language Models</em></a>. arXiv:2304.07619.
+          <em>GPT-4 scores capture initial reactions to post-cutoff headlines. Returns decline as adoption rises.</em>
+        </li>
+        <li>
+          Ratner, A., Bach, S. H., Ehrenberg, H., Fries, J., Wu, S., and Ré, C. (2017).
+          <a href="https://arxiv.org/abs/1711.10160"><em>Snorkel: Rapid Training Data Creation with Weak Supervision</em></a>. arXiv:1711.10160.
+          <em>Labelling functions of unknown accuracy, denoised without ground truth.</em>
+        </li>
+      </ul>
+      <h3>From forecasts to decisions</h3>
+      <ul>
+        <li>
+          Elmachtoub, A. N., and Grigas, P. (2022).
+          <a href="https://doi.org/10.1287/mnsc.2020.3922"><em>Smart &ldquo;Predict, then Optimize&rdquo;</em></a>. <em>Management Science</em> 68(1), 9&ndash;26; arXiv:1710.08005.
+          <em>Train on decision error. SPO+ is a convex, statistically consistent surrogate.</em>
+        </li>
+        <li>
+          G&acirc;rleanu, N., and Pedersen, L. H. (2013).
+          <a href="https://doi.org/10.1111/jofi.12080"><em>Dynamic Trading with Predictable Returns and Transaction Costs</em></a>. <em>Journal of Finance</em> 68(6), 2309&ndash;2340.
+          <em>Trade partway toward an aim portfolio. Persistent signals get more weight.</em>
+        </li>
+        <li>
+          Dudik, M., Langford, J., and Li, L. (2011).
+          <a href="https://arxiv.org/abs/1103.4601"><em>Doubly Robust Policy Evaluation and Learning</em></a>. arXiv:1103.4601; ICML 2011.
+          <em>Accurate policy values if either the reward model or the logging-policy model is good.</em>
+        </li>
+        <li>
+          Swaminathan, A. and Joachims, T. (2015).
+          <a href="https://arxiv.org/abs/1502.02362"><em>Counterfactual Risk Minimization: Learning from Logged Bandit Feedback</em></a>. arXiv:1502.02362.
+          <em>Propensity-weighted learning with a variance penalty.</em>
+        </li>
+        <li>
+          Levine, S., Kumar, A., Tucker, G., and Fu, J. (2020).
+          <a href="https://arxiv.org/abs/2005.01643"><em>Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems</em></a>. arXiv:2005.01643.
+          <em>The tutorial on learning policies from fixed data.</em>
+        </li>
+        <li>
+          Kumar, A., Zhou, A., Tucker, G., and Levine, S. (2020).
+          <a href="https://arxiv.org/abs/2006.04779"><em>Conservative Q-Learning for Offline Reinforcement Learning</em></a>. arXiv:2006.04779.
+          <em>A value function that lower-bounds the true value.</em>
+        </li>
+        <li>
+          Kostrikov, I., Nair, A., and Levine, S. (2021).
+          <a href="https://arxiv.org/abs/2110.06169"><em>Offline Reinforcement Learning with Implicit Q-Learning</em></a>. arXiv:2110.06169.
+          <em>Never queries actions outside the dataset.</em>
+        </li>
+        <li>
+          Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., and Robins, J. (2018).
+          <a href="https://doi.org/10.1111/ectj.12097"><em>Double/Debiased Machine Learning for Treatment and Structural Parameters</em></a>. <em>The Econometrics Journal</em> 21(1), C1&ndash;C68.
+          <em>Orthogonal scores and cross-fitting. Estimation under stated identification assumptions, not a substitute for them.</em>
+        </li>
+      </ul>
+      <h3>Evaluating a search</h3>
+      <ul>
+        <li>
+          White, H. (2000).
+          <a href="https://doi.org/10.1111/1468-0262.00152"><em>A Reality Check for Data Snooping</em></a>. <em>Econometrica</em> 68(5), 1097&ndash;1126.
+          <em>Tests whether the best model from a search beats a benchmark, accounting for the search.</em>
+        </li>
+        <li>
+          Hansen, P. R. (2005).
+          <a href="https://doi.org/10.1198/073500105000000063"><em>A Test for Superior Predictive Ability</em></a>. <em>Journal of Business &amp; Economic Statistics</em> 23(4), 365&ndash;380.
+          <em>More power than the reality check, less sensitive to poor alternatives.</em>
+        </li>
+        <li>
+          Romano, J. P., and Wolf, M. (2005).
+          <a href="https://doi.org/10.1111/j.1468-0262.2005.00615.x"><em>Stepwise Multiple Testing as Formalized Data Snooping</em></a>. <em>Econometrica</em> 73(4), 1237&ndash;1282.
+          <em>Which of many strategies beat the benchmark.</em>
+        </li>
+        <li>
+          Harvey, C. R., Liu, Y., and Zhu, H. (2016).
+          <a href="https://doi.org/10.1093/rfs/hhv059"><em>&hellip; and the Cross-Section of Expected Returns</em></a>. <em>Review of Financial Studies</em> 29(1), 5&ndash;68.
+          <em>Multiple testing applied to hundreds of published factors.</em>
+        </li>
+        <li>
+          Bailey, D. H., and L&oacute;pez de Prado, M. (2014).
+          <a href="https://doi.org/10.3905/jpm.2014.40.5.094"><em>The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality</em></a>. <em>Journal of Portfolio Management</em> 40(5), 94&ndash;107.
+          <em>A Sharpe ratio corrected for the number of trials.</em>
+        </li>
+        <li>
+          Bailey, D. H., Borwein, J., L&oacute;pez de Prado, M., and Zhu, Q. J. (2016).
+          <a href="https://doi.org/10.21314/JCF.2016.322"><em>The Probability of Backtest Overfitting</em></a>. <em>Journal of Computational Finance</em>.
+          <em>The chance that the in-sample winner is below median out of sample.</em>
+        </li>
+        <li>
+          Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O., and Roth, A. (2014).
+          <a href="https://arxiv.org/abs/1411.2664"><em>Preserving Statistical Validity in Adaptive Data Analysis</em></a>. arXiv:1411.2664.
+          <em>Holdout reuse for adaptively chosen queries, via differential privacy.</em>
+        </li>
+        <li>
+          Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O., and Roth, A. (2015).
+          <a href="https://doi.org/10.1126/science.aaa9375"><em>The Reusable Holdout: Preserving Validity in Adaptive Data Analysis</em></a>. <em>Science</em> 349(6248), 636&ndash;638.
+          <em>The practical version. Assumes independent samples from a fixed distribution.</em>
+        </li>
+        <li>
+          Kapoor, S. and Narayanan, A. (2022).
+          <a href="https://arxiv.org/abs/2207.07048"><em>Leakage and the Reproducibility Crisis in ML-based Science</em></a>. arXiv:2207.07048.
+          <em>Leakage in 17 fields and 329 papers, and a taxonomy of eight types.</em>
+        </li>
+        <li>
+          Paleka, D., Goel, S., Geiping, J., and Tramèr, F. (2025).
+          <a href="https://arxiv.org/abs/2506.00723"><em>Pitfalls in Evaluating Language Model Forecasters</em></a>. arXiv:2506.00723.
+          <em>Temporal leakage and weak extrapolation in evaluations of LLM forecasters.</em>
+        </li>
+        <li>
+          Glasserman, P. and Lin, C. (2023).
+          <a href="https://arxiv.org/abs/2309.17322"><em>Assessing Look-Ahead Bias in Stock Return Predictions Generated By GPT Sentiment Analysis</em></a>. arXiv:2309.17322.
+          <em>Distraction by general company knowledge outweighs look-ahead in-sample.</em>
+        </li>
+        <li>
+          He, S., Lv, L., Manela, A., and Wu, J. (2025).
+          <a href="https://arxiv.org/abs/2502.21206"><em>Chronologically Consistent Large Language Models</em></a>. arXiv:2502.21206.
+          <em>ChronoBERT and ChronoGPT, trained only on text available at each date.</em>
+        </li>
+        <li>
+          Yan, Y., Tang, R., Gao, Z., Jiang, W., and Lu, Y. (2026).
+          <a href="https://arxiv.org/abs/2603.11838"><em>DatedGPT: Preventing Lookahead Bias in Large Language Models with Time-Aware Pretraining</em></a>. arXiv:2603.11838.
+          <em>Twelve 1.3B models with annual cutoffs. A look-ahead premium of 26.4 basis points per standard deviation.</em>
+        </li>
+        <li>
+          Gao, Z., Jiang, W., and Yan, Y. (2025).
+          <a href="https://arxiv.org/abs/2512.23847"><em>Detecting Lookahead Bias in LLM Forecasts</em></a>. arXiv:2512.23847.
+          <em>A look-ahead propensity estimated from date-only recall queries.</em>
+        </li>
+        <li>
+          Benhenda, M. (2026).
+          <a href="https://arxiv.org/abs/2601.13770"><em>Look-Ahead-Bench: a Standardized Benchmark of Look-ahead Bias in Point-in-Time LLMs for Finance</em></a>. arXiv:2601.13770.
+          <em>Look-ahead measured by performance decay across regimes.</em>
+        </li>
+        <li>
+          Li, W. W., Wang, M., and Ma, T. (2026).
+          <a href="https://arxiv.org/abs/2605.24564"><em>Summoning the Oracle to Slay It: Mitigating Look-Ahead Bias in Financial Backtesting with Large Language Models</em></a>. arXiv:2605.24564; EMNLP 2026.
+          <em>FinCAD. Attenuates memorised outcomes at inference.</em>
+        </li>
+      </ul>
+      <h3>Surveys</h3>
+      <ul>
+        <li>
+          Gao, H., Geng, J., Hua, W., Hu, M., Juan, X., et al. (2025).
+          <a href="https://arxiv.org/abs/2507.21046"><em>A Survey of Self-Evolving Agents: What, When, How, and Where to Evolve on the Path to Artificial Super Intelligence</em></a>. arXiv:2507.21046; TMLR 2026.
+          <em>What, when and how agents evolve.</em>
+        </li>
+        <li>
+          Ren, Z., Chen, Y., Guo, D., Rong, G., Li, T., et al. (2026).
+          <a href="https://arxiv.org/abs/2607.13104"><em>Self-Improvements in Modern Agentic Systems: A Survey</em></a>. arXiv:2607.13104.
+          <em>Self-improvement as an update operator on model parameters or scaffold components.</em>
+        </li>
+        <li>
+          Tayal, K., Sharma, A., Winata, G. I., Das, A., and Sahu, S. (2026).
+          <a href="https://arxiv.org/abs/2609.01597"><em>The Rise of Verbal Reinforcement Learning</em></a>. arXiv:2609.01597.
+          <em>Natural-language feedback as grounding, deliberation and learning signal.</em>
+        </li>
+      </ul>
+
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

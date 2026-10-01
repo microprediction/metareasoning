@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>What a Self-Improving System Updates</title>
+  <meta name="description" content="Self-improvement organised by what changes: prompts and programs, episodic memory, code and agent design, and model weights, with the evidence on self-correction without external feedback." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>What a Self-Improving System Updates</h1>
+    <p class="subtitle">Prompts, memory, code, control logic and weights, and the feedback each
+    one needs.</p>
+
+    <p class="lead">
+      <a href="https://arxiv.org/abs/2607.13104">Ren et al. (2026)</a> describe an agent as a
+      configuration that couples a foundation model with a scaffold of prompts, memory, tools and
+      control logic. Self-improvement is an update operator that commits changes to the model
+      parameters or to scaffold components.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2507.21046">Gao et al. (2025)</a> organise the same field by
+      what, when and how an agent evolves. <a href="https://arxiv.org/abs/2609.01597">Tayal et al.
+      (2026)</a> survey the subset driven by natural-language feedback, under the name verbal
+      reinforcement learning.
+    </p>
+
+    <h2>Prompts and programs</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2310.03714">DSPy</a> (Khattab et al. 2023) represents a
+      language-model pipeline as a graph of declarative modules and compiles it against a metric,
+      bootstrapping demonstrations. Compiled pipelines beat standard few-shot prompting by over 25%
+      for GPT-3.5 and 65% for Llama-2-13b-chat in its case studies.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2309.03409">OPRO</a> (Yang et al. 2023) puts previous solutions
+      and their scores into the prompt and asks the model for a better one.
+      <a href="https://arxiv.org/abs/2309.16797">Promptbreeder</a> (Fernando et al. 2023) evolves task
+      prompts, and also evolves the mutation prompts that produce them.
+      <a href="https://arxiv.org/abs/2406.07496">TextGrad</a> (Yuksekgonul et al. 2024) propagates
+      textual feedback backwards through a computation graph, by analogy with automatic
+      differentiation.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2507.19457">GEPA</a> (Agrawal et al. 2025) samples execution
+      traces, reflects on them in natural language to diagnose failures, proposes and tests prompt
+      updates, and combines lessons from a Pareto frontier of its own attempts. Across six tasks it
+      beats GRPO by 6% on average and by up to 20%, using up to 35 times fewer rollouts. Components
+      with identifiable failure cases, such as extraction, routing and classification steps, suit
+      this kind of reflection.
+    </p>
+
+    <h2>Memory</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2303.11366">Reflexion</a> (Shinn et al. 2023) has an agent write
+      a reflection on each failed attempt and keep it in an episodic buffer for later trials, and
+      reports 91% pass@1 on HumanEval. <a href="https://arxiv.org/abs/2308.10144">ExpeL</a> (Zhao et
+      al. 2023) extracts insights across a collection of training tasks and recalls them at
+      inference. <a href="https://arxiv.org/abs/2305.16291">Voyager</a> (Wang et al. 2023) stores
+      verified behaviours as a library of executable skills.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2601.03192">MemRL</a> (Zhang et al. 2026) addresses retrieval
+      that matches on semantics and returns noise. It learns, from environmental feedback, which
+      stored episodes are useful, and improves at runtime with the model weights fixed.
+    </p>
+    <p>
+      For a research system, useful memory is often procedural: a record that one extraction
+      procedure handles a class of document correctly, or that a set of historical analogues
+      improved a class of forecast. Learning of this kind needs no weight update.
+    </p>
+
+    <h2>Code and agent design</h2>
+    <p>
+      <a href="https://arxiv.org/abs/cs/0309048">G&ouml;del machines</a> (Schmidhuber 2003) rewrite
+      any part of their own code once they have proved the rewrite useful. Proving that most
+      changes are beneficial is impossible in practice, as
+      <a href="https://arxiv.org/abs/2505.22954">Zhang et al. (2025)</a> note.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2310.02304">STOP</a> (Zelikman et al. 2023) runs a
+      language-model scaffold that improves programs on itself. The language model proposes
+      strategies including beam search, genetic algorithms and simulated annealing. The authors note this is not full recursive
+      self-improvement, since the model is unchanged, and measure how often generated code bypasses
+      a sandbox.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2408.08435">Meta Agent Search</a> (Hu, Lu &amp; Clune 2024)
+      has a meta agent program new agents in code from an archive of earlier discoveries.
+      <a href="https://arxiv.org/abs/2410.04444">G&ouml;del Agent</a> (Yin et al. 2024) lets an agent
+      modify its own logic under a high-level objective.
+      <a href="https://arxiv.org/abs/2505.22954">The Darwin G&ouml;del Machine</a> (Zhang et al.
+      2025) replaces the proof requirement with empirical validation on coding benchmarks and keeps
+      an open-ended archive of variants. It raises SWE-bench performance from 20.0% to 50.0%.
+    </p>
+
+    <h2>Weights</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2508.03680">Agent Lightning</a> (Luo et al. 2025) decouples
+      agent execution from reinforcement-learning training, so an existing agent can be trained from
+      its trajectories with little code change. <a href="https://arxiv.org/abs/2608.17528">Agent
+      Lightning v1.0</a> (He et al. 2026) lets the deployment harness own the interaction loop, and
+      reports Qwen3.5-9B rising from 41.8% to 56.4% on SWE-bench Verified with 6,000 training
+      examples.
+    </p>
+    <p>
+      The <a href="./outcomes.html">resolved-outcomes</a> page covers weight updates driven by
+      forecast outcomes. <a href="https://arxiv.org/abs/2004.05439">Hospedales et al. (2020)</a>
+      survey the older meta-learning literature, which improves a learning algorithm from many
+      learning episodes.
+    </p>
+
+    <h2>Self-correction without external feedback</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2310.01798">Huang et al. (2023)</a> study intrinsic
+      self-correction, in which a model revises its answer using only its own judgement. On
+      reasoning tasks models struggle to improve this way, and their performance sometimes falls.
+    </p>
+    <p>
+      Every method above with a reported gain uses an external signal: a test suite, a benchmark
+      score, an environment reward or a resolved outcome. For a research system that signal comes
+      from the evaluation service, which is why all proposed changes pass through one interface
+      and why failed changes are kept.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

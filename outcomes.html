@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Learning from Resolved Outcomes</title>
+  <meta name="description" content="Using the passage of time as supervision: proper scoring rules, forecasting benchmarks built on future events, language models trained on resolved outcomes, and learning under delayed feedback and drift." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Learning from Resolved Outcomes</h1>
+    <p class="subtitle">Forecasts resolve, and the resolution is a label nobody had to write.</p>
+
+    <p class="lead">
+      A system that records what it knew at each date, and what it predicted, receives a stream of
+      labelled examples as events resolve. The same stream prices the research that preceded each
+      forecast. A research action that changed a forecast in the right direction was worth
+      something, and one that changed nothing was not.
+    </p>
+
+    <h2>Proper scoring rules</h2>
+    <p>
+      <a href="https://doi.org/10.1175/1520-0493(1950)078%3C0001:VOFEIT%3E2.0.CO;2">Brier (1950)</a>
+      introduced the squared-error score for probability forecasts in weather verification.
+      <a href="https://doi.org/10.1198/016214506000001437">Gneiting and Raftery (2007)</a> give the
+      general theory. A scoring rule is strictly proper when a forecaster maximises expected score
+      only by reporting their true belief. The logarithmic score, the Brier score and the
+      continuous ranked probability score are all strictly proper.
+    </p>
+    <p>
+      Propriety is what makes a score usable as a training reward. A reward that is not proper can
+      be gamed by a forecaster who reports something other than their belief.
+    </p>
+
+    <h2>Forecasting benchmarks built on time</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2206.15474">Autocast</a> (Zou et al. 2022) pairs questions from
+      forecasting tournaments with a news corpus organised by date, so that a model can be shown
+      only what a human forecaster could have seen. Language models at the time performed far below
+      the human expert baseline.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2402.18563">Halawi et al. (2024)</a> build a retrieval-augmented
+      system that searches for information, forecasts and aggregates. On questions published after
+      the models&rsquo; knowledge cutoffs it nears the crowd aggregate of competitive forecasters,
+      and in some settings surpasses it.
+      <a href="https://arxiv.org/abs/2402.19379">Schoenegger et al. (2024)</a> find an ensemble of
+      twelve models statistically indistinguishable from a crowd of 925 human forecasters on 31
+      binary questions.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2409.19839">ForecastBench</a> (Karger et al. 2024) removes
+      leakage by construction. It asks only about events with no known answer at submission time.
+      On its human-comparison subset, expert forecasters outperform the best language model with
+      $p &lt; 0.001$.
+    </p>
+    <p>
+      Question generation and resolution can themselves be automated.
+      <a href="https://arxiv.org/abs/2601.22444">Bosse et al. (2026)</a> use web research agents to
+      write 1,499 questions and resolve them months later. They estimate about 96% of the questions
+      are verifiable and unambiguous, and resolution is about 95% accurate.
+    </p>
+
+    <h2>Training on outcomes</h2>
+    <p>
+      Three papers from one group trace a path from ranking to reinforcement learning.
+      <a href="https://arxiv.org/abs/2502.05253">Turtel, Franklin and Schoenegger (2025)</a> have a
+      model generate pairs of reasoning traces and forecasts for questions that resolve after its
+      knowledge cutoff, rank each pair by distance to the outcome, and fine-tune with direct
+      preference optimisation. Accuracy improves by 7&ndash;10% over the base model and over a
+      control fine-tuned on randomised labels.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2505.17989">Outcome-based reinforcement learning</a> (Turtel et
+      al. 2025) applies reinforcement learning with verifiable rewards to prediction-market
+      questions, with news headlines as context. A 14B model matches or surpasses frontier models on
+      accuracy and improves calibration substantially. In a trading simulation on the test
+      questions, the authors estimate a return on investment above 10%.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2601.06336">Future-as-Label</a> (Turtel et al. 2026) states the
+      principle in general form. A predictor sees only causally masked information, a resolver uses
+      later information to establish the outcome, and a proper scoring rule supplies the reward.
+      Qwen3-32B trained this way improves its Brier score by 27% and halves its calibration error
+      relative to the pretrained model. It outperforms Qwen3-235B on constructed future-event tasks
+      and on a Metaculus benchmark.
+    </p>
+    <p>
+      The limitations are stated plainly in the paper. Training is offline on resolved events,
+      deployment-time feedback loops &ldquo;are not evaluated in this study,&rdquo; and the
+      experiments cover binary outcomes only. Richer outcome spaces and fully online settings are
+      left for future work.
+    </p>
+
+    <h2>Delayed and shifting feedback</h2>
+    <p>
+      Outcomes arrive at different horizons, so a system that updates weights on its experts or
+      models works with delayed feedback. <a href="https://arxiv.org/abs/1306.0686">Joulani, Gy&ouml;rgy
+      and Szepesv&aacute;ri (2013)</a> show that delay increases regret multiplicatively in
+      adversarial problems and additively in stochastic ones, and give black-box reductions from
+      the undelayed case. <a href="https://doi.org/10.1017/cbo9780511546921">Cesa-Bianchi and Lugosi
+      (2006)</a> is the standard reference for combining expert predictions online.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2106.00170">Adaptive conformal inference</a> (Gibbs &amp;
+      Cand&egrave;s 2021) maintains the long-run coverage of prediction sets under arbitrary
+      distribution shift by re-estimating a single parameter online. Coverage is a frequency
+      guarantee. It is distinct from conditional accuracy, and from the usefulness of the set for
+      any decision.
+    </p>
+
+    <h2>Evaluation hazards specific to forecasting</h2>
+    <p>
+      <a href="https://arxiv.org/abs/2506.00723">Paleka, Goel, Geiping and Tram&egrave;r (2025)</a>
+      argue that claims of human-level forecasting deserve caution. They identify many forms of
+      temporal leakage in evaluation, and a gap between benchmark performance and real-world
+      forecasting. Prospective designs such as ForecastBench answer the first concern. The second
+      remains open.
+    </p>
+    <p>
+      The <a href="./evaluation.html">evaluating a search</a> page covers look-ahead bias inside
+      the language model itself, which a date filter on retrieved documents does not remove.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

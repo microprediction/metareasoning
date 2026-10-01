@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>From Forecasts to Decisions</title>
+  <meta name="description" content="The bridge from predictions to actions: decision-focused learning, dynamic trading with predictable returns and costs, off-policy evaluation from logged decisions, offline reinforcement learning, and causal estimation." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>From Forecasts to Decisions</h1>
+    <p class="subtitle">Equal forecast errors can have unequal costs, and logged decisions reflect
+    the policy that made them.</p>
+
+    <h2>Decision-focused learning</h2>
+    <p>
+      The usual pipeline predicts and then optimises, and trains the predictor to minimise
+      prediction error. <a href="https://arxiv.org/abs/1710.08005">Smart &ldquo;Predict, then
+      Optimize&rdquo;</a> (Elmachtoub &amp; Grigas; <a href="https://doi.org/10.1287/mnsc.2020.3922">Management
+      Science 2022</a>) trains it on the decision error the prediction induces instead. The SPO loss
+      is hard to optimise, so the paper derives a convex surrogate, SPO+, and proves it statistically
+      consistent with the SPO loss under mild conditions.
+    </p>
+    <p>
+      The gains are largest when the prediction model is misspecified. In the paper&rsquo;s
+      shortest-path and portfolio experiments, linear models trained with SPO+ tend to beat random
+      forests even when the ground truth is highly nonlinear.
+    </p>
+    <p>
+      The same reasoning applies one level up, to the choice of what to learn.
+      <a href="https://arxiv.org/abs/2602.05340">Wan et al. (2026)</a> design sequential experiments
+      to reduce decision loss rather than prediction error, and reach a stopping point earlier than
+      decision-blind designs.
+    </p>
+
+    <h2>Signals with different horizons</h2>
+    <p>
+      <a href="https://doi.org/10.1111/jofi.12080">G&acirc;rleanu and Pedersen (2013)</a> solve for
+      optimal dynamic trading when returns are predictable from signals that decay at different
+      rates and trading is costly. The optimal portfolio trades partway toward an aim portfolio, a
+      weighted average of the current and expected future Markowitz portfolios. Persistent signals
+      receive more weight than fast-decaying ones.
+    </p>
+    <p>
+      The result gives forecasts at different horizons a common use. A signal that matters over
+      days and one that matters over months enter the same portfolio through their decay rates,
+      so both horizons need calibrated forecasts. Keeping forecast scores separate from portfolio
+      results distinguishes an improvement in forecasting from a change in risk taken.
+    </p>
+
+    <h2>Learning from logged decisions</h2>
+    <p>
+      Historical feedback reflects the actions an earlier policy chose. Evaluating a new policy on
+      that data means correcting for the mismatch.
+      <a href="https://arxiv.org/abs/1103.4601">Doubly robust estimation</a> (Dud&iacute;k, Langford
+      &amp; Li 2011) combines a model of rewards with a model of the logging policy, and stays
+      accurate if either one is good.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/1502.02362">Counterfactual risk minimisation</a> (Swaminathan
+      &amp; Joachims 2015) learns from logged bandit feedback with propensity weighting, and
+      penalises the variance of the weighted estimate through generalisation bounds.
+    </p>
+    <p>
+      Both depend on coverage. Logged action probabilities make the correction possible where they
+      exist. Estimating them does not recover actions the old policy never took, and does not remove
+      confounding the logs do not record.
+    </p>
+
+    <h2>Offline reinforcement learning</h2>
+    <p>
+      When decisions change later opportunities, through inventory, execution or information
+      gathered, the problem becomes sequential. <a href="https://arxiv.org/abs/2005.01643">Levine,
+      Kumar, Tucker and Fu (2020)</a> review learning policies from fixed datasets, and the central
+      difficulty of distribution shift between the data and the learned policy.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2006.04779">Conservative Q-learning</a> (Kumar et al. 2020)
+      learns a value function that lower-bounds the true value of the policy, so actions poorly
+      supported by the data are not overvalued. <a href="https://arxiv.org/abs/2110.06169">Implicit
+      Q-learning</a> (Kostrikov, Nair &amp; Levine 2021) never evaluates actions outside the dataset.
+      It estimates the value of the best in-sample action with an upper expectile.
+    </p>
+
+    <h2>What market prices do and do not reveal</h2>
+    <p>
+      For a price-taking system, later market prices score a directional forecast whether or not a
+      trade followed. That makes many more observations available than completed trades. Fills,
+      market impact and the results of research never performed are not observed, and are the
+      quantities off-policy methods are needed for.
+    </p>
+    <p>
+      A correctly forecast event may already be reflected in prices. A forecast of the event and a
+      forecast of the market&rsquo;s surprise at it are different targets and need separate scores.
+    </p>
+
+    <h2>Causal estimation</h2>
+    <p>
+      <a href="https://doi.org/10.1111/ectj.12097">Double/debiased machine learning</a> (Chernozhukov
+      et al. 2018) estimates treatment effects with flexible machine-learning models for the nuisance
+      functions, using orthogonal scores and cross-fitting to remove the bias the flexible fits
+      introduce. It estimates effects under stated identification assumptions. It cannot create
+      identification from text and correlations where none exists.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

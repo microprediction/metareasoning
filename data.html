@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Relational Features and Weak Labels</title>
+  <meta name="description" content="The substrate a research system learns from: relational databases as temporal graphs, automated feature synthesis, text as predictive data, and weak supervision from noisy heuristic sources." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Relational Features and Weak Labels</h1>
+    <p class="subtitle">Linked tables, text, and noisy sources of supervision.</p>
+
+    <p class="lead">
+      A research system&rsquo;s history usually lives in a relational database: documents, events,
+      extracted facts, forecasts, comments, decisions and outcomes, joined by keys and stamped with
+      times. Two questions follow. How should features be built from linked, timestamped tables?
+      And how should the many imperfect judgements in those tables be turned into labels?
+    </p>
+
+    <h2>Relational databases as temporal graphs</h2>
+    <p>
+      <a href="https://doi.org/10.1109/dsaa.2015.7344858">Deep Feature Synthesis</a> (Kanter &amp;
+      Veeramachaneni 2015) builds features automatically by stacking aggregations along the
+      relationships between tables. It is the explicit, interpretable baseline.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2312.04615">Relational Deep Learning</a> (Fey et al. 2023)
+      treats a database as a temporal heterogeneous graph, with a node for each row and an edge for
+      each primary&ndash;foreign-key link, and learns across it with message-passing networks.
+      <a href="https://arxiv.org/abs/2407.20060">RelBench</a> (Robinson et al. 2024) supplies the
+      benchmark. In its user study, a relational model beat features engineered by an experienced
+      data scientist while cutting the human work by more than an order of magnitude.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2602.12606">RelBench v2</a> (Gu et al. 2026) grows to 11
+      datasets, over 22 million rows and 29 tables. It adds autocomplete tasks, which infer missing
+      attributes while respecting temporal constraints, and reports relational models consistently
+      beating single-table baselines.
+    </p>
+    <p>
+      Explicit aggregation remains competitive. <a href="https://arxiv.org/abs/2602.18495">RDBLearn</a>
+      (Zhang et al. 2026) featurises each target row with relational aggregations over linked
+      records, then runs an off-the-shelf tabular foundation model on the result. It is the best
+      foundation-model approach the authors evaluate on RelBench and 4DBInfer, and at times beats
+      supervised baselines trained on each dataset.
+    </p>
+    <p>
+      For a research database, the comparison that matters is between a learned relational
+      representation and timestamped SQL aggregates fed to a regularised model. Candidate aggregates
+      include disagreement among sources, revisions to an estimate, counts of independent sources,
+      and changes in a recommendation. A graph database is not required for either.
+    </p>
+
+    <h2>Text as predictive data</h2>
+    <p>
+      <a href="https://doi.org/10.1257/jel.20181020">Gentzkow, Kelly and Taddy (2019)</a> survey the
+      statistical methods for using text as data in economics: representing documents, and linking
+      them to outcomes through dictionaries, generative models and regression.
+      <a href="https://doi.org/10.3386/w26186">Ke, Kelly and Xiu (2019)</a> learn a sentiment score
+      from the returns that follow news, rather than from a generic dictionary.
+    </p>
+    <p>
+      <a href="https://arxiv.org/abs/2304.07619">Lopez-Lira and Tang (2023)</a> find that GPT-4 scores
+      on post-cutoff headlines capture initial market reactions, with about 90% portfolio-day hit
+      rates for the non-tradable initial reaction, and predict some subsequent drift. Strategy
+      returns decline as adoption of such models rises. Task-specific signal learned from text is
+      a different object from generic sentiment, and the two should be compared directly.
+    </p>
+
+    <h2>Weak supervision</h2>
+    <p>
+      <a href="https://arxiv.org/abs/1711.10160">Snorkel</a> (Ratner et al. 2017) trains models from
+      labelling functions, heuristics whose accuracies and correlations are unknown, and learns to
+      denoise their outputs without ground truth.
+    </p>
+    <p>
+      A research system accumulates many such sources: automated recommendations, analyst comments,
+      extraction heuristics and model scores. The Snorkel framing treats them as noisy labellers
+      with unknown and possibly correlated errors, rather than taking any one of them as truth. A
+      source&rsquo;s estimate stays a prediction until an outcome checks it.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

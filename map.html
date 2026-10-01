@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Literature Map</title>
+  <meta name="description" content="An interactive map of the metareasoning literature: classical value of computation, information acquisition, metareasoning in language models, learning from resolved outcomes, research agents, self-improvement, relational data, decisions and evaluation, with dashed edges marking connections not yet made.">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    #map-wrap { max-width: 1140px; margin: 0 auto; padding: 16px 24px 40px; }
+    #graph { width: 100%; height: 860px; border: 1px solid #ddd; background: #fdfdfd; border-radius: 4px; }
+    .legend { font-size: 0.85em; color: #444; display: flex; flex-wrap: wrap; gap: 14px 22px; margin: 10px 0; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .line { width: 26px; height: 0; border-top: 2.5px solid #999; display: inline-block; }
+    #tooltip { position: absolute; pointer-events: none; background: rgba(20,20,20,0.95); color: #eee;
+        padding: 8px 11px; border-radius: 4px; font-size: 13px; max-width: 350px; display: none; line-height: 1.35; }
+    text.nodelabel { font: 11px sans-serif; fill: #222; pointer-events: none; }
+    .hint { color:#666; font-size: 0.9em; }
+    .gaps li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+<div id="map-wrap">
+  <h1>Literature Map</h1>
+  <p>Each node is a paper or a hub concept, coloured by literature. Grey edges mark descent,
+  blue edges conceptual links between literatures, and dotted purple edges rebuttals or
+  contrasting results. <span style="color:#c0392b">Dashed red edges are connections that do not
+  yet exist</span>: searched for and not found as of 30 September 2026. They are dated, scoped
+  search claims rather than proofs of absence, and are withdrawn when someone finds the missing
+  work. Clicking a node opens the work, dragging rearranges, and hovering shows the one-line
+  story.</p>
+  <div class="legend" id="cluster-legend"></div>
+  <div class="legend">
+    <span><span class="line" style="border-color:#999"></span> builds on or extends</span>
+    <span><span class="line" style="border-color:#2471a3"></span> conceptual link</span>
+    <span><span class="line" style="border-color:#1e8449"></span> reaches the organising question</span>
+    <span><span class="line" style="border-top-style:dotted; border-color:#7d3c98"></span> rebuts or contrasts</span>
+    <span><span class="line" style="border-top-style:dashed; border-color:#c0392b"></span> gap: not found</span>
+  </div>
+  <div id="graph"></div>
+  <p class="hint">Corrections welcome: file an issue on
+  <a href="https://github.com/microprediction/metareasoning">microprediction/metareasoning</a>.</p>
+
+  <h2>Gaps</h2>
+  <p>Each gap rests on keyword searches of arXiv titles and abstracts run on 30 September 2026,
+  plus the reference lists of the papers at either end. An absence is informative only if someone
+  looked, and only honest if it is withdrawn when the missing work turns up.</p>
+  <ol class="gaps">
+    <li>
+      <em>Research controllers do not value an experiment by its effect on a decision.</em>
+      The classical theory values a computation by the change it makes to a later action
+      (Russell &amp; Wefald, Hay et al.). Research agents choose directions by tree search or a
+      bandit over a benchmark score (<a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a>,
+      <a href="https://arxiv.org/abs/2502.13138">AIDE</a>). The nearest work,
+      <a href="https://arxiv.org/abs/2608.23848">ExTS</a>, treats tree expansion as a
+      value-of-information decision, and <a href="https://arxiv.org/abs/2608.14354">ScienceFlow</a>
+      allocates compute by validated progress. Both value against the score being optimised.
+      <a href="https://arxiv.org/abs/2602.05340">Decision-focused experimental design</a> values
+      experiments by decision loss, but for linear optimisation rather than an agent.
+      <em>Confidence: moderate.</em>
+    </li>
+    <li>
+      <em>No research loop uses an outcome-trained forecaster as its object level.</em>
+      Language models trained on resolved outcomes with proper scoring rules
+      (<a href="https://arxiv.org/abs/2601.06336">Future-as-Label</a>,
+      <a href="https://arxiv.org/abs/2505.17989">outcome-based RL</a>) and autonomous loops that
+      propose and test hypotheses have not been combined. Searches pairing research agents with
+      Brier scores or resolved outcomes returned only
+      <a href="https://arxiv.org/abs/2601.22444">automated question generation</a>, which builds
+      the evaluation rather than the loop. <em>Confidence: moderate.</em>
+    </li>
+    <li>
+      <em>No off-policy evaluation of research policies.</em>
+      Logged experiments are exactly the data off-policy estimators such as
+      <a href="https://arxiv.org/abs/1103.4601">doubly robust evaluation</a> are built for: a
+      logging policy chose which experiment to run, and only its outcome was observed. No paper
+      found evaluates a candidate research controller this way. The nearest hit runs the
+      other way: code-modifying language-model agents that optimise off-policy evaluation itself.
+      <em>Confidence: moderate.</em>
+    </li>
+    <li>
+      <em>Adaptive-data-analysis methods have not reached research agents.</em>
+      The <a href="https://doi.org/10.1126/science.aaa9375">reusable holdout</a> addresses the exact
+      problem an adaptive agent creates. Searches combining adaptive data analysis or holdout reuse
+      with language models or agents found nothing relevant.
+      <a href="https://arxiv.org/abs/2608.27734">Gen&ccedil;ay (2026)</a> corrects by deflating for
+      trial count instead. <em>Confidence: moderate to high.</em>
+    </li>
+    <li>
+      <em>Research agents do not learn from their own experiment logs as relational data.</em>
+      An agent&rsquo;s history of proposals, runs and outcomes is a linked, timestamped database of
+      the kind relational deep learning targets. <a href="https://arxiv.org/abs/2602.18495">RDBLearn</a>
+      ships an agent-facing interface for relational prediction, so the tooling exists. No paper
+      found applies it to an agent&rsquo;s own logs to predict which proposals will pay off.
+      <em>Confidence: low to moderate.</em>
+    </li>
+    <li>
+      <em>Search in language-model agents is not decision-focused.</em>
+      <a href="https://doi.org/10.1287/mnsc.2020.3922">Smart Predict-then-Optimize</a> shows that
+      training on decision error beats training on prediction error when models are misspecified.
+      Agentic search methods score candidates by a task metric. None found scores a candidate
+      forecast or feature by the decision loss it induces downstream.
+      <em>Confidence: moderate.</em>
+    </li>
+  </ol>
+</div>
+<div id="tooltip"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script>
+const CLUSTERS = {"hub": {"label": "Where effort goes", "color": "#10212b"}, "classic": {"label": "Classical metareasoning", "color": "#8e44ad"}, "acquire": {"label": "Information acquisition", "color": "#e67e22"}, "llmmeta": {"label": "Metareasoning in language models", "color": "#0d7d8c"}, "outcomes": {"label": "Learning from outcomes", "color": "#27ae60"}, "agents": {"label": "Research loops", "color": "#2471a3"}, "update": {"label": "Self-improvement mechanisms", "color": "#a04000"}, "data": {"label": "Relational data & weak labels", "color": "#7f8c8d"}, "decide": {"label": "Forecasts to decisions", "color": "#b7950b"}, "eval": {"label": "Evaluating a search", "color": "#c0392b"}};
+const NODES = [
+{
+"id": "hub",
+"c": "hub",
+"label": "Value of a research action",
+"url": null,
+"big": true,
+"note": "The organising question: which next computation, query or experiment has the greatest expected effect on a later decision, net of its cost."
+},
+{
+"id": "rw",
+"c": "classic",
+"label": "Russell & Wefald 1991",
+"url": "https://doi.org/10.1016/0004-3702(91)90015-C",
+"big": true,
+"note": "Computations are actions valued by their effect on later actions. The rational agent performs the computation of highest net value and acts when none remains positive."
+},
+{
+"id": "howard",
+"c": "classic",
+"label": "Howard: value of information",
+"url": "https://doi.org/10.1109/tssc.1966.300074",
+"big": false,
+"note": "The value of information as the gain in expected utility from observing before deciding."
+},
+{
+"id": "matheson",
+"c": "classic",
+"label": "Matheson: value of computation",
+"url": "https://doi.org/10.1109/tssc.1968.300126",
+"big": false,
+"note": "Extends the value of information from observations to analysis. The earliest statement of the value of computation."
+},
+{
+"id": "horvitz",
+"c": "classic",
+"label": "Horvitz: bounded rationality",
+"url": "https://arxiv.org/abs/1304.2759",
+"big": false,
+"note": "Horvitz 2013. Decision-theoretic control of inference under resource limits: weigh the costs and benefits of approximation procedures, and of acting on a partial result."
+},
+{
+"id": "hay",
+"c": "classic",
+"label": "Selecting computations",
+"url": "https://arxiv.org/abs/1207.5879",
+"big": true,
+"note": "Hay et al. 2012. Metalevel control as a Bayesian selection problem rather than a bandit problem, since only the final choice collects reward. Finite sampling bounds in some cases, and a counterexample to the conjecture that an optimal policy always reaches a decision."
+},
+{
+"id": "tolpin",
+"c": "classic",
+"label": "MCTS by simple regret",
+"url": "https://arxiv.org/abs/1207.5536",
+"big": false,
+"note": "Tolpin & Shimony 2012. UCT minimises cumulative regret, but search needs simple regret. Optimising the sampling is itself a metareasoning problem."
+},
+{
+"id": "sezener",
+"c": "classic",
+"label": "Values of computation in MCTS",
+"url": "https://arxiv.org/abs/2002.04335",
+"big": false,
+"note": "Sezener & Dayan 2020. Values Monte Carlo simulations by their expected effect on the action eventually chosen, beyond the myopic horizon."
+},
+{
+"id": "callaway",
+"c": "classic",
+"label": "Learning to select computations",
+"url": "https://arxiv.org/abs/1711.06892",
+"big": true,
+"note": "Callaway et al. 2017. Bayesian metalevel policy search. The value of information lies between the myopic value and the value of perfect information, and that bracket makes a learned metalevel policy tractable."
+},
+{
+"id": "rr",
+"c": "classic",
+"label": "Resource-rational analysis",
+"url": "https://doi.org/10.1017/s0140525x1900061x",
+"big": false,
+"note": "The research programme stated in full, with commentary."
+},
+{
+"id": "gittins",
+"c": "acquire",
+"label": "Gittins indices",
+"url": "https://doi.org/10.1111/j.2517-6161.1979.tb01068.x",
+"big": false,
+"note": "Index policies for allocating effort among alternatives, optimal under the bandit-process assumptions."
+},
+{
+"id": "kg",
+"c": "acquire",
+"label": "Knowledge gradient",
+"url": "https://doi.org/10.1137/070693424",
+"big": false,
+"note": "The one-step expected improvement in the value of the best alternative."
+},
+{
+"id": "ids",
+"c": "acquire",
+"label": "Information-directed sampling",
+"url": "https://arxiv.org/abs/1403.5556",
+"big": false,
+"note": "Russo & Roy 2014. Acts to minimise squared expected regret per unit of information about the optimal action. A regret bound that scales with the entropy of the optimal action."
+},
+{
+"id": "hyperband",
+"c": "acquire",
+"label": "Hyperband",
+"url": "https://arxiv.org/abs/1603.06560",
+"big": false,
+"note": "Li et al. 2016. Adaptive resource allocation with early stopping over random configurations, reported an order of magnitude faster than Bayesian optimisation on its benchmarks. The non-Bayesian counterpoint."
+},
+{
+"id": "afa",
+"c": "acquire",
+"label": "Active feature acquisition",
+"url": "https://arxiv.org/abs/2010.02433",
+"big": false,
+"note": "Li & Oliva 2020. Which missing features to pay for at prediction time, with a generative surrogate estimating the information gain of each."
+},
+{
+"id": "dfsed",
+"c": "acquire",
+"label": "Decision-focused experimental design",
+"url": "https://arxiv.org/abs/2602.05340",
+"big": false,
+"note": "Wan et al. 2026. Sequential experimental design aimed at decision loss rather than prediction error. Stops earlier than decision-blind designs."
+},
+{
+"id": "act",
+"c": "llmmeta",
+"label": "Adaptive computation time",
+"url": "https://arxiv.org/abs/1603.08983",
+"big": false,
+"note": "Graves 2016. A network learns how many internal steps to take. On text it spends more computation on harder transitions."
+},
+{
+"id": "snell",
+"c": "llmmeta",
+"label": "Compute-optimal test time",
+"url": "https://arxiv.org/abs/2408.03314",
+"big": false,
+"note": "Snell et al. 2024. Compute-optimal test-time scaling depends on prompt difficulty. More than four times the efficiency of best-of-N."
+},
+{
+"id": "desab",
+"c": "llmmeta",
+"label": "Rational metareasoning for LLMs",
+"url": "https://arxiv.org/abs/2410.05563",
+"big": true,
+"note": "Sabbata et al. 2024. A reward built on the value of computation, trained by expert iteration. 20–37% fewer tokens at unchanged performance."
+},
+{
+"id": "metar",
+"c": "llmmeta",
+"label": "Meta-Reasoner",
+"url": "https://arxiv.org/abs/2502.19918",
+"big": false,
+"note": "Sui et al. 2025. A contextual bandit chooses between continuing, backtracking, switching strategy and restarting."
+},
+{
+"id": "aera",
+"c": "llmmeta",
+"label": "AERA",
+"url": "https://arxiv.org/abs/2608.27964",
+"big": false,
+"note": "Wang et al. 2026. Present confidence is a poor guide to whether more computation helps. Learns the future value of computation instead, cutting completion tokens by 95.99% for a 0.4-point accuracy cost on held-out GSM8K."
+},
+{
+"id": "exts",
+"c": "llmmeta",
+"label": "ExTS: expansion as VOI",
+"url": "https://arxiv.org/abs/2608.23848",
+"big": false,
+"note": "Fang & Wang 2026. Tree expansion as a value-of-information decision under a small evaluation budget."
+},
+{
+"id": "brier",
+"c": "outcomes",
+"label": "Brier score",
+"url": "https://doi.org/10.1175/1520-0493(1950)078%3C0001:VOFEIT%3E2.0.CO;2",
+"big": false,
+"note": "The squared-error score for probability forecasts."
+},
+{
+"id": "gr",
+"c": "outcomes",
+"label": "Proper scoring rules",
+"url": "https://doi.org/10.1198/016214506000001437",
+"big": false,
+"note": "The general theory of proper scoring rules, and the reason they can serve as rewards."
+},
+{
+"id": "autocast",
+"c": "outcomes",
+"label": "Autocast",
+"url": "https://arxiv.org/abs/2206.15474",
+"big": false,
+"note": "Zou et al. 2022. Tournament questions paired with a date-ordered news corpus, so a model sees only what a forecaster could have seen."
+},
+{
+"id": "halawi",
+"c": "outcomes",
+"label": "Human-level forecasting",
+"url": "https://arxiv.org/abs/2402.18563",
+"big": false,
+"note": "Halawi et al. 2024. A retrieval-augmented forecasting system that nears the crowd aggregate on post-cutoff questions."
+},
+{
+"id": "fbench",
+"c": "outcomes",
+"label": "ForecastBench",
+"url": "https://arxiv.org/abs/2409.19839",
+"big": false,
+"note": "Karger et al. 2024. A dynamic benchmark of questions about unresolved events. Experts beat the best language model, $p < 0.001$."
+},
+{
+"id": "teach",
+"c": "outcomes",
+"label": "Self-taught forecasting (DPO)",
+"url": "https://arxiv.org/abs/2502.05253",
+"big": false,
+"note": "Turtel et al. 2025. Self-play forecasts ranked by distance to the outcome, then DPO. 7–10% accuracy gains over base and randomised-label controls."
+},
+{
+"id": "orl",
+"c": "outcomes",
+"label": "Outcome-based RL",
+"url": "https://arxiv.org/abs/2505.17989",
+"big": false,
+"note": "Turtel et al. 2025. Reinforcement learning with verifiable rewards on prediction-market questions. A 14B model matches frontier accuracy with better calibration."
+},
+{
+"id": "fal",
+"c": "outcomes",
+"label": "Future-as-Label",
+"url": "https://arxiv.org/abs/2601.06336",
+"big": true,
+"note": "Turtel et al. 2026. Resolved outcomes as reward. The predictor sees causally masked information, a resolver establishes the outcome, and a proper scoring rule scores the forecast. A 27% Brier improvement for Qwen3-32B. Offline, binary outcomes only; deployment-time loops are not evaluated."
+},
+{
+"id": "bosse",
+"c": "outcomes",
+"label": "Automated question resolution",
+"url": "https://arxiv.org/abs/2601.22444",
+"big": false,
+"note": "Bosse et al. 2026. Agents write and later resolve forecasting questions. About 96% verifiable and 95% correctly resolved."
+},
+{
+"id": "delay",
+"c": "outcomes",
+"label": "Delayed feedback",
+"url": "https://arxiv.org/abs/1306.0686",
+"big": false,
+"note": "Joulani et al. 2013. Delay multiplies regret in adversarial problems and adds to it in stochastic ones."
+},
+{
+"id": "aci",
+"c": "outcomes",
+"label": "Adaptive conformal",
+"url": "https://arxiv.org/abs/2106.00170",
+"big": false,
+"note": "Gibbs & Candès 2021. Long-run coverage of prediction sets under arbitrary drift. Coverage is not conditional accuracy."
+},
+{
+"id": "aisci",
+"c": "agents",
+"label": "AI Scientist",
+"url": "https://arxiv.org/abs/2408.06292",
+"big": false,
+"note": "Lu et al. 2024. Ideas, code, experiments, paper and automated review, under $15 per paper."
+},
+{
+"id": "beel",
+"c": "agents",
+"label": "⟂ AI Scientist evaluated",
+"url": "https://arxiv.org/abs/2502.14297",
+"big": false,
+"note": "Beel et al. 2025. Independent evaluation of the AI Scientist: 42% of experiments failed on coding errors, novelty checks misfired, some papers had hallucinated numbers."
+},
+{
+"id": "aisci2",
+"c": "agents",
+"label": "AI Scientist-v2",
+"url": "https://arxiv.org/abs/2504.08066",
+"big": false,
+"note": "Yamada et al. 2025. Agentic tree search without human code templates. One of three workshop submissions scored above the average acceptance threshold."
+},
+{
+"id": "aide",
+"c": "agents",
+"label": "AIDE",
+"url": "https://arxiv.org/abs/2502.13138",
+"big": false,
+"note": "Jiang et al. 2025. Machine-learning engineering as tree search over code."
+},
+{
+"id": "mle",
+"c": "agents",
+"label": "MLE-bench",
+"url": "https://arxiv.org/abs/2410.07095",
+"big": false,
+"note": "Chan et al. 2024. 75 Kaggle competitions. o1-preview with AIDE reached bronze or better in 16.9%."
+},
+{
+"id": "sflow",
+"c": "agents",
+"label": "ScienceFlow",
+"url": "https://arxiv.org/abs/2608.14354",
+"big": false,
+"note": "Zhao et al. 2026. Long-horizon research with recoverable executable states and value-driven compute allocation. 70.22% any-medal on MLE-bench within 24 hours."
+},
+{
+"id": "funsearch",
+"c": "agents",
+"label": "FunSearch",
+"url": "https://doi.org/10.1038/s41586-023-06924-6",
+"big": false,
+"note": "FunSearch. Evolves programs against an evaluator."
+},
+{
+"id": "alphaevolve",
+"c": "agents",
+"label": "AlphaEvolve",
+"url": "https://arxiv.org/abs/2506.13131",
+"big": false,
+"note": "Novikov et al. 2025. Evolutionary code editing with evaluator feedback. A 48-multiplication procedure for $4 \\times 4$ complex matrices."
+},
+{
+"id": "qlib",
+"c": "agents",
+"label": "Qlib",
+"url": "https://arxiv.org/abs/2009.11189",
+"big": false,
+"note": "Yang et al. 2020. Infrastructure for AI-driven quantitative research."
+},
+{
+"id": "rdq",
+"c": "agents",
+"label": "RD-Agent(Q)",
+"url": "https://arxiv.org/abs/2505.15155",
+"big": true,
+"note": "Li et al. 2025. A full research loop over factors and models: research, development and feedback stages, with a multi-armed bandit choosing the next direction. Up to twice the annualised return of classical factor libraries with 70% fewer factors. Its limitations section names alternative data, domain knowledge and online adaptation as open."
+},
+{
+"id": "alphaagent",
+"c": "agents",
+"label": "AlphaAgent",
+"url": "https://arxiv.org/abs/2502.16789",
+"big": false,
+"note": "Tang et al. 2025. Factor mining with originality, hypothesis alignment and complexity constraints to resist decay."
+},
+{
+"id": "tradingagents",
+"c": "agents",
+"label": "TradingAgents & kin",
+"url": "https://arxiv.org/abs/2412.20138",
+"big": false,
+"note": "Xiao et al. 2024. FinMem, FinAgent, FinCon and TradingAgents: trading agents with layered memory, reflection and analyst roles. Useful as design references; their evaluations are contested."
+},
+{
+"id": "dspy",
+"c": "update",
+"label": "DSPy",
+"url": "https://arxiv.org/abs/2310.03714",
+"big": false,
+"note": "Khattab et al. 2023. Pipelines as declarative modules compiled against a metric."
+},
+{
+"id": "opro",
+"c": "update",
+"label": "OPRO",
+"url": "https://arxiv.org/abs/2309.03409",
+"big": false,
+"note": "Yang et al. 2023. OPRO. Past solutions and scores in the prompt."
+},
+{
+"id": "gepa",
+"c": "update",
+"label": "GEPA",
+"url": "https://arxiv.org/abs/2507.19457",
+"big": true,
+"note": "Agrawal et al. 2025. Reflective prompt evolution over execution traces. Beats GRPO by 6% on average with up to 35 times fewer rollouts."
+},
+{
+"id": "textgrad",
+"c": "update",
+"label": "TextGrad",
+"url": "https://arxiv.org/abs/2406.07496",
+"big": false,
+"note": "Yuksekgonul et al. 2024. Textual feedback propagated backwards through a computation graph."
+},
+{
+"id": "reflexion",
+"c": "update",
+"label": "Reflexion",
+"url": "https://arxiv.org/abs/2303.11366",
+"big": false,
+"note": "Shinn et al. 2023. Verbal reflections kept in episodic memory across trials."
+},
+{
+"id": "memrl",
+"c": "update",
+"label": "MemRL",
+"url": "https://arxiv.org/abs/2601.03192",
+"big": false,
+"note": "Zhang et al. 2026. Learns which episodic memories are useful from environmental feedback, with weights fixed."
+},
+{
+"id": "godel",
+"c": "update",
+"label": "Gödel machines",
+"url": "https://arxiv.org/abs/cs/0309048",
+"big": false,
+"note": "Schmidhuber 2003. Provably optimal self-rewrites, conditional on finding the proof."
+},
+{
+"id": "stop",
+"c": "update",
+"label": "STOP",
+"url": "https://arxiv.org/abs/2310.02304",
+"big": false,
+"note": "Zelikman et al. 2023. A scaffold that improves itself, with sandbox-bypass rates measured."
+},
+{
+"id": "adas",
+"c": "update",
+"label": "Meta Agent Search",
+"url": "https://arxiv.org/abs/2408.08435",
+"big": false,
+"note": "Hu et al. 2024. A meta agent programs new agents from an archive of discoveries."
+},
+{
+"id": "dgm",
+"c": "update",
+"label": "Darwin Gödel Machine",
+"url": "https://arxiv.org/abs/2505.22954",
+"big": false,
+"note": "Zhang et al. 2025. Empirical validation replaces proof. SWE-bench 20.0% to 50.0%."
+},
+{
+"id": "lightning",
+"c": "update",
+"label": "Agent Lightning",
+"url": "https://arxiv.org/abs/2508.03680",
+"big": false,
+"note": "Luo et al. 2025. Agent execution decoupled from RL training."
+},
+{
+"id": "huang",
+"c": "update",
+"label": "⟂ Cannot self-correct yet",
+"url": "https://arxiv.org/abs/2310.01798",
+"big": false,
+"note": "Huang et al. 2023. Without external feedback, models struggle to correct their reasoning and sometimes get worse."
+},
+{
+"id": "ren",
+"c": "update",
+"label": "Self-improvement survey",
+"url": "https://arxiv.org/abs/2607.13104",
+"big": false,
+"note": "Ren et al. 2026. Self-improvement as an update operator on model parameters or scaffold components."
+},
+{
+"id": "dfs",
+"c": "data",
+"label": "Deep Feature Synthesis",
+"url": "https://doi.org/10.1109/dsaa.2015.7344858",
+"big": false,
+"note": "Stacked aggregations across related tables. The explicit baseline."
+},
+{
+"id": "rdl",
+"c": "data",
+"label": "Relational deep learning",
+"url": "https://arxiv.org/abs/2312.04615",
+"big": false,
+"note": "Fey et al. 2023. A database as a temporal heterogeneous graph, one node per row."
+},
+{
+"id": "relbench",
+"c": "data",
+"label": "RelBench v1/v2",
+"url": "https://arxiv.org/abs/2602.12606",
+"big": false,
+"note": "Gu et al. 2026. RelBench (2024) and RelBench v2 (2026): relational benchmarks with temporal constraints, 11 datasets in v2."
+},
+{
+"id": "rdblearn",
+"c": "data",
+"label": "RDBLearn",
+"url": "https://arxiv.org/abs/2602.18495",
+"big": false,
+"note": "Zhang et al. 2026. Relational aggregations plus a tabular foundation model, competitive with supervised baselines."
+},
+{
+"id": "snorkel",
+"c": "data",
+"label": "Snorkel",
+"url": "https://arxiv.org/abs/1711.10160",
+"big": false,
+"note": "Ratner et al. 2017. Labelling functions of unknown accuracy, denoised without ground truth."
+},
+{
+"id": "textdata",
+"c": "data",
+"label": "Text as data",
+"url": "https://doi.org/10.1257/jel.20181020",
+"big": false,
+"note": "Statistical methods for text in economics."
+},
+{
+"id": "spo",
+"c": "decide",
+"label": "Smart Predict-then-Optimize",
+"url": "https://doi.org/10.1287/mnsc.2020.3922",
+"big": true,
+"note": "Train on decision error. SPO+ is a convex, statistically consistent surrogate."
+},
+{
+"id": "gp",
+"c": "decide",
+"label": "Gârleanu–Pedersen",
+"url": "https://doi.org/10.1111/jofi.12080",
+"big": false,
+"note": "Trade partway toward an aim portfolio. Persistent signals get more weight."
+},
+{
+"id": "dr",
+"c": "decide",
+"label": "Doubly robust OPE",
+"url": "https://arxiv.org/abs/1103.4601",
+"big": false,
+"note": "Dudik et al. 2011. Accurate policy values if either the reward model or the logging-policy model is good."
+},
+{
+"id": "crm",
+"c": "decide",
+"label": "Counterfactual risk min.",
+"url": "https://arxiv.org/abs/1502.02362",
+"big": false,
+"note": "Swaminathan & Joachims 2015. Propensity-weighted learning with a variance penalty."
+},
+{
+"id": "cql",
+"c": "decide",
+"label": "CQL / IQL",
+"url": "https://arxiv.org/abs/2006.04779",
+"big": false,
+"note": "Kumar et al. 2020. Conservative and implicit Q-learning: offline RL that avoids overvaluing actions the data does not support."
+},
+{
+"id": "dml",
+"c": "decide",
+"label": "Double/debiased ML",
+"url": "https://doi.org/10.1111/ectj.12097",
+"big": false,
+"note": "Orthogonal scores and cross-fitting. Estimation under stated identification assumptions, not a substitute for them."
+},
+{
+"id": "white",
+"c": "eval",
+"label": "Reality check",
+"url": "https://doi.org/10.1111/1468-0262.00152",
+"big": false,
+"note": "Tests whether the best model from a search beats a benchmark, accounting for the search."
+},
+{
+"id": "hansen",
+"c": "eval",
+"label": "Superior predictive ability",
+"url": "https://doi.org/10.1198/073500105000000063",
+"big": false,
+"note": "More power than the reality check, less sensitive to poor alternatives."
+},
+{
+"id": "pbo",
+"c": "eval",
+"label": "Backtest overfitting / DSR",
+"url": "https://doi.org/10.21314/JCF.2016.322",
+"big": false,
+"note": "The probability of backtest overfitting and the deflated Sharpe ratio: both correct for the number of trials, so both need it recorded."
+},
+{
+"id": "dwork",
+"c": "eval",
+"label": "Reusable holdout",
+"url": "https://doi.org/10.1126/science.aaa9375",
+"big": false,
+"note": "The practical version. Assumes independent samples from a fixed distribution."
+},
+{
+"id": "kapoor",
+"c": "eval",
+"label": "Leakage crisis",
+"url": "https://arxiv.org/abs/2207.07048",
+"big": false,
+"note": "Kapoor & Narayanan 2022. Leakage in 17 fields and 329 papers, and a taxonomy of eight types."
+},
+{
+"id": "glasserman",
+"c": "eval",
+"label": "Look-ahead vs distraction",
+"url": "https://arxiv.org/abs/2309.17322",
+"big": false,
+"note": "Glasserman & Lin 2023. Distraction by general company knowledge outweighs look-ahead in-sample."
+},
+{
+"id": "dated",
+"c": "eval",
+"label": "DatedGPT / ChronoGPT",
+"url": "https://arxiv.org/abs/2603.11838",
+"big": false,
+"note": "Yan et al. 2026. Language models with strict training cutoffs, so a backtest uses only what a model could have known."
+},
+{
+"id": "paleka",
+"c": "eval",
+"label": "⟂ Forecaster eval pitfalls",
+"url": "https://arxiv.org/abs/2506.00723",
+"big": false,
+"note": "Paleka et al. 2025. Temporal leakage and weak extrapolation in evaluations of LLM forecasters."
+},
+{
+"id": "finsaber",
+"c": "eval",
+"label": "⟂ FINSABER",
+"url": "https://arxiv.org/abs/2505.07078",
+"big": false,
+"note": "Li et al. 2025. FINSABER. Reported LLM timing advantages deteriorate over two decades and 100+ symbols."
+},
+{
+"id": "gencay",
+"c": "eval",
+"label": "⟂ Honest evaluation",
+"url": "https://arxiv.org/abs/2608.27734",
+"big": true,
+"note": "Gençay 2026. Leakage-safe tools by construction and deflation by the agent’s own trial count. Rejects every LLM-discovered strategy tested, and shows a leaky oracle with Sharpe 35 passing both the deflated Sharpe ratio and the backtest-overfitting test."
+}
+];
+const LINKS = [{"s": "rw", "t": "hub", "k": "link"}, {"s": "howard", "t": "matheson", "k": "builds"}, {"s": "matheson", "t": "rw", "k": "builds"}, {"s": "horvitz", "t": "rw", "k": "link"}, {"s": "rw", "t": "hay", "k": "builds"}, {"s": "hay", "t": "tolpin", "k": "link"}, {"s": "tolpin", "t": "sezener", "k": "link"}, {"s": "hay", "t": "callaway", "k": "builds"}, {"s": "callaway", "t": "rr", "k": "builds"}, {"s": "callaway", "t": "desab", "k": "builds"}, {"s": "rr", "t": "desab", "k": "link"}, {"s": "howard", "t": "kg", "k": "link"}, {"s": "gittins", "t": "kg", "k": "link"}, {"s": "kg", "t": "ids", "k": "link"}, {"s": "kg", "t": "hub", "k": "link"}, {"s": "afa", "t": "hub", "k": "link"}, {"s": "hyperband", "t": "kg", "k": "rebut", "lab": "allocation without a model"}, {"s": "spo", "t": "dfsed", "k": "builds"}, {"s": "kg", "t": "dfsed", "k": "builds"}, {"s": "dfsed", "t": "hub", "k": "bridge", "lab": "decision loss, not error"}, {"s": "act", "t": "snell", "k": "link"}, {"s": "snell", "t": "desab", "k": "link"}, {"s": "desab", "t": "metar", "k": "link"}, {"s": "snell", "t": "aera", "k": "link"}, {"s": "aera", "t": "hub", "k": "bridge"}, {"s": "exts", "t": "hub", "k": "bridge"}, {"s": "tolpin", "t": "exts", "k": "link"}, {"s": "brier", "t": "gr", "k": "link"}, {"s": "gr", "t": "fal", "k": "link"}, {"s": "autocast", "t": "halawi", "k": "builds"}, {"s": "halawi", "t": "fbench", "k": "builds"}, {"s": "fbench", "t": "paleka", "k": "link"}, {"s": "paleka", "t": "halawi", "k": "rebut"}, {"s": "teach", "t": "orl", "k": "builds"}, {"s": "orl", "t": "fal", "k": "builds"}, {"s": "bosse", "t": "fal", "k": "link"}, {"s": "fal", "t": "hub", "k": "bridge", "lab": "outcomes price research"}, {"s": "delay", "t": "fal", "k": "link"}, {"s": "aci", "t": "delay", "k": "link"}, {"s": "aisci", "t": "aisci2", "k": "builds"}, {"s": "beel", "t": "aisci", "k": "rebut"}, {"s": "aide", "t": "mle", "k": "link"}, {"s": "aide", "t": "aisci2", "k": "link"}, {"s": "mle", "t": "sflow", "k": "builds"}, {"s": "sflow", "t": "hub", "k": "bridge", "lab": "value-driven compute"}, {"s": "funsearch", "t": "alphaevolve", "k": "builds"}, {"s": "qlib", "t": "rdq", "k": "builds"}, {"s": "aide", "t": "rdq", "k": "link"}, {"s": "rdq", "t": "alphaagent", "k": "link"}, {"s": "tradingagents", "t": "finsaber", "k": "builds"}, {"s": "finsaber", "t": "tradingagents", "k": "rebut"}, {"s": "rdq", "t": "hub", "k": "bridge", "lab": "bandit scheduler"}, {"s": "dspy", "t": "gepa", "k": "builds"}, {"s": "opro", "t": "gepa", "k": "link"}, {"s": "textgrad", "t": "gepa", "k": "link"}, {"s": "reflexion", "t": "memrl", "k": "link"}, {"s": "godel", "t": "stop", "k": "link"}, {"s": "stop", "t": "adas", "k": "link"}, {"s": "adas", "t": "dgm", "k": "builds"}, {"s": "godel", "t": "dgm", "k": "builds"}, {"s": "huang", "t": "reflexion", "k": "rebut", "lab": "only with external feedback"}, {"s": "ren", "t": "gepa", "k": "link"}, {"s": "ren", "t": "memrl", "k": "link"}, {"s": "ren", "t": "lightning", "k": "link"}, {"s": "dfs", "t": "rdl", "k": "builds"}, {"s": "rdl", "t": "relbench", "k": "builds"}, {"s": "relbench", "t": "rdblearn", "k": "builds"}, {"s": "dfs", "t": "rdblearn", "k": "link", "lab": "aggregates, revisited"}, {"s": "snorkel", "t": "textdata", "k": "link"}, {"s": "spo", "t": "gp", "k": "link"}, {"s": "dr", "t": "crm", "k": "link"}, {"s": "crm", "t": "cql", "k": "link"}, {"s": "dml", "t": "dr", "k": "link"}, {"s": "white", "t": "hansen", "k": "builds"}, {"s": "hansen", "t": "pbo", "k": "link"}, {"s": "pbo", "t": "gencay", "k": "builds"}, {"s": "dwork", "t": "kapoor", "k": "link"}, {"s": "glasserman", "t": "dated", "k": "link"}, {"s": "dated", "t": "gencay", "k": "link"}, {"s": "gencay", "t": "rdq", "k": "rebut", "lab": "every LLM strategy rejected"}, {"s": "gencay", "t": "alphaagent", "k": "rebut"}, {"s": "hay", "t": "rdq", "k": "gap", "lab": "VOC of an experiment"}, {"s": "fal", "t": "rdq", "k": "gap", "lab": "outcome-trained core"}, {"s": "dr", "t": "rdq", "k": "gap", "lab": "OPE of research policies"}, {"s": "dwork", "t": "gencay", "k": "gap", "lab": "holdout reuse for agents"}, {"s": "relbench", "t": "rdq", "k": "gap", "lab": "own logs as substrate"}, {"s": "spo", "t": "exts", "k": "gap", "lab": "decision-valued search"}];
+
+const EDGE = {
+  builds: {stroke:"#999",    w:1.4, dash:null},
+  link:   {stroke:"#2471a3", w:1.3, dash:null},
+  same:   {stroke:"#2471a3", w:2.6, dash:null},
+  bridge: {stroke:"#1e8449", w:1.8, dash:null},
+  rebut:  {stroke:"#7d3c98", w:1.6, dash:"2,3"},
+  gap:    {stroke:"#c0392b", w:1.8, dash:"6,4"},
+};
+
+const W = document.getElementById("graph").clientWidth, H = 860;
+const svg = d3.select("#graph").append("svg")
+  .attr("width","100%").attr("height",H).attr("viewBox",[0,0,W,H]);
+const tooltip = d3.select("#tooltip");
+
+const links = LINKS.map(l => ({...l, source:l.s, target:l.t}));
+const nodes = NODES.map(n => ({...n}));
+const hub = nodes.find(n => n.id === "hub"); hub.fx = W/2; hub.fy = H/2;
+
+// each literature gets a sector around the hub; links then pull related sectors together
+const ORDER = ["classic","acquire","decide","eval","data","update","agents","outcomes","llmmeta"];
+const home = {hub:[W/2, H/2]};
+ORDER.forEach((c,i)=>{ const th = -Math.PI/2 + 2*Math.PI*i/ORDER.length;
+  home[c] = [W/2 + 0.36*W*Math.cos(th), H/2 + 0.38*H*Math.sin(th)]; });
+nodes.forEach(n => { const [hx,hy] = home[n.c]; n.x = hx + (Math.random()-0.5)*60; n.y = hy + (Math.random()-0.5)*60; });
+const sim = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d=>d.id).distance(d=>d.k==="builds"||d.k==="rebut"?60:120).strength(d=>(d.k==="builds"||d.k==="rebut")?0.35:0.02))
+  .force("charge", d3.forceManyBody().strength(-240))
+  .force("x", d3.forceX(d=>home[d.c][0]).strength(0.22))
+  .force("y", d3.forceY(d=>home[d.c][1]).strength(0.22))
+  .force("collide", d3.forceCollide().radius(46));
+
+const link = svg.append("g").selectAll("line").data(links).join("line")
+  .attr("stroke", d=>EDGE[d.k].stroke)
+  .attr("stroke-width", d=>EDGE[d.k].w)
+  .attr("stroke-dasharray", d=>EDGE[d.k].dash)
+  .attr("opacity", d=>d.k==="builds"||d.k==="rebut"||d.k==="gap"?0.85:0.35);
+
+const edgelabel = svg.append("g").selectAll("text").data(links.filter(d=>d.lab)).join("text")
+  .attr("font-size", 9.5).attr("font-style","italic")
+  .attr("fill", d=>d.k==="gap"?"#c0392b":"#777")
+  .attr("text-anchor","middle")
+  .attr("paint-order","stroke").attr("stroke","#fdfdfd").attr("stroke-width",3.5).attr("stroke-linejoin","round")
+  .text(d=>d.lab);
+
+const node = svg.append("g").selectAll("g").data(nodes).join("g")
+  .style("cursor", d=>d.url?"pointer":"grab")
+  .on("click", (e,d)=>{ if(d.url) window.open(d.url,"_blank"); })
+  .on("mousemove", (e,d)=>{ tooltip.style("display","block")
+      .style("left",(e.pageX+14)+"px").style("top",(e.pageY+8)+"px")
+      .html(`<b>${d.label}</b><br>${d.note}`); })
+  .on("mouseout", ()=>tooltip.style("display","none"))
+  .call(d3.drag()
+    .on("start",(e,d)=>{ if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+    .on("drag", (e,d)=>{ d.fx=e.x; d.fy=e.y; })
+    .on("end",  (e,d)=>{ if(!e.active) sim.alphaTarget(0); if(d.id!=="hub"){ d.fx=null; d.fy=null; } }));
+
+node.append("circle")
+  .attr("r", d=>d.id==="hub"?14:(d.big?10:6.5))
+  .attr("fill", d=>CLUSTERS[d.c].color)
+  .attr("stroke","#fff").attr("stroke-width",1.6);
+
+node.append("text").attr("class","nodelabel")
+  .attr("x", 0).attr("y", d=>(d.id==="hub"?14:(d.big?10:6.5))+13)
+  .attr("text-anchor","middle")
+  .attr("font-weight", d=>d.big?600:400)
+  .attr("paint-order","stroke").attr("stroke","#fdfdfd").attr("stroke-width",3.5).attr("stroke-linejoin","round")
+  .text(d=>d.label);
+
+sim.on("tick", () => {
+  nodes.forEach(d => { d.x = Math.max(60, Math.min(W-60, d.x)); d.y = Math.max(24, Math.min(H-24, d.y)); });
+  link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+      .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+  edgelabel.attr("x",d=>(d.source.x+d.target.x)/2).attr("y",d=>(d.source.y+d.target.y)/2-3);
+  node.attr("transform", d=>`translate(${d.x},${d.y})`);
+});
+
+d3.select("#cluster-legend").selectAll("span").data(Object.values(CLUSTERS)).join("span")
+  .html(d=>`<span class="dot" style="background:${d.color}"></span>${d.label}`);
+</script>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

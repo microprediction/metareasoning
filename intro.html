@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Introduction</title>
+  <meta name="description" content="Object-level and meta-level reasoning, the value of computation, learned metareasoning, the neighbouring vocabularies, and a reference architecture for a research system that learns what to investigate." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Introduction</h1>
+    <p class="subtitle">Two levels of reasoning, the value of a computation, and the vocabularies
+    that border the subject.</p>
+
+    <h2>Object level and meta level</h2>
+    <p>
+      An object-level question is about the world: what a filing implies for revenue, whether a
+      policy change will raise demand, how likely an event is to occur by a given date. A meta-level
+      question is about the system&rsquo;s own effort: which of the available investigations to run
+      next, and whether to run any at all.
+    </p>
+    <p>
+      A research system faces the meta-level question constantly. It can read another source, check
+      an inventory figure, fit a model, look for a disconfirming report, revisit a historical
+      analogue, or stop. Each of these costs time or money. Each is worth doing only if it might
+      change what the system does next.
+    </p>
+
+    <h2>The value of computation</h2>
+    <p>
+      Let $s$ be the system&rsquo;s current information state and $U(a)$ the utility of action $a$.
+      Acting now yields $\max_a \mathbb{E}[U(a) \mid s]$. A computation $c$ produces a result that
+      updates the state to $s \cdot c$, and the system then acts on the updated state. The value of
+      the computation is the expected gain from acting after it, less its cost:
+    </p>
+    <div class="equation-card">
+      $$\mathrm{VOC}(c) \;=\; \mathbb{E}_{c}\Big[\max_a \mathbb{E}[U(a) \mid s \cdot c]\Big] \;-\; \max_a \mathbb{E}[U(a) \mid s] \;-\; \mathrm{cost}(c).$$
+    </div>
+    <p>
+      The first term averages over the results the computation might return. A computation whose
+      every possible result leaves the chosen action unchanged has zero gross value, however much
+      uncertainty it removes. Reducing uncertainty about something irrelevant to the decision earns
+      nothing.
+    </p>
+    <p>
+      <a href="https://doi.org/10.1109/tssc.1966.300074">Howard (1966)</a> gave the same expression
+      for the value of information, and <a href="https://doi.org/10.1109/tssc.1968.300126">Matheson
+      (1968)</a> applied it to analysis and computation.
+      <a href="https://doi.org/10.1016/0004-3702(91)90015-C">Russell and Wefald (1991)</a> made it
+      the basis of a general theory of metareasoning, in which an agent performs the computation of
+      highest value and acts when none has positive value.
+    </p>
+
+    <h3>Myopia and intractability</h3>
+    <p>
+      The rule is simple to state and hard to apply. The value of one computation depends on which
+      computations follow it, so the exact problem is a sequential decision over the whole space of
+      computation sequences. The usual approximation is myopic. It values each computation as if
+      the system will act immediately after it.
+    </p>
+    <p>
+      Myopic estimates undervalue computations that pay off only in combination, and a myopic policy
+      can stop too early. <a href="https://arxiv.org/abs/1711.06892">Callaway et al. (2017)</a> note
+      that the true value of information lies between the myopic value and the value of perfect
+      information, and use that bracket to learn a metalevel policy.
+      <a href="https://arxiv.org/abs/1207.5879">Hay et al. (2012)</a> give a counterexample to the
+      intuitive conjecture that an optimal metalevel policy always reaches a decision.
+    </p>
+
+    <h2>Learned metareasoning</h2>
+    <p>
+      Exact metareasoning is intractable, so the practical question is whether a metalevel policy
+      can be learned from experience. The ingredients are a log of past computations, the
+      information state each was run in, and a later outcome that says whether the resulting
+      decision was good.
+    </p>
+    <p>
+      Several recent systems learn such a policy for a language model&rsquo;s own reasoning.
+      <a href="https://arxiv.org/abs/2410.05563">De Sabbata et al. (2024)</a> train a model with a
+      reward that penalises reasoning whose value of computation does not cover its cost.
+      <a href="https://arxiv.org/abs/2608.27964">AERA (2026)</a> learns whether generating another
+      block of candidate answers is likely to recover a better one, using future correctness only to
+      build offline supervision. The <a href="./selection.html">selecting computations</a> page
+      covers this line from its origins.
+    </p>
+    <p>
+      A research system is the same problem at a larger grain. The computations are experiments,
+      queries and model fits rather than reasoning tokens. The outcomes arrive weeks or months later,
+      and the <a href="./outcomes.html">resolved-outcomes</a> literature shows how to turn them into
+      training signal.
+    </p>
+
+    <h2>Neighbouring vocabularies</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Term</th><th>Emphasis</th><th>Representative work</th></tr></thead>
+        <tbody>
+          <tr><td>Rational metareasoning</td>
+              <td>Choosing computations by their expected value, and deciding when to stop</td>
+              <td class="mode"><a href="https://doi.org/10.1016/0004-3702(91)90015-C">Russell &amp; Wefald 1991</a>;
+              <a href="https://arxiv.org/abs/1207.5879">Hay et al. 2012</a></td></tr>
+          <tr><td>Resource-rational analysis</td>
+              <td>Cognition as the optimal use of limited computation</td>
+              <td class="mode"><a href="https://doi.org/10.1017/s0140525x1900061x">Lieder &amp; Griffiths 2020</a></td></tr>
+          <tr><td>Autonomous research</td>
+              <td>Generating hypotheses, running experiments and evaluating the results</td>
+              <td class="mode"><a href="https://arxiv.org/abs/2408.06292">Lu et al. 2024</a>;
+              <a href="https://arxiv.org/abs/2505.15155">Li et al. 2025</a></td></tr>
+          <tr><td>Self-improving agents</td>
+              <td>Updating prompts, memory, tools, procedures or weights from experience</td>
+              <td class="mode"><a href="https://arxiv.org/abs/2507.21046">Gao et al. 2025</a>;
+              <a href="https://arxiv.org/abs/2607.13104">Ren et al. 2026</a></td></tr>
+          <tr><td>Meta-learning</td>
+              <td>Using many learning episodes to improve the learning algorithm itself</td>
+              <td class="mode"><a href="https://arxiv.org/abs/2004.05439">Hospedales et al. 2020</a></td></tr>
+          <tr><td>Online and continual learning</td>
+              <td>Incorporating evidence as it arrives, including delayed feedback and drift</td>
+              <td class="mode"><a href="https://arxiv.org/abs/1306.0686">Joulani et al. 2013</a>;
+              <a href="https://arxiv.org/abs/2106.00170">Gibbs &amp; Cand&egrave;s 2021</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      &ldquo;Self-improving quantitative research&rdquo; names an application: a system that learns
+      both how to predict and how to conduct the research that produces its predictions.
+      &ldquo;Learned metareasoning&rdquo; names the capability that distinguishes it, a research
+      policy that improves its own allocation of effort. The central question of the subject is
+      which next research action has the greatest expected value, given what is currently known.
+    </p>
+
+    <h2>A reference architecture</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 780 210" role="img"
+           aria-label="A research controller proposes actions; an evaluation service runs them under as-of constraints, scores them and records every trial in a ledger that the controller learns from">
+        <defs>
+          <marker id="arrow2" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
+            <path d="M0,0 L6.5,3 L0,6 Z" fill="#0d7d8c"/>
+          </marker>
+        </defs>
+        <rect x="10" y="30" width="220" height="110" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="120" y="60" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Research controller</text>
+        <text x="120" y="82" text-anchor="middle" font-size="11.5" fill="#5a5a5a">proposes queries, features,</text>
+        <text x="120" y="98" text-anchor="middle" font-size="11.5" fill="#5a5a5a">prompts, models, procedures</text>
+        <text x="120" y="120" text-anchor="middle" font-size="11" fill="#9a9a9a">objective: improvement per unit cost</text>
+
+        <line x1="234" y1="70" x2="296" y2="70" stroke="#0d7d8c" stroke-width="2" marker-end="url(#arrow2)"/>
+        <text x="265" y="62" text-anchor="middle" font-size="10.5" fill="#9a9a9a">proposal</text>
+
+        <rect x="300" y="20" width="220" height="130" rx="10" fill="#0d7d8c"/>
+        <text x="410" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Evaluation service</text>
+        <text x="410" y="74" text-anchor="middle" font-size="11.5" fill="#e6f3f5">as-of data access only</text>
+        <text x="410" y="92" text-anchor="middle" font-size="11.5" fill="#e6f3f5">tasks fixed before outcomes</text>
+        <text x="410" y="110" text-anchor="middle" font-size="11.5" fill="#e6f3f5">proper scores, chronological splits</text>
+        <text x="410" y="128" text-anchor="middle" font-size="11.5" fill="#e6f3f5">promotion on later evidence</text>
+
+        <line x1="524" y1="85" x2="586" y2="85" stroke="#0d7d8c" stroke-width="2" marker-end="url(#arrow2)"/>
+
+        <rect x="590" y="30" width="180" height="110" rx="10" fill="#ffffff" stroke="#e2e2e2"/>
+        <text x="680" y="60" text-anchor="middle" font-size="14" font-weight="600" fill="#10212b">Ledger</text>
+        <text x="680" y="82" text-anchor="middle" font-size="11.5" fill="#5a5a5a">every trial, including</text>
+        <text x="680" y="98" text-anchor="middle" font-size="11.5" fill="#5a5a5a">failures, with its cost</text>
+        <text x="680" y="120" text-anchor="middle" font-size="11" fill="#9a9a9a">sets the evidential bar</text>
+
+        <path d="M 680 144 L 680 185 L 120 185 L 120 144" fill="none" stroke="#0d7d8c" stroke-width="1.6"
+              stroke-dasharray="5 3" marker-end="url(#arrow2)"/>
+        <text x="400" y="200" text-anchor="middle" font-size="11" fill="#5a5a5a">the controller learns which kinds of proposal paid off, under which circumstances, at what cost</text>
+      </svg>
+      <p class="caption">The controller never touches data or scores directly. Every proposal passes
+      through one interface.</p>
+    </div>
+    <p>
+      The separation has precedents. <a href="https://arxiv.org/abs/2601.06336">Future-as-Label</a>
+      gives the predictor only information before a cutoff and lets a separate resolver use later
+      information. <a href="https://arxiv.org/abs/2505.15155">RD-Agent(Q)</a> divides its loop into
+      research, development and feedback stages.
+      <a href="https://arxiv.org/abs/2608.27734">Gen&ccedil;ay (2026)</a> lets the agent act only
+      through registry-validated tools whose feature space excludes look-ahead, and records every
+      evaluation the search performs.
+    </p>
+    <p>
+      Separating a research controller from the evaluation of its proposals lets the system learn
+      from many more observations than completed decisions. Every resolved forecast scores the
+      research that fed it, whether or not any action followed.
+    </p>
+
+    <h2>Constraints on the data</h2>
+    <p>
+      The literature on evaluation, surveyed on the <a href="./evaluation.html">evaluating a
+      search</a> page, implies a short list of requirements for any system that learns from its own
+      history.
+    </p>
+    <ul>
+      <li>
+        <em>Reproducible information states.</em> A record of when something happened, when the
+        system first received it, and which version was visible at each time. A daily snapshot
+        cannot recover an intraday sequence that was never recorded. The
+        <a href="https://arxiv.org/abs/2206.15474">Autocast</a> news corpus is organised by date for
+        this reason.
+      </li>
+      <li>
+        <em>Tasks defined before outcomes are seen.</em> The task set includes items that were
+        ignored and opportunities that produced no action, so that it is not built around events
+        that later proved dramatic. <a href="https://arxiv.org/abs/2506.00723">Paleka et al.
+        (2025)</a> catalogue the forms of temporal leakage that follow otherwise.
+      </li>
+      <li>
+        <em>Explicit targets.</em> A probability, a duration or a magnitude has a denominator, a
+        horizon and an uncertainty, and is scored with a
+        <a href="https://doi.org/10.1198/016214506000001437">proper scoring rule</a>.
+      </li>
+      <li>
+        <em>Clustering of repeated coverage.</em> Many reports of one event are one observation, not
+        many independent successes.
+      </li>
+      <li>
+        <em>Retention of failed experiments.</em> The number of trials sets the bar a reported
+        result must clear, as in the <a href="https://doi.org/10.3905/jpm.2014.40.5.094">deflated
+        Sharpe ratio</a>.
+      </li>
+      <li>
+        <em>Consumed holdouts.</em> Once a system adapts to a period&rsquo;s results, that period is
+        no longer untouched evidence for the adapted system
+        (<a href="https://doi.org/10.1126/science.aaa9375">Dwork et al. 2015</a>).
+      </li>
+    </ul>
+
+    <div class="next-steps">
+      <p>The topic pages follow the loop. <a href="./selection.html">Selecting computations</a> covers
+      the metalevel theory, <a href="./outcomes.html">learning from resolved outcomes</a> the labels,
+      <a href="./agents.html">autonomous research loops</a> and
+      <a href="./updating.html">what a self-improving system updates</a> the machinery,
+      <a href="./data.html">relational features and weak labels</a> the substrate,
+      <a href="./decisions.html">from forecasts to decisions</a> the bridge to action, and
+      <a href="./evaluation.html">evaluating a search</a> the statistics that make an improvement
+      believable.</p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>

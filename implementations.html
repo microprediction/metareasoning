@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Implementations</title>
+  <meta name="description" content="Open code for metareasoning and self-improving research systems: research loops, self-improvement frameworks, relational learning, off-policy and causal libraries, and benchmarks, with repository status as of September 2026." />
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], ignoredTags:['script','noscript','style','textarea','pre','code','svg']});"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">metareasoning</a>
+      <nav>
+        <span class="navdrop"><a href="./intro.html">Topics</a><span class="navdrop-menu">
+          <a href="./intro.html">Introduction</a>
+          <a href="./selection.html">Selecting computations</a>
+          <a href="./outcomes.html">Learning from resolved outcomes</a>
+          <a href="./agents.html">Autonomous research loops</a>
+          <a href="./updating.html">What a self-improving system updates</a>
+          <a href="./data.html">Relational features and weak labels</a>
+          <a href="./decisions.html">From forecasts to decisions</a>
+          <a href="./evaluation.html">Evaluating a search</a>
+        </span></span>
+        <span class="navdrop"><a href="./bibliography.html">Reference</a><span class="navdrop-menu">
+          <a href="./bibliography.html">Annotated bibliography</a>
+          <a href="./implementations.html">Implementations</a>
+          <a href="./map.html">Literature map</a>
+          <a href="./timeline.html">Timeline</a>
+        </span></span>
+        <a href="https://github.com/microprediction/metareasoning">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p class="pagenav"><a href="./index.html">&larr; Home</a></p>
+    <h1>Implementations</h1>
+    <p class="subtitle">Open code for the loops, the update mechanisms, the substrate and the
+    evaluations.</p>
+
+    <p class="muted">Star counts and last-push dates were read from the GitHub API on
+    30 September 2026. A repository with no recent push may be complete rather than abandoned.</p>
+
+    <h2>Research loops</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Project</th><th>Purpose</th><th>Paper</th><th class="nowrap">Stars</th><th class="nowrap">Last push</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/microsoft/RD-Agent">R&amp;D-Agent, including RD-Agent(Q)</a></td><td>Hypothesis, code, backtest and feedback loop for data-driven research</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2505.15155">2505.15155</a></td><td class="mode nowrap">14,816</td><td class="mode nowrap">2026-09-30</td></tr>
+          <tr><td><a href="https://github.com/microsoft/qlib">Qlib</a></td><td>Quantitative research platform: data, models, backtests</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2009.11189">2009.11189</a></td><td class="mode nowrap">49,078</td><td class="mode nowrap">2026-09-22</td></tr>
+          <tr><td><a href="https://github.com/RndmVariableQ/AlphaAgent">AlphaAgent</a></td><td>Regularised LLM factor mining</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2502.16789">2502.16789</a></td><td class="mode nowrap">418</td><td class="mode nowrap">2026-07-03</td></tr>
+          <tr><td><a href="https://github.com/WecoAI/aideml">AIDE</a></td><td>Tree search over code for ML engineering</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2502.13138">2502.13138</a></td><td class="mode nowrap">1,550</td><td class="mode nowrap">2026-09-03</td></tr>
+          <tr><td><a href="https://github.com/SakanaAI/AI-Scientist">The AI Scientist</a></td><td>End-to-end automated papers, with template code</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2408.06292">2408.06292</a></td><td class="mode nowrap">14,645</td><td class="mode nowrap">2025-12-19</td></tr>
+          <tr><td><a href="https://github.com/SakanaAI/AI-Scientist-v2">The AI Scientist-v2</a></td><td>Agentic tree search, no templates</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2504.08066">2504.08066</a></td><td class="mode nowrap">7,247</td><td class="mode nowrap">2025-12-19</td></tr>
+          <tr><td><a href="https://github.com/TauricResearch/TradingAgents">TradingAgents</a></td><td>Multi-agent simulated trading firm</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2412.20138">2412.20138</a></td><td class="mode nowrap">109,371</td><td class="mode nowrap">2026-09-29</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Self-improvement</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Project</th><th>Purpose</th><th>Paper</th><th class="nowrap">Stars</th><th class="nowrap">Last push</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/stanfordnlp/dspy">DSPy</a></td><td>Declarative LM pipelines compiled against a metric</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2310.03714">2310.03714</a></td><td class="mode nowrap">38,437</td><td class="mode nowrap">2026-09-30</td></tr>
+          <tr><td><a href="https://github.com/gepa-ai/gepa">GEPA</a></td><td>Reflective prompt and code evolution</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2507.19457">2507.19457</a></td><td class="mode nowrap">6,822</td><td class="mode nowrap">2026-09-29</td></tr>
+          <tr><td><a href="https://github.com/zou-group/textgrad">TextGrad</a></td><td>Textual feedback through computation graphs</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2406.07496">2406.07496</a></td><td class="mode nowrap">3,750</td><td class="mode nowrap">2025-07-25</td></tr>
+          <tr><td><a href="https://github.com/google-deepmind/opro">OPRO</a></td><td>Optimisation by prompting</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2309.03409">2309.03409</a></td><td class="mode nowrap">780</td><td class="mode nowrap">2024-12-04</td></tr>
+          <tr><td><a href="https://github.com/noahshinn/reflexion">Reflexion</a></td><td>Verbal reflection in episodic memory</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2303.11366">2303.11366</a></td><td class="mode nowrap">3,290</td><td class="mode nowrap">2025-01-14</td></tr>
+          <tr><td><a href="https://github.com/MemTensor/MemRL">MemRL</a></td><td>Reinforcement learning on episodic memory</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2601.03192">2601.03192</a></td><td class="mode nowrap">176</td><td class="mode nowrap">2026-07-18</td></tr>
+          <tr><td><a href="https://github.com/ShengranHu/ADAS">ADAS</a></td><td>Meta Agent Search over agent code</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2408.08435">2408.08435</a></td><td class="mode nowrap">1,638</td><td class="mode nowrap">2025-01-28</td></tr>
+          <tr><td><a href="https://github.com/Arvid-pku/Godel_Agent">G&ouml;del Agent</a></td><td>Self-modifying agent</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2410.04444">2410.04444</a></td><td class="mode nowrap">228</td><td class="mode nowrap">2025-09-17</td></tr>
+          <tr><td><a href="https://github.com/jennyzzt/dgm">Darwin G&ouml;del Machine</a></td><td>Archive-based self-improving coding agents</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2505.22954">2505.22954</a></td><td class="mode nowrap">2,385</td><td class="mode nowrap">2025-08-13</td></tr>
+          <tr><td><a href="https://github.com/microsoft/agent-lightning">Agent Lightning</a></td><td>RL training decoupled from agent execution</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2508.03680">2508.03680</a></td><td class="mode nowrap">18,540</td><td class="mode nowrap">2026-09-29</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Data and supervision</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Project</th><th>Purpose</th><th>Paper</th><th class="nowrap">Stars</th><th class="nowrap">Last push</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/stanford-star/relbench">RelBench</a></td><td>Relational deep learning benchmark</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2407.20060">2407.20060</a></td><td class="mode nowrap">392</td><td class="mode nowrap">2026-09-17</td></tr>
+          <tr><td><a href="https://github.com/pyg-team/pytorch-frame">PyTorch Frame</a></td><td>Tabular deep learning used by RDL models</td><td class="mode nowrap">&mdash;</td><td class="mode nowrap">799</td><td class="mode nowrap">2026-09-07</td></tr>
+          <tr><td><a href="https://github.com/alteryx/featuretools">Featuretools</a></td><td>Deep Feature Synthesis</td><td class="mode nowrap">&mdash;</td><td class="mode nowrap">7,687</td><td class="mode nowrap">2026-09-11</td></tr>
+          <tr><td><a href="https://github.com/snorkel-team/snorkel">Snorkel</a></td><td>Weak supervision from labelling functions</td><td class="mode nowrap"><a href="https://arxiv.org/abs/1711.10160">1711.10160</a></td><td class="mode nowrap">6,011</td><td class="mode nowrap">2026-09-14</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Decisions and causal estimation</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Project</th><th>Purpose</th><th>Paper</th><th class="nowrap">Stars</th><th class="nowrap">Last push</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/paulgrigas/SmartPredictThenOptimize">SPO</a></td><td>Reference code for SPO and SPO+</td><td class="mode nowrap"><a href="https://arxiv.org/abs/1710.08005">1710.08005</a></td><td class="mode nowrap">91</td><td class="mode nowrap">2024-08-09</td></tr>
+          <tr><td><a href="https://github.com/st-tech/zr-obp">Open Bandit Pipeline</a></td><td>Off-policy evaluation estimators and data</td><td class="mode nowrap">&mdash;</td><td class="mode nowrap">711</td><td class="mode nowrap">2024-06-03</td></tr>
+          <tr><td><a href="https://github.com/takuseno/d3rlpy">d3rlpy</a></td><td>Offline RL algorithms including CQL and IQL</td><td class="mode nowrap">&mdash;</td><td class="mode nowrap">1,683</td><td class="mode nowrap">2025-09-10</td></tr>
+          <tr><td><a href="https://github.com/DoubleML/doubleml-for-py">DoubleML</a></td><td>Double/debiased machine learning</td><td class="mode nowrap">&mdash;</td><td class="mode nowrap">791</td><td class="mode nowrap">2026-09-23</td></tr>
+          <tr><td><a href="https://github.com/py-why/EconML">EconML</a></td><td>Heterogeneous treatment effect estimation</td><td class="mode nowrap">&mdash;</td><td class="mode nowrap">4,803</td><td class="mode nowrap">2026-09-28</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Evaluation</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Project</th><th>Purpose</th><th>Paper</th><th class="nowrap">Stars</th><th class="nowrap">Last push</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/openai/mle-bench">MLE-bench</a></td><td>75 Kaggle competitions for ML agents</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2410.07095">2410.07095</a></td><td class="mode nowrap">1,759</td><td class="mode nowrap">2026-04-24</td></tr>
+          <tr><td><a href="https://github.com/snap-stanford/MLAgentBench">MLAgentBench</a></td><td>13 ML experimentation tasks</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2310.03302">2310.03302</a></td><td class="mode nowrap">354</td><td class="mode nowrap">2024-06-19</td></tr>
+          <tr><td><a href="https://github.com/forecastingresearch/forecastbench">ForecastBench</a></td><td>Dynamic forecasting benchmark on unresolved questions</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2409.19839">2409.19839</a></td><td class="mode nowrap">86</td><td class="mode nowrap">2026-09-30</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Reading lists</h2>
+    <div class="table-wrap">
+      <table class="impl">
+        <thead><tr><th>Project</th><th>Purpose</th><th>Paper</th><th class="nowrap">Stars</th><th class="nowrap">Last push</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/selfimproving-agent/Awesome-Self-Improving-Agents">Awesome Self-Improving Agents</a></td><td>Tracks the Ren et al. survey</td><td class="mode nowrap"><a href="https://arxiv.org/abs/2607.13104">2607.13104</a></td><td class="mode nowrap">521</td><td class="mode nowrap">2026-09-30</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Corrections to maintenance status are welcome as an
+      <a href="https://github.com/microprediction/metareasoning/issues">issue</a>.
+    </p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/microprediction/metareasoning">Source</a> &middot;
+    Maintained by <a href="https://github.com/microprediction">Peter Cotton</a>.
+  </footer>
+</body>
+</html>
+
