@@ -55,7 +55,8 @@ maintenance status has changed.
 
 ## Deployment
 
-GitHub Pages from the default branch, root directory.
+GitHub Pages from the default branch, root directory. `CNAME` points at
+`metareasoning.microprediction.org`.
 
 ## License
 
